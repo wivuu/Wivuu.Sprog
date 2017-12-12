@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace csparser
 {
-    using System.Globalization;
     using static Fundamentals;
     static class Fundamentals
     {
@@ -19,17 +18,12 @@ namespace csparser
         {
             var matchIndex = 0;
 
-            while (matchIndex < input.Length)
-            {
-                if (predicate(input[matchIndex]))
-                    ++matchIndex;
-                else
-                    break;
-            }
+            while (matchIndex < input.Length && predicate( input[matchIndex] ))
+                ++matchIndex;
 
             match = matchIndex > 0
                 ? input.Slice(0, matchIndex)
-                : throw new Exception("(Take) Unable to parse");
+                : throw new Exception("Unable to parse");
 
             return input.Slice(matchIndex);
         }
@@ -50,18 +44,24 @@ namespace csparser
 
             return Skip(input, Predicate);
         }
+
+        public static string AsString(this ReadOnlySpan<char> input) =>
+            new String(input.ToArray());
     }
 
     class Program
     {
         static void Main(string[] args)
         {
-            @"  This is some string  "
+            var remaining = 
+                @"  This is some string  "
                 .AsSpan()
                 .SkipWhitespace()
-                .Take(AThroughZ, out var word);
+                .Take(AThroughZ, out var word)
+                .SkipWhitespace();
 
-            Console.WriteLine($"Word: {word}");
+            Console.WriteLine($"Word: {word.AsString()}");
+            Console.WriteLine($"Remaining: {remaining.AsString()}");
         }
     }
 }
