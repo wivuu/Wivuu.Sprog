@@ -6,18 +6,17 @@ namespace csparser
     using static Fundamentals;
     static class Fundamentals
     {
-        public static char[] Whitespace = 
-            new [] { ' ', '\t', '\r', '\n' };
+        public static bool Whitespace(char c) =>
+            c == ' ' || c == '\t' || c == '\r' || c == '\n';
             
-        public static char[] AThroughZ =
-            (from c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-             select c).ToArray();
-
+        public static bool AThroughZ(char c) => 
+            ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z');
+            
         public static ReadOnlySpan<char> Take(
             this ReadOnlySpan<char> input, Func<char, bool> predicate, out ReadOnlySpan<char> match)
         {
             var matchIndex = 0;
-
+            
             while (matchIndex < input.Length && predicate( input[matchIndex] ))
                 ++matchIndex;
 
@@ -28,22 +27,8 @@ namespace csparser
             return input.Slice(matchIndex);
         }
 
-        public static ReadOnlySpan<char> Take(this ReadOnlySpan<char> input, char[] predicate, out ReadOnlySpan<char> match)
-        {
-            bool Predicate(char c) => Array.IndexOf(predicate, c) != -1;
-
-            return Take(input, Predicate, out match);
-        }
-
         public static ReadOnlySpan<char> Skip(this ReadOnlySpan<char> input, Func<char, bool> predicate) =>
             Take(input, predicate, out _);
-
-        public static ReadOnlySpan<char> SkipWhitespace(this ReadOnlySpan<char> input)
-        {
-            bool Predicate(char c) => Array.IndexOf(Whitespace, c) != -1;
-
-            return Skip(input, Predicate);
-        }
 
         public static string AsString(this ReadOnlySpan<char> input) =>
             new String(input.ToArray());
@@ -56,9 +41,9 @@ namespace csparser
             var remaining = 
                 @"  This is some string  "
                 .AsSpan()
-                .SkipWhitespace()
+                .Skip(Whitespace)
                 .Take(AThroughZ, out var word)
-                .SkipWhitespace();
+                .Skip(Whitespace);
 
             Console.WriteLine($"Word: {word.AsString()}");
             Console.WriteLine($"Remaining: {remaining.AsString()}");
