@@ -42,13 +42,23 @@ namespace csparser
             return input.Slice(i);
         }
 
-        public static ReadOnlySpan<char> Peek(this ReadOnlySpan<char> input, int take = 1) =>
-            input.Length >= take
-            ? input.Slice(0, take)
-            : throw new Exception($"Unable to peek {take} from length {input.Length}");
+        public static bool Peek(this ReadOnlySpan<char> input, int take, out ReadOnlySpan<char> match)
+        {
+            if (input.Length < take)
+                return false;
 
-        public static char Peek(this ReadOnlySpan<char> input) =>
-            Peek(input, 1)[0];
+            match = input.Slice(0, take);
+
+            return true;
+        }
+
+        public static bool Peek(this ReadOnlySpan<char> input, out char match)
+        {        
+            var result = Peek(input, 1, out var m);
+            match      = m[0];
+
+            return result;
+        }
 
         public static ReadOnlySpan<char> SkipOne(this ReadOnlySpan<char> input, Func<char, bool> predicate) =>
             input.Slice(MatchWhile(input, predicate, take: 1));
