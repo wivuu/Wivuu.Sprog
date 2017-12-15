@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
-using Sprache;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-using BenchmarkDotNet.Attributes.Jobs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static csparser.Parser;
+using Sprache;
 using static System.Char;
+using static csparser.Parser;
 
 namespace benchmarks
 {
