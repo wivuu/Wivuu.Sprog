@@ -24,6 +24,20 @@ namespace csparser
     public class ParserTests
     {
         [TestMethod]
+        public void TestParserContinuators()
+        {
+            (string, ReadOnlySpan<char>) identifier(string input) =>
+                input.AsSpan()
+                     .Skip(IsWhiteSpace)
+                     .TakeOne(IsLetter, out var first)
+                     .Take(IsLetterOrDigit, out var rest)
+                     .Skip(IsWhiteSpace)
+                     .Result($"{first}{rest.AsString()}");
+
+            var (output, _) = identifier(" tBis   ");
+        }
+
+        [TestMethod]
         public void TestParseIdents()
         {
             var remaining = 

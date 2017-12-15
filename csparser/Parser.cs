@@ -79,5 +79,8 @@ namespace csparser
 
             return sb.ToString();
         }
+
+        public static (string id, ReadOnlySpan<char> rest) Result(this ReadOnlySpan<char> rest, string id) => 
+            (id, rest);
     }
 }

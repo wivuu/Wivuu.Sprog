@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.env.osx": {
+        "PATH": "/Users/erikoleary/.platformio/penv/bin:/Users/erikoleary/.opam/system/bin:/Users/erikoleary/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/erikoleary/bin:/usr/local/gnat/bin"
+    }
+}
