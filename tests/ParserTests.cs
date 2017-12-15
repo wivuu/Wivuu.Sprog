@@ -1,8 +1,5 @@
 using System;
-using System.Text;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static csparser.Parser;
 using static System.Char;
 
 namespace csparser
