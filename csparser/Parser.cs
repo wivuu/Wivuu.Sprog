@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Linq;
 
 namespace csparser
 {
@@ -67,7 +66,7 @@ namespace csparser
             input.Slice(MatchWhile(input, predicate));
 
         public static string AsString(this ReadOnlySpan<char> input) =>
-            new String(input.ToArray());
+            new string(input.ToArray());
             
         public static string Concat(this ReadOnlySpan<char> input, params ReadOnlySpan<char>[] rest)
         {
