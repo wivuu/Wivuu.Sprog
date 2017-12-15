@@ -1,0 +1,441 @@
+// ***** BenchmarkRunner: Start   *****
+// Found benchmarks:
+//   Program.InternalVersion: Job-LJWXHU(InvocationCount=100000)
+//   Program.SpracheVersion: Job-LJWXHU(InvocationCount=100000)
+
+// Validating benchmarks:
+// **************************
+// Benchmark: Program.InternalVersion: Job-LJWXHU(InvocationCount=100000)
+// *** Generate *** 
+// Result = Success
+// BinariesDirectoryPath = /Users/erikoleary/projects/parser/benchmarks/bin/release/netcoreapp2.0/73ca1b13-80b4-484d-9adb-7e7fef5cae59/bin/Release/netcoreapp2.0
+
+// *** Build ***
+// dotnet restore took 1.95s
+// dotnet build took 5.46s
+// Result = Success
+
+// *** Execute ***
+// Launch: 1 / 1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 2.0.3 (Framework 4.6.0.0), 64bit RyuJIT
+// GC=Concurrent Workstation
+// Job: Job-GFDDUZ(InvocationCount=100000)
+
+IdleWarmup  1: 100000 op, 443000.00 ns, 4.4300 ns/op
+IdleWarmup  2: 100000 op, 200000.00 ns, 2.0000 ns/op
+IdleWarmup  3: 100000 op, 195000.00 ns, 1.9500 ns/op
+IdleWarmup  4: 100000 op, 195000.00 ns, 1.9500 ns/op
+IdleWarmup  5: 100000 op, 195000.00 ns, 1.9500 ns/op
+IdleWarmup  6: 100000 op, 195000.00 ns, 1.9500 ns/op
+IdleWarmup  7: 100000 op, 201000.00 ns, 2.0100 ns/op
+
+IdleTarget  1: 100000 op, 186000.00 ns, 1.8600 ns/op
+IdleTarget  2: 100000 op, 188000.00 ns, 1.8800 ns/op
+IdleTarget  3: 100000 op, 189000.00 ns, 1.8900 ns/op
+IdleTarget  4: 100000 op, 217000.00 ns, 2.1700 ns/op
+IdleTarget  5: 100000 op, 216000.00 ns, 2.1600 ns/op
+IdleTarget  6: 100000 op, 216000.00 ns, 2.1600 ns/op
+IdleTarget  7: 100000 op, 215000.00 ns, 2.1500 ns/op
+IdleTarget  8: 100000 op, 216000.00 ns, 2.1600 ns/op
+IdleTarget  9: 100000 op, 216000.00 ns, 2.1600 ns/op
+IdleTarget 10: 100000 op, 217000.00 ns, 2.1700 ns/op
+IdleTarget 11: 100000 op, 254000.00 ns, 2.5400 ns/op
+IdleTarget 12: 100000 op, 216000.00 ns, 2.1600 ns/op
+IdleTarget 13: 100000 op, 220000.00 ns, 2.2000 ns/op
+IdleTarget 14: 100000 op, 249000.00 ns, 2.4900 ns/op
+IdleTarget 15: 100000 op, 216000.00 ns, 2.1600 ns/op
+
+MainWarmup  1: 100000 op, 44673000.00 ns, 446.7300 ns/op
+MainWarmup  2: 100000 op, 38405000.00 ns, 384.0500 ns/op
+MainWarmup  3: 100000 op, 34876000.00 ns, 348.7600 ns/op
+MainWarmup  4: 100000 op, 34257000.00 ns, 342.5700 ns/op
+MainWarmup  5: 100000 op, 35425000.00 ns, 354.2500 ns/op
+MainWarmup  6: 100000 op, 40500000.00 ns, 405.0000 ns/op
+MainWarmup  7: 100000 op, 38291000.00 ns, 382.9100 ns/op
+MainWarmup  8: 100000 op, 34741000.00 ns, 347.4100 ns/op
+MainWarmup  9: 100000 op, 35948000.00 ns, 359.4800 ns/op
+MainWarmup 10: 100000 op, 36061000.00 ns, 360.6100 ns/op
+MainWarmup 11: 100000 op, 37944000.00 ns, 379.4400 ns/op
+MainWarmup 12: 100000 op, 36297000.00 ns, 362.9700 ns/op
+
+MainTarget  1: 100000 op, 33800000.00 ns, 338.0000 ns/op
+MainTarget  2: 100000 op, 36221000.00 ns, 362.2100 ns/op
+MainTarget  3: 100000 op, 33883000.00 ns, 338.8300 ns/op
+MainTarget  4: 100000 op, 36654000.00 ns, 366.5400 ns/op
+MainTarget  5: 100000 op, 36921000.00 ns, 369.2100 ns/op
+MainTarget  6: 100000 op, 34546000.00 ns, 345.4600 ns/op
+MainTarget  7: 100000 op, 35073000.00 ns, 350.7300 ns/op
+MainTarget  8: 100000 op, 36611000.00 ns, 366.1100 ns/op
+MainTarget  9: 100000 op, 34172000.00 ns, 341.7200 ns/op
+MainTarget 10: 100000 op, 35697000.00 ns, 356.9700 ns/op
+MainTarget 11: 100000 op, 34065000.00 ns, 340.6500 ns/op
+MainTarget 12: 100000 op, 34314000.00 ns, 343.1400 ns/op
+MainTarget 13: 100000 op, 35349000.00 ns, 353.4900 ns/op
+MainTarget 14: 100000 op, 34445000.00 ns, 344.4500 ns/op
+MainTarget 15: 100000 op, 36358000.00 ns, 363.5800 ns/op
+MainTarget 16: 100000 op, 35640000.00 ns, 356.4000 ns/op
+MainTarget 17: 100000 op, 37017000.00 ns, 370.1700 ns/op
+MainTarget 18: 100000 op, 37201000.00 ns, 372.0100 ns/op
+MainTarget 19: 100000 op, 36983000.00 ns, 369.8300 ns/op
+MainTarget 20: 100000 op, 37716000.00 ns, 377.1600 ns/op
+MainTarget 21: 100000 op, 33698000.00 ns, 336.9800 ns/op
+MainTarget 22: 100000 op, 34167000.00 ns, 341.6700 ns/op
+MainTarget 23: 100000 op, 34367000.00 ns, 343.6700 ns/op
+MainTarget 24: 100000 op, 34696000.00 ns, 346.9600 ns/op
+MainTarget 25: 100000 op, 35898000.00 ns, 358.9800 ns/op
+MainTarget 26: 100000 op, 35798000.00 ns, 357.9800 ns/op
+MainTarget 27: 100000 op, 34414000.00 ns, 344.1400 ns/op
+MainTarget 28: 100000 op, 34611000.00 ns, 346.1100 ns/op
+MainTarget 29: 100000 op, 36496000.00 ns, 364.9600 ns/op
+MainTarget 30: 100000 op, 36608000.00 ns, 366.0800 ns/op
+MainTarget 31: 100000 op, 34877000.00 ns, 348.7700 ns/op
+MainTarget 32: 100000 op, 34124000.00 ns, 341.2400 ns/op
+MainTarget 33: 100000 op, 34095000.00 ns, 340.9500 ns/op
+MainTarget 34: 100000 op, 36944000.00 ns, 369.4400 ns/op
+MainTarget 35: 100000 op, 35685000.00 ns, 356.8500 ns/op
+MainTarget 36: 100000 op, 35175000.00 ns, 351.7500 ns/op
+
+Result  1: 100000 op, 33584600.00 ns, 335.8460 ns/op
+Result  2: 100000 op, 36005600.00 ns, 360.0560 ns/op
+Result  3: 100000 op, 33667600.00 ns, 336.6760 ns/op
+Result  4: 100000 op, 36438600.00 ns, 364.3860 ns/op
+Result  5: 100000 op, 36705600.00 ns, 367.0560 ns/op
+Result  6: 100000 op, 34330600.00 ns, 343.3060 ns/op
+Result  7: 100000 op, 34857600.00 ns, 348.5760 ns/op
+Result  8: 100000 op, 36395600.00 ns, 363.9560 ns/op
+Result  9: 100000 op, 33956600.00 ns, 339.5660 ns/op
+Result 10: 100000 op, 35481600.00 ns, 354.8160 ns/op
+Result 11: 100000 op, 33849600.00 ns, 338.4960 ns/op
+Result 12: 100000 op, 34098600.00 ns, 340.9860 ns/op
+Result 13: 100000 op, 35133600.00 ns, 351.3360 ns/op
+Result 14: 100000 op, 34229600.00 ns, 342.2960 ns/op
+Result 15: 100000 op, 36142600.00 ns, 361.4260 ns/op
+Result 16: 100000 op, 35424600.00 ns, 354.2460 ns/op
+Result 17: 100000 op, 36801600.00 ns, 368.0160 ns/op
+Result 18: 100000 op, 36985600.00 ns, 369.8560 ns/op
+Result 19: 100000 op, 36767600.00 ns, 367.6760 ns/op
+Result 20: 100000 op, 37500600.00 ns, 375.0060 ns/op
+Result 21: 100000 op, 33482600.00 ns, 334.8260 ns/op
+Result 22: 100000 op, 33951600.00 ns, 339.5160 ns/op
+Result 23: 100000 op, 34151600.00 ns, 341.5160 ns/op
+Result 24: 100000 op, 34480600.00 ns, 344.8060 ns/op
+Result 25: 100000 op, 35682600.00 ns, 356.8260 ns/op
+Result 26: 100000 op, 35582600.00 ns, 355.8260 ns/op
+Result 27: 100000 op, 34198600.00 ns, 341.9860 ns/op
+Result 28: 100000 op, 34395600.00 ns, 343.9560 ns/op
+Result 29: 100000 op, 36280600.00 ns, 362.8060 ns/op
+Result 30: 100000 op, 36392600.00 ns, 363.9260 ns/op
+Result 31: 100000 op, 34661600.00 ns, 346.6160 ns/op
+Result 32: 100000 op, 33908600.00 ns, 339.0860 ns/op
+Result 33: 100000 op, 33879600.00 ns, 338.7960 ns/op
+Result 34: 100000 op, 36728600.00 ns, 367.2860 ns/op
+Result 35: 100000 op, 35469600.00 ns, 354.6960 ns/op
+Result 36: 100000 op, 34959600.00 ns, 349.5960 ns/op
+GC:  360 0 0 0 3600000
+
+
+// Run, Diagnostic
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 2.0.3 (Framework 4.6.0.0), 64bit RyuJIT
+// GC=Concurrent Workstation
+// Job: Job-PAJUPQ(InvocationCount=100000)
+
+// AfterGlobalSetup
+// BeforeMainRun
+// BeforeGlobalCleanup
+Result  1: 100000 op, 31161650.00 ns, 311.6165 ns/op
+Result  2: 100000 op, 31338650.00 ns, 313.3865 ns/op
+Result  3: 100000 op, 30123650.00 ns, 301.2365 ns/op
+Result  4: 100000 op, 30134650.00 ns, 301.3465 ns/op
+Result  5: 100000 op, 30608650.00 ns, 306.0865 ns/op
+Result  6: 100000 op, 30235650.00 ns, 302.3565 ns/op
+Result  7: 100000 op, 29871650.00 ns, 298.7165 ns/op
+Result  8: 100000 op, 30619650.00 ns, 306.1965 ns/op
+Result  9: 100000 op, 29580650.00 ns, 295.8065 ns/op
+Result 10: 100000 op, 29152650.00 ns, 291.5265 ns/op
+Result 11: 100000 op, 28978650.00 ns, 289.7865 ns/op
+Result 12: 100000 op, 31289650.00 ns, 312.8965 ns/op
+Result 13: 100000 op, 29427650.00 ns, 294.2765 ns/op
+Result 14: 100000 op, 27450650.00 ns, 274.5065 ns/op
+Result 15: 100000 op, 32085650.00 ns, 320.8565 ns/op
+Result 16: 100000 op, 27619650.00 ns, 276.1965 ns/op
+Result 17: 100000 op, 27989650.00 ns, 279.8965 ns/op
+Result 18: 100000 op, 29004650.00 ns, 290.0465 ns/op
+Result 19: 100000 op, 29868650.00 ns, 298.6865 ns/op
+Result 20: 100000 op, 29841650.00 ns, 298.4165 ns/op
+Result 21: 100000 op, 30167650.00 ns, 301.6765 ns/op
+Result 22: 100000 op, 32513650.00 ns, 325.1365 ns/op
+Result 23: 100000 op, 29483650.00 ns, 294.8365 ns/op
+Result 24: 100000 op, 29213650.00 ns, 292.1365 ns/op
+Result 25: 100000 op, 32999650.00 ns, 329.9965 ns/op
+Result 26: 100000 op, 29636650.00 ns, 296.3665 ns/op
+Result 27: 100000 op, 32834650.00 ns, 328.3465 ns/op
+Result 28: 100000 op, 29431650.00 ns, 294.3165 ns/op
+Result 29: 100000 op, 29224650.00 ns, 292.2465 ns/op
+Result 30: 100000 op, 29072650.00 ns, 290.7265 ns/op
+Result 31: 100000 op, 29636650.00 ns, 296.3665 ns/op
+Result 32: 100000 op, 29842650.00 ns, 298.4265 ns/op
+Result 33: 100000 op, 30204650.00 ns, 302.0465 ns/op
+Result 34: 100000 op, 29977650.00 ns, 299.7765 ns/op
+Result 35: 100000 op, 27683650.00 ns, 276.8365 ns/op
+Result 36: 100000 op, 32060650.00 ns, 320.6065 ns/op
+Result 37: 100000 op, 29337650.00 ns, 293.3765 ns/op
+Result 38: 100000 op, 32093650.00 ns, 320.9365 ns/op
+Result 39: 100000 op, 29811650.00 ns, 298.1165 ns/op
+Result 40: 100000 op, 29552650.00 ns, 295.5265 ns/op
+Result 41: 100000 op, 29057650.00 ns, 290.5765 ns/op
+Result 42: 100000 op, 27791650.00 ns, 277.9165 ns/op
+Result 43: 100000 op, 27988650.00 ns, 279.8865 ns/op
+Result 44: 100000 op, 27779650.00 ns, 277.7965 ns/op
+Result 45: 100000 op, 27532650.00 ns, 275.3265 ns/op
+Result 46: 100000 op, 28620650.00 ns, 286.2065 ns/op
+Result 47: 100000 op, 29160650.00 ns, 291.6065 ns/op
+Result 48: 100000 op, 27935650.00 ns, 279.3565 ns/op
+Result 49: 100000 op, 27818650.00 ns, 278.1865 ns/op
+Result 50: 100000 op, 29293650.00 ns, 292.9365 ns/op
+Result 51: 100000 op, 29305650.00 ns, 293.0565 ns/op
+Result 52: 100000 op, 28983650.00 ns, 289.8365 ns/op
+Result 53: 100000 op, 28711650.00 ns, 287.1165 ns/op
+Result 54: 100000 op, 31569650.00 ns, 315.6965 ns/op
+Result 55: 100000 op, 28828650.00 ns, 288.2865 ns/op
+Result 56: 100000 op, 27369650.00 ns, 273.6965 ns/op
+Result 57: 100000 op, 28728650.00 ns, 287.2865 ns/op
+Result 58: 100000 op, 27847650.00 ns, 278.4765 ns/op
+Result 59: 100000 op, 28183650.00 ns, 281.8365 ns/op
+Result 60: 100000 op, 28303650.00 ns, 283.0365 ns/op
+Result 61: 100000 op, 29728650.00 ns, 297.2865 ns/op
+Result 62: 100000 op, 31438650.00 ns, 314.3865 ns/op
+Result 63: 100000 op, 30269650.00 ns, 302.6965 ns/op
+Result 64: 100000 op, 29867650.00 ns, 298.6765 ns/op
+Result 65: 100000 op, 29859650.00 ns, 298.5965 ns/op
+Result 66: 100000 op, 29570650.00 ns, 295.7065 ns/op
+GC:  720 0 0 3110400000 7200000
+
+
+Mean = 351.8235 ns, StdErr = 1.9652 ns (0.56%); N = 36, StdDev = 11.7912 ns
+Min = 334.8260 ns, Q1 = 341.2510 ns, Median = 350.4660 ns, Q3 = 363.3660 ns, Max = 375.0060 ns
+IQR = 22.1150 ns, LowerFence = 308.0785 ns, UpperFence = 396.5385 ns
+ConfidenceInterval = [344.7662 ns; 358.8808 ns] (CI 99.9%), Margin = 7.0573 ns (2.01% of Mean)
+Skewness = 0.23, Kurtosis = 1.61
+
+
+// **************************
+// Benchmark: Program.SpracheVersion: Job-LJWXHU(InvocationCount=100000)
+// *** Generate *** 
+// Result = Success
+// BinariesDirectoryPath = /Users/erikoleary/projects/parser/benchmarks/bin/release/netcoreapp2.0/0f7906b0-7981-4f28-b989-294b56ad53d9/bin/Release/netcoreapp2.0
+
+// *** Build ***
+// dotnet restore took 1.95s
+// dotnet build took 5.4s
+// Result = Success
+
+// *** Execute ***
+// Launch: 1 / 1
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 2.0.3 (Framework 4.6.0.0), 64bit RyuJIT
+// GC=Concurrent Workstation
+// Job: Job-MZOBMP(InvocationCount=100000)
+
+IdleWarmup  1: 100000 op, 376000.00 ns, 3.7600 ns/op
+IdleWarmup  2: 100000 op, 184000.00 ns, 1.8400 ns/op
+IdleWarmup  3: 100000 op, 183000.00 ns, 1.8300 ns/op
+IdleWarmup  4: 100000 op, 182000.00 ns, 1.8200 ns/op
+IdleWarmup  5: 100000 op, 184000.00 ns, 1.8400 ns/op
+IdleWarmup  6: 100000 op, 183000.00 ns, 1.8300 ns/op
+IdleWarmup  7: 100000 op, 182000.00 ns, 1.8200 ns/op
+IdleWarmup  8: 100000 op, 183000.00 ns, 1.8300 ns/op
+IdleWarmup  9: 100000 op, 183000.00 ns, 1.8300 ns/op
+
+IdleTarget  1: 100000 op, 182000.00 ns, 1.8200 ns/op
+IdleTarget  2: 100000 op, 185000.00 ns, 1.8500 ns/op
+IdleTarget  3: 100000 op, 183000.00 ns, 1.8300 ns/op
+IdleTarget  4: 100000 op, 186000.00 ns, 1.8600 ns/op
+IdleTarget  5: 100000 op, 188000.00 ns, 1.8800 ns/op
+IdleTarget  6: 100000 op, 189000.00 ns, 1.8900 ns/op
+IdleTarget  7: 100000 op, 188000.00 ns, 1.8800 ns/op
+IdleTarget  8: 100000 op, 189000.00 ns, 1.8900 ns/op
+IdleTarget  9: 100000 op, 190000.00 ns, 1.9000 ns/op
+IdleTarget 10: 100000 op, 189000.00 ns, 1.8900 ns/op
+IdleTarget 11: 100000 op, 243000.00 ns, 2.4300 ns/op
+IdleTarget 12: 100000 op, 229000.00 ns, 2.2900 ns/op
+IdleTarget 13: 100000 op, 205000.00 ns, 2.0500 ns/op
+IdleTarget 14: 100000 op, 212000.00 ns, 2.1200 ns/op
+IdleTarget 15: 100000 op, 211000.00 ns, 2.1100 ns/op
+IdleTarget 16: 100000 op, 213000.00 ns, 2.1300 ns/op
+IdleTarget 17: 100000 op, 217000.00 ns, 2.1700 ns/op
+IdleTarget 18: 100000 op, 218000.00 ns, 2.1800 ns/op
+IdleTarget 19: 100000 op, 236000.00 ns, 2.3600 ns/op
+IdleTarget 20: 100000 op, 217000.00 ns, 2.1700 ns/op
+
+MainWarmup  1: 100000 op, 312084000.00 ns, 3.1208 us/op
+MainWarmup  2: 100000 op, 291430000.00 ns, 2.9143 us/op
+MainWarmup  3: 100000 op, 301935000.00 ns, 3.0194 us/op
+MainWarmup  4: 100000 op, 309089000.00 ns, 3.0909 us/op
+MainWarmup  5: 100000 op, 303514000.00 ns, 3.0351 us/op
+MainWarmup  6: 100000 op, 303864000.00 ns, 3.0386 us/op
+MainWarmup  7: 100000 op, 304357000.00 ns, 3.0436 us/op
+MainWarmup  8: 100000 op, 296305000.00 ns, 2.9631 us/op
+
+MainTarget  1: 100000 op, 302308000.00 ns, 3.0231 us/op
+MainTarget  2: 100000 op, 288013000.00 ns, 2.8801 us/op
+MainTarget  3: 100000 op, 299882000.00 ns, 2.9988 us/op
+MainTarget  4: 100000 op, 292961000.00 ns, 2.9296 us/op
+MainTarget  5: 100000 op, 313689000.00 ns, 3.1369 us/op
+MainTarget  6: 100000 op, 299313000.00 ns, 2.9931 us/op
+MainTarget  7: 100000 op, 292828000.00 ns, 2.9283 us/op
+MainTarget  8: 100000 op, 305272000.00 ns, 3.0527 us/op
+MainTarget  9: 100000 op, 301289000.00 ns, 3.0129 us/op
+MainTarget 10: 100000 op, 290264000.00 ns, 2.9026 us/op
+MainTarget 11: 100000 op, 301434000.00 ns, 3.0143 us/op
+MainTarget 12: 100000 op, 294207000.00 ns, 2.9421 us/op
+MainTarget 13: 100000 op, 306769000.00 ns, 3.0677 us/op
+MainTarget 14: 100000 op, 309104000.00 ns, 3.0910 us/op
+MainTarget 15: 100000 op, 295323000.00 ns, 2.9532 us/op
+MainTarget 16: 100000 op, 302876000.00 ns, 3.0288 us/op
+MainTarget 17: 100000 op, 301194000.00 ns, 3.0119 us/op
+MainTarget 18: 100000 op, 307089000.00 ns, 3.0709 us/op
+MainTarget 19: 100000 op, 310903000.00 ns, 3.1090 us/op
+MainTarget 20: 100000 op, 287108000.00 ns, 2.8711 us/op
+MainTarget 21: 100000 op, 304634000.00 ns, 3.0463 us/op
+MainTarget 22: 100000 op, 287957000.00 ns, 2.8796 us/op
+MainTarget 23: 100000 op, 298477000.00 ns, 2.9848 us/op
+
+Result  1: 100000 op, 302104500.00 ns, 3.0210 us/op
+Result  2: 100000 op, 287809500.00 ns, 2.8781 us/op
+Result  3: 100000 op, 299678500.00 ns, 2.9968 us/op
+Result  4: 100000 op, 292757500.00 ns, 2.9276 us/op
+Result  5: 100000 op, 313485500.00 ns, 3.1349 us/op
+Result  6: 100000 op, 299109500.00 ns, 2.9911 us/op
+Result  7: 100000 op, 292624500.00 ns, 2.9262 us/op
+Result  8: 100000 op, 305068500.00 ns, 3.0507 us/op
+Result  9: 100000 op, 301085500.00 ns, 3.0109 us/op
+Result 10: 100000 op, 290060500.00 ns, 2.9006 us/op
+Result 11: 100000 op, 301230500.00 ns, 3.0123 us/op
+Result 12: 100000 op, 294003500.00 ns, 2.9400 us/op
+Result 13: 100000 op, 306565500.00 ns, 3.0657 us/op
+Result 14: 100000 op, 308900500.00 ns, 3.0890 us/op
+Result 15: 100000 op, 295119500.00 ns, 2.9512 us/op
+Result 16: 100000 op, 302672500.00 ns, 3.0267 us/op
+Result 17: 100000 op, 300990500.00 ns, 3.0099 us/op
+Result 18: 100000 op, 306885500.00 ns, 3.0689 us/op
+Result 19: 100000 op, 310699500.00 ns, 3.1070 us/op
+Result 20: 100000 op, 286904500.00 ns, 2.8690 us/op
+Result 21: 100000 op, 304430500.00 ns, 3.0443 us/op
+Result 22: 100000 op, 287753500.00 ns, 2.8775 us/op
+Result 23: 100000 op, 298273500.00 ns, 2.9827 us/op
+GC:  3220 0 0 0 2300000
+
+
+// Run, Diagnostic
+Failed to set up high priority. Make sure you have the right permissions. Message: Permission denied
+// BeforeAnythingElse
+
+// Benchmark Process Environment Information:
+// Runtime=.NET Core 2.0.3 (Framework 4.6.0.0), 64bit RyuJIT
+// GC=Concurrent Workstation
+// Job: Job-TYEHNB(InvocationCount=100000)
+
+// AfterGlobalSetup
+// BeforeMainRun
+// BeforeGlobalCleanup
+Result  1: 100000 op, 293316800.00 ns, 2.9332 us/op
+Result  2: 100000 op, 274462800.00 ns, 2.7446 us/op
+Result  3: 100000 op, 300604800.00 ns, 3.0060 us/op
+Result  4: 100000 op, 281656800.00 ns, 2.8166 us/op
+Result  5: 100000 op, 284958800.00 ns, 2.8496 us/op
+Result  6: 100000 op, 273774800.00 ns, 2.7377 us/op
+Result  7: 100000 op, 277115800.00 ns, 2.7712 us/op
+Result  8: 100000 op, 284293800.00 ns, 2.8429 us/op
+Result  9: 100000 op, 280645800.00 ns, 2.8065 us/op
+Result 10: 100000 op, 287864800.00 ns, 2.8786 us/op
+Result 11: 100000 op, 279635800.00 ns, 2.7964 us/op
+Result 12: 100000 op, 276261800.00 ns, 2.7626 us/op
+Result 13: 100000 op, 277739800.00 ns, 2.7774 us/op
+Result 14: 100000 op, 286681800.00 ns, 2.8668 us/op
+Result 15: 100000 op, 285755800.00 ns, 2.8576 us/op
+Result 16: 100000 op, 280157800.00 ns, 2.8016 us/op
+Result 17: 100000 op, 287097800.00 ns, 2.8710 us/op
+Result 18: 100000 op, 271818800.00 ns, 2.7182 us/op
+Result 19: 100000 op, 286859800.00 ns, 2.8686 us/op
+Result 20: 100000 op, 275044800.00 ns, 2.7504 us/op
+Result 21: 100000 op, 287446800.00 ns, 2.8745 us/op
+Result 22: 100000 op, 284629800.00 ns, 2.8463 us/op
+GC:  3220 0 0 13560800000 2300000
+
+
+Mean = 2.9949 us, StdErr = 0.0158 us (0.53%); N = 23, StdDev = 0.0757 us
+Min = 2.8690 us, Q1 = 2.9276 us, Median = 3.0099 us, Q3 = 3.0507 us, Max = 3.1349 us
+IQR = 0.1231 us, LowerFence = 2.7429 us, UpperFence = 3.2354 us
+ConfidenceInterval = [2.9350 us; 3.0547 us] (CI 99.9%), Margin = 0.0598 us (2.00% of Mean)
+Skewness = -0.08, Kurtosis = 1.93
+
+
+// ***** BenchmarkRunner: Finish  *****
+
+// * Export *
+  BenchmarkDotNet.Artifacts/results/benchmarks.Program-report.csv
+  BenchmarkDotNet.Artifacts/results/benchmarks.Program-report-github.md
+  BenchmarkDotNet.Artifacts/results/benchmarks.Program-report.html
+
+// * Detailed results *
+Program.InternalVersion: Job-LJWXHU(InvocationCount=100000)
+Runtime = .NET Core 2.0.3 (Framework 4.6.0.0), 64bit RyuJIT; GC = Concurrent Workstation
+Mean = 351.8235 ns, StdErr = 1.9652 ns (0.56%); N = 36, StdDev = 11.7912 ns
+Min = 334.8260 ns, Q1 = 341.2510 ns, Median = 350.4660 ns, Q3 = 363.3660 ns, Max = 375.0060 ns
+IQR = 22.1150 ns, LowerFence = 308.0785 ns, UpperFence = 396.5385 ns
+ConfidenceInterval = [344.7662 ns; 358.8808 ns] (CI 99.9%), Margin = 7.0573 ns (2.01% of Mean)
+Skewness = 0.23, Kurtosis = 1.61
+
+
+Program.SpracheVersion: Job-LJWXHU(InvocationCount=100000)
+Runtime = .NET Core 2.0.3 (Framework 4.6.0.0), 64bit RyuJIT; GC = Concurrent Workstation
+Mean = 2.9949 us, StdErr = 0.0158 us (0.53%); N = 23, StdDev = 0.0757 us
+Min = 2.8690 us, Q1 = 2.9276 us, Median = 3.0099 us, Q3 = 3.0507 us, Max = 3.1349 us
+IQR = 0.1231 us, LowerFence = 2.7429 us, UpperFence = 3.2354 us
+ConfidenceInterval = [2.9350 us; 3.0547 us] (CI 99.9%), Margin = 0.0598 us (2.00% of Mean)
+Skewness = -0.08, Kurtosis = 1.93
+
+
+Total time: 00:00:38 (38.49 sec)
+
+// * Summary *
+
+BenchmarkDotNet=v0.10.11, OS=macOS 10.13.2 (17C88) [Darwin 17.3.0]
+Processor=Intel Core i7-6820HQ CPU 2.70GHz (Skylake), ProcessorCount=8
+.NET Core SDK=2.1.2
+  [Host]     : .NET Core 2.0.3 (Framework 4.6.0.0), 64bit RyuJIT
+  Job-LJWXHU : .NET Core 2.0.3 (Framework 4.6.0.0), 64bit RyuJIT
+
+InvocationCount=100000  
+
+          Method |       Mean |     Error |   StdDev |  Gen 0 | Allocated |
+---------------- |-----------:|----------:|---------:|-------:|----------:|
+ InternalVersion |   351.8 ns |  7.057 ns | 11.79 ns | 0.1000 |     432 B |
+  SpracheVersion | 2,994.9 ns | 59.840 ns | 75.68 ns | 1.4000 |    5896 B |
+
+// * Warnings *
+MinIterationTime
+  Program.InternalVersion: InvocationCount=100000 -> MinIterationTime = 33.6980 ms which is very small. It's recommended to increase it.
+
+// * Legends *
+  Mean      : Arithmetic mean of all measurements
+  Error     : Half of 99.9% confidence interval
+  StdDev    : Standard deviation of all measurements
+  Gen 0     : GC Generation 0 collects per 1k Operations
+  Allocated : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
+  1 ns      : 1 Nanosecond (0.000000001 sec)
+
+// * Diagnostic Output - MemoryDiagnoser *
+
+
+// ***** BenchmarkRunner: End *****
+// * Artifacts cleanup *

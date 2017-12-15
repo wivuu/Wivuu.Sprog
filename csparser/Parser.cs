@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace csparser
 {
-    static partial class Parser
+    public static partial class Parser
     {
         static int MatchWhile(this ReadOnlySpan<char> input, Func<char, bool> predicate)
         {
