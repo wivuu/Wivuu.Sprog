@@ -72,9 +72,8 @@ namespace csparser
             
         public static string Concat(this ReadOnlySpan<char> input, params ReadOnlySpan<char>[] rest)
         {
-            var sb = new StringBuilder();
+            var sb = new StringBuilder(input.AsString());
 
-            sb.Append(input.AsString());
             for (var i = 0; i < rest.Length; ++i)
                 sb.Append(rest[i].AsString());
 
