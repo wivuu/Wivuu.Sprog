@@ -7,7 +7,7 @@ namespace csparser
     {
         public delegate bool Predicate(char id);
 
-        static int MatchWhile(this ReadOnlySpan<char> input, Predicate predicate)
+        static int MatchWhile(ref ReadOnlySpan<char> input, Predicate predicate)
         {
             var i = 0;
             while (i < input.Length && predicate( input[i] ))
@@ -16,7 +16,7 @@ namespace csparser
             return i;
         }
         
-        static int MatchWhile(this ReadOnlySpan<char> input, Predicate predicate, int take)
+        static int MatchWhile(ref ReadOnlySpan<char> input, Predicate predicate, int take)
         {
             var i = 0;
             while (i < input.Length && i < take && predicate( input[i] ))
@@ -28,7 +28,7 @@ namespace csparser
         public static ReadOnlySpan<char> TakeOne(
             this ReadOnlySpan<char> input, Predicate predicate, out char match)
         {
-            var i = MatchWhile(input, predicate, take: 1);
+            var i = MatchWhile(ref input, predicate, take: 1);
             match = input[0];
 
             return input.Slice(i);
@@ -37,7 +37,7 @@ namespace csparser
         public static ReadOnlySpan<char> Take(
             this ReadOnlySpan<char> input, Predicate predicate, out ReadOnlySpan<char> match)
         {
-            var i = MatchWhile(input, predicate);
+            var i = MatchWhile(ref input, predicate);
             match = input.Slice(0, i);
 
             return input.Slice(i);
@@ -62,10 +62,10 @@ namespace csparser
         }
 
         public static ReadOnlySpan<char> SkipOne(this ReadOnlySpan<char> input, Predicate predicate) =>
-            input.Slice(MatchWhile(input, predicate, take: 1));
+            input.Slice(MatchWhile(ref input, predicate, take: 1));
 
         public static ReadOnlySpan<char> Skip(this ReadOnlySpan<char> input, Predicate predicate) =>
-            input.Slice(MatchWhile(input, predicate));
+            input.Slice(MatchWhile(ref input, predicate));
 
         public static string AsString(this ReadOnlySpan<char> input) =>
             new string(input.ToArray());
