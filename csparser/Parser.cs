@@ -80,6 +80,13 @@ namespace csparser
             return input.Slice(i);
         }
 
+        /// <summary>
+        /// Peek single character
+        /// </summary>
+        /// <param name="input">Input to match</param>
+        /// <param name="take">Input test</param>
+        /// <param name="match">Matching character</param>
+        /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Peek(this ReadOnlySpan<char> input, out char match)
         {        

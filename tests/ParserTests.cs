@@ -23,7 +23,7 @@ namespace csparser
 
             while (remaining.Length > 0) 
             {
-                remaining = remaining
+                remaining
                     .TakeIdentifier(out var identifier)
                     .Skip(IsWhiteSpace);
 
