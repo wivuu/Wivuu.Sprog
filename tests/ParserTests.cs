@@ -51,5 +51,14 @@ namespace csparser
                 Console.WriteLine($"Remaining: `{remaining.AsString()}`");
             }
         }
+
+        [TestMethod]
+        public void TestConcat() 
+        {
+            var (fst, snd) = ("This is a test. ", "And another");
+            var result     = fst.AsSpan().Concat(snd.AsSpan());
+
+            Assert.AreEqual("This is a test. And another", result);
+        }
     }
 }

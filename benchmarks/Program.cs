@@ -44,7 +44,7 @@ namespace benchmarks
 
         static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<Program>();
+            BenchmarkRunner.Run<Program>();
         }
     }
 }
