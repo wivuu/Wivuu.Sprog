@@ -6,15 +6,11 @@ namespace csparser
 {
     public static class ParserExtensions
     {
-        public static ReadOnlySpan<char> ParseIdentifier(this ReadOnlySpan<char> input, out string identifier)
-        {
-            var result = input
-                 .TakeOne(IsLetter, out var prefix)
-                 .Take(IsLetterOrDigit, out var word);
-
-            identifier = $"{prefix}{word.AsString()}";
-            return result;
-        }
+        public static ReadOnlySpan<char> TakeIdentifier(this ReadOnlySpan<char> input, out string identifier) =>
+            input.Skip(IsWhiteSpace)
+                 .TakeOne(IsLetter, out var first)
+                 .Take(IsLetterOrDigit, out var rest)
+                 .Result(identifier = $"{first}{rest.AsString()}");
     }
 
     [TestClass]
@@ -23,15 +19,16 @@ namespace csparser
         [TestMethod]
         public void TestParserContinuators()
         {
-            (string, ReadOnlySpan<char>) identifier(string input) =>
-                input.AsSpan()
-                     .Skip(IsWhiteSpace)
-                     .TakeOne(IsLetter, out var first)
-                     .Take(IsLetterOrDigit, out var rest)
-                     .Skip(IsWhiteSpace)
-                     .Result($"{first}{rest.AsString()}");
+            var remaining = " This is a test ".AsSpan();
 
-            var (output, _) = identifier(" tBis   ");
+            while (remaining.Length > 0) 
+            {
+                remaining = remaining
+                    .TakeIdentifier(out var identifier)
+                    .Skip(IsWhiteSpace);
+
+                Console.WriteLine(identifier);
+            }
         }
 
         [TestMethod]
@@ -46,7 +43,7 @@ namespace csparser
             if (remaining.Peek(out var c))
             {
                 remaining
-                    .ParseIdentifier(out var ident)
+                    .TakeIdentifier(out var ident)
                     .Skip(IsWhiteSpace);
 
                 Console.WriteLine($"     Char: `{c}`");

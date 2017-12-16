@@ -15,15 +15,15 @@ namespace benchmarks
         [Benchmark]
         public void InternalVersion()
         {
-            (string, ReadOnlySpan<char>) identifier(string input) =>
+            ReadOnlySpan<char> TakeIdentifier(string input, out string _id) =>
                 input.AsSpan()
                      .Skip(IsWhiteSpace)
                      .TakeOne(IsLetter, out var first)
                      .Take(IsLetterOrDigit, out var rest)
                      .Skip(IsWhiteSpace)
-                     .Result($"{first}{rest.AsString()}");
+                     .Result(_id = $"{first}{rest.AsString()}");
 
-            var (id, _) = identifier(" abc123  ");
+            TakeIdentifier(" abc123  ", out var id);
             Assert.AreEqual("abc123", id);
         }
 
