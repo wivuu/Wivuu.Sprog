@@ -10,7 +10,7 @@ namespace csparser
             input.Skip(IsWhiteSpace)
                  .TakeOne(IsLetter, out var first)
                  .Take(IsLetterOrDigit, out var rest)
-                 .Result(identifier = $"{first}{rest.AsString()}");
+                 .Let(identifier = $"{first}{rest.AsString()}");
     }
 
     [TestClass]
