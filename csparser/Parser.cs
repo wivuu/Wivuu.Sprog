@@ -83,8 +83,5 @@ namespace csparser
 
         public static ReadOnlySpan<char> Let(this ReadOnlySpan<char> rest, string id) => 
             rest;
-
-        public static ReadOnlySpan<char> Let(this ReadOnlySpan<char> rest, params string[] id) => 
-            rest;
     }
 }
