@@ -4,6 +4,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sprache;
+using static System.String;
 using static System.Char;
 using static csparser.Parser;
 
@@ -21,7 +22,7 @@ namespace benchmarks
                      .TakeOne(IsLetter, out var first)
                      .Take(IsLetterOrDigit, out var rest)
                      .Skip(IsWhiteSpace)
-                     .Let(_id = $"{first}{rest}");
+                     .Let(_id = Concat(first, rest));
 
             TakeIdentifier(" abc123  ", out var id);
             Assert.AreEqual("abc123", id);
