@@ -45,7 +45,7 @@ namespace csparser
 
             if (remaining.Peek(out var c))
             {
-                remaining = remaining
+                remaining
                     .ParseIdentifier(out var ident)
                     .Skip(IsWhiteSpace);
 
