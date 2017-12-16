@@ -67,8 +67,13 @@ namespace csparser
         public static ReadOnlySpan<char> Skip(this ReadOnlySpan<char> input, Predicate predicate) =>
             input.Slice(MatchWhile(ref input, predicate));
 
-        public static string AsString(this ReadOnlySpan<char> input) =>
-            new string(input.ToArray());
+        public static unsafe string AsString(this ReadOnlySpan<char> input)
+        {
+            fixed (char* buffer = &input.DangerousGetPinnableReference())
+            {
+                return new string(buffer, 0, input.Length);
+            }
+        }
             
         public static string Concat(this ReadOnlySpan<char> input, params ReadOnlySpan<char>[] rest)
         {
