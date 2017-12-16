@@ -10,7 +10,7 @@ namespace csparser
             input.Skip(IsWhiteSpace)
                  .TakeOne(IsLetter, out var first)
                  .Take(IsLetterOrDigit, out var rest)
-                 .Let(identifier = $"{first}{rest.AsString()}");
+                 .Let(identifier = $"{first}{rest}");
     }
 
     [TestClass]
@@ -50,15 +50,6 @@ namespace csparser
                 Console.WriteLine($"    Ident: `{ident}`");
                 Console.WriteLine($"Remaining: `{remaining.AsString()}`");
             }
-        }
-
-        [TestMethod]
-        public void TestConcat() 
-        {
-            var (fst, snd) = ("This is a test. ", "And another");
-            var result     = fst.AsSpan().Concat(snd.AsSpan());
-
-            Assert.AreEqual("This is a test. And another", result);
         }
     }
 }

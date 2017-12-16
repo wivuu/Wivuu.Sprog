@@ -21,7 +21,7 @@ namespace benchmarks
                      .TakeOne(IsLetter, out var first)
                      .Take(IsLetterOrDigit, out var rest)
                      .Skip(IsWhiteSpace)
-                     .Let(_id = $"{first}{rest.AsString()}");
+                     .Let(_id = $"{first}{rest}");
 
             TakeIdentifier(" abc123  ", out var id);
             Assert.AreEqual("abc123", id);

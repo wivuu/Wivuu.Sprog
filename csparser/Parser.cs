@@ -72,10 +72,10 @@ namespace csparser
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpan<char> Take(
-            this ReadOnlySpan<char> input, Predicate predicate, out ReadOnlySpan<char> match)
+            this ReadOnlySpan<char> input, Predicate predicate, out string match)
         {
             var i = MatchWhile(ref input, predicate);
-            match = input.Slice(0, i);
+            match = input.Slice(0, i).AsString();
 
             return input.Slice(i);
         }
@@ -101,17 +101,21 @@ namespace csparser
         /// </summary>
         /// <param name="input">Input to match</param>
         /// <param name="take">Input test</param>
-        /// <param name="match">Matching characters</param>
+        /// <param name="match">Matching string</param>
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Peek(this ReadOnlySpan<char> input, int take, out ReadOnlySpan<char> match)
+        public static bool Peek(this ReadOnlySpan<char> input, int take, out string match)
         {
             if (input.Length < take)
+            {
+                match = null;
                 return false;
-
-            match = input.Slice(0, take);
-
-            return true;
+            }
+            else
+            {
+                match = input.Slice(0, take).AsString();
+                return true;
+            }
         }
 
         /// <summary>
@@ -147,16 +151,6 @@ namespace csparser
                 return new string(buffer, 0, input.Length);
             }
         }
-            
-        /// <summary>
-        /// Concatentate two inputs
-        /// </summary>
-        /// <param name="input">Left-hand input</param>
-        /// <param name="rest">Right-hand input</param>
-        /// <returns>New string containing all input characters</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string Concat(this ReadOnlySpan<char> input, ReadOnlySpan<char> rest) =>
-            string.Concat(input.AsString(), rest.AsString());
 
         /// <summary>
         /// Assign and return remaining buffer
