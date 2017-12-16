@@ -5,7 +5,9 @@ namespace csparser
 {
     public static partial class Parser
     {
-        static int MatchWhile(this ReadOnlySpan<char> input, Func<char, bool> predicate)
+        public delegate bool Predicate(char id);
+
+        static int MatchWhile(this ReadOnlySpan<char> input, Predicate predicate)
         {
             var i = 0;
             while (i < input.Length && predicate( input[i] ))
@@ -14,7 +16,7 @@ namespace csparser
             return i;
         }
         
-        static int MatchWhile(this ReadOnlySpan<char> input, Func<char, bool> predicate, int take)
+        static int MatchWhile(this ReadOnlySpan<char> input, Predicate predicate, int take)
         {
             var i = 0;
             while (i < input.Length && i < take && predicate( input[i] ))
@@ -24,7 +26,7 @@ namespace csparser
         }
 
         public static ReadOnlySpan<char> TakeOne(
-            this ReadOnlySpan<char> input, Func<char, bool> predicate, out char match)
+            this ReadOnlySpan<char> input, Predicate predicate, out char match)
         {
             var i = MatchWhile(input, predicate, take: 1);
             match = input[0];
@@ -33,7 +35,7 @@ namespace csparser
         }
 
         public static ReadOnlySpan<char> Take(
-            this ReadOnlySpan<char> input, Func<char, bool> predicate, out ReadOnlySpan<char> match)
+            this ReadOnlySpan<char> input, Predicate predicate, out ReadOnlySpan<char> match)
         {
             var i = MatchWhile(input, predicate);
             match = input.Slice(0, i);
@@ -59,10 +61,10 @@ namespace csparser
             return result;
         }
 
-        public static ReadOnlySpan<char> SkipOne(this ReadOnlySpan<char> input, Func<char, bool> predicate) =>
+        public static ReadOnlySpan<char> SkipOne(this ReadOnlySpan<char> input, Predicate predicate) =>
             input.Slice(MatchWhile(input, predicate, take: 1));
 
-        public static ReadOnlySpan<char> Skip(this ReadOnlySpan<char> input, Func<char, bool> predicate) =>
+        public static ReadOnlySpan<char> Skip(this ReadOnlySpan<char> input, Predicate predicate) =>
             input.Slice(MatchWhile(input, predicate));
 
         public static string AsString(this ReadOnlySpan<char> input) =>
