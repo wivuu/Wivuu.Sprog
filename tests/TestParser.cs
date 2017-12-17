@@ -14,7 +14,7 @@ namespace csparser
     }
 
     [TestClass]
-    public class ParserTests
+    public class TestParser
     {
         [TestMethod]
         public void TestParserContinuators()
@@ -38,18 +38,14 @@ namespace csparser
                 @"1  B3his is some string  "
                 .AsSpan()
                 .SkipOne(IsDigit)
+                .Skip(IsWhiteSpace)
+                .Peek(out var c)
+                .TakeIdentifier(out var ident)
                 .Skip(IsWhiteSpace);
 
-            if (remaining.Peek(out var c))
-            {
-                remaining
-                    .TakeIdentifier(out var ident)
-                    .Skip(IsWhiteSpace);
-
-                Console.WriteLine($"     Char: `{c}`");
-                Console.WriteLine($"    Ident: `{ident}`");
-                Console.WriteLine($"Remaining: `{remaining.AsString()}`");
-            }
+            Console.WriteLine($"     Char: `{c}`");
+            Console.WriteLine($"    Ident: `{ident}`");
+            Console.WriteLine($"Remaining: `{remaining.AsString()}`");
         }
     }
 }

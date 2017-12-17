@@ -13,8 +13,10 @@ namespace benchmarks
     [MemoryDiagnoser]
     public class Program
     {
+        #region Simple
+
         [Benchmark]
-        public void InternalVersion()
+        public void InternalSimple()
         {
             ReadOnlySpan<char> TakeIdentifier(string input, out string _id) =>
                 input.AsSpan()
@@ -29,7 +31,7 @@ namespace benchmarks
         }
 
         [Benchmark]
-        public void SpracheVersion() 
+        public void SpracheSimple() 
         {
             var identifier =
                 from leading in Sprache.Parse.WhiteSpace.Many()
@@ -42,6 +44,34 @@ namespace benchmarks
 
             Assert.AreEqual("abc123", id);
         }
+
+        #endregion
+
+        #region Xml
+        
+        const string SourceXml = @"
+        <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+            <li>Item 4</li>
+            <li>Item 5</li>
+        </ul>
+        ";
+
+        [Benchmark]
+        public void InternalXml()
+        {
+            csparser.XmlParser.TryParse(SourceXml, out var _);
+        }
+        
+        [Benchmark]
+        public void SpracheXml()
+        {
+            var parsed = SpracheXmlParser.Document.Parse(SourceXml);
+        }
+
+        #endregion
 
         static void Main(string[] args)
         {

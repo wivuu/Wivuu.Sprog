@@ -88,12 +88,12 @@ namespace csparser
         /// <param name="match">Matching character</param>
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Peek(this ReadOnlySpan<char> input, out char match)
+        public static ReadOnlySpan<char> Peek(this ReadOnlySpan<char> input, out char match)
         {        
-            var result = Peek(input, 1, out var m);
-            match      = m[0];
+            Peek(input, 1, out var m);
+            match = m[0];
 
-            return result;
+            return input;
         }
 
         /// <summary>
@@ -104,18 +104,13 @@ namespace csparser
         /// <param name="match">Matching string</param>
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Peek(this ReadOnlySpan<char> input, int take, out string match)
+        public static ReadOnlySpan<char> Peek(this ReadOnlySpan<char> input, int take, out string match)
         {
-            if (input.Length < take)
-            {
-                match = null;
-                return false;
-            }
-            else
-            {
-                match = input.Slice(0, take).AsString();
-                return true;
-            }
+            match = (input.Length < take)
+                ? null
+                : input.Slice(0, take).AsString();
+
+            return input;
         }
 
         /// <summary>

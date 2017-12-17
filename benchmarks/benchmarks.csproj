@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\csparser\csparser.csproj" />
+    <ProjectReference Include="..\tests\tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>
