@@ -91,25 +91,13 @@ namespace csparser
             return input;
         }
 
-        // static CharSpan ParseNode(this CharSpan input, out Node n) =>
-        //     input.ParseTag(out var id, out var selfClosing)
-        //         .Rest(out var rest)
-        //         .Let(selfClosing
-        //         ? input.Let(n = new Node { Name = id })
-        //         : input.ParseItems(out var children)
-        //                .Let(n = new Node { Name = id, Children = children })
-        //                .ParseEndTag(id));
-
-        static CharSpan ParseNode(this CharSpan input, out Node n) 
-        {
-            input = input.ParseTag(out var id, out var selfClosing);
-            
-            return selfClosing 
-                ? input.Let(n = new Node { Name = id })
-                : input.ParseItems(out var children)
-                       .Let(n = new Node { Name = id, Children = children })
-                       .ParseEndTag(id);
-        }
+        static CharSpan ParseNode(this CharSpan input, out Node n) =>
+            input.ParseTag(out var id, out var selfClosing)
+                 .Rest(out var rest)
+                 .Let(selfClosing ? rest.Let(n = new Node { Name = id })
+                                  : rest.ParseItems(out var children)
+                                        .Let(n = new Node { Name = id, Children = children })
+                                        .ParseEndTag(id));
 
         public static bool TryParse(string xml, out Document document)
         {
