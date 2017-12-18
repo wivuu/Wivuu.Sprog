@@ -40,29 +40,29 @@ namespace csparser
 
     public static class XmlParser
     {
-        static CharSpan Identifier(this CharSpan input, out string identifier) =>
+        static CharSpan ParseIdentifier(this CharSpan input, out string identifier) =>
             input.Skip(IsWhiteSpace)
                  .TakeOne(IsLetter, out var first)
                  .Take(IsLetterOrDigit, out var rest)
                  .Let(identifier = string.Concat(first, rest))
                  .Skip(IsWhiteSpace);
 
-        static CharSpan Tag(this CharSpan input, out string name, out bool selfClosing) =>
+        static CharSpan ParseTag(this CharSpan input, out string name, out bool selfClosing) =>
             input.SkipOne(c => c == '<')
-                 .Identifier(out name)
+                 .ParseIdentifier(out name)
                  .Peek(out var nextC)
                  .Let(selfClosing = nextC == '/')
                  .SkipOne(c => c == '>')
                  .Skip(IsWhiteSpace);
 
-        static CharSpan EndTag(this CharSpan input, string name) =>
+        static CharSpan ParseEndTag(this CharSpan input, string name) =>
             input.SkipOne(c => c == '<')
                  .SkipOne(c => c == '/')
-                 .Identifier(out var _)
+                 .ParseIdentifier(out var _)
                  .SkipOne(c => c == '>')
                  .Skip(IsWhiteSpace);
 
-        static CharSpan Items(this CharSpan input, out List<Item> items)
+        static CharSpan ParseItems(this CharSpan input, out List<Item> items)
         {
             bool NextItem(out Item next)
             {
@@ -73,7 +73,7 @@ namespace csparser
                 }
                 else if (input.StartsWith("<"))
                 {
-                    input = input.Node(out var n);
+                    input = input.ParseNode(out var n);
                     next  = n;
                     return true;
                 }
@@ -92,22 +92,31 @@ namespace csparser
             return input;
         }
 
-        static CharSpan Node(this CharSpan input, out Node n) 
+        // static CharSpan ParseNode(this CharSpan input, out Node n) =>
+        //     input.ParseTag(out var id, out var selfClosing)
+        //         .Rest(out var rest)
+        //         .Let(selfClosing
+        //         ? input.Let(n = new Node { Name = id })
+        //         : input.ParseItems(out var children)
+        //                .Let(n = new Node { Name = id, Children = children })
+        //                .ParseEndTag(id));
+
+        static CharSpan ParseNode(this CharSpan input, out Node n) 
         {
-            input = input.Tag(out var id, out var selfClosing);
+            input = input.ParseTag(out var id, out var selfClosing);
             
             return selfClosing 
                 ? input.Let(n = new Node { Name = id })
-                : input.Items(out var children)
+                : input.ParseItems(out var children)
                        .Let(n = new Node { Name = id, Children = children })
-                       .EndTag(id);
+                       .ParseEndTag(id);
         }
 
         public static bool TryParse(string xml, out Document document)
         {
             xml.AsSpan()
                .Skip(IsWhiteSpace)
-               .Node(out var n);
+               .ParseNode(out var n);
                
             document = new Document { Root = n };
             return true;
@@ -120,7 +129,13 @@ namespace csparser
         const string SourceXml = @"
         <ul>
             <li>Item 1</li>
-            <li>Item 2</li>
+            <li>
+                <ul>
+                    <li>Item 2.1</li>
+                    <li>Item 2.2</li>
+                    <li>Item 2.3</li>
+                </ul>
+            </li>
             <li>Item 3</li>
             <li>Item 4</li>
             <li>Item 5</li>
@@ -128,8 +143,10 @@ namespace csparser
         ";
 
         [TestMethod]
-        public void TestParse() =>
-            Assert.IsTrue(XmlParser.TryParse(SourceXml, out var _));
-
+        public void TestParse()
+        {
+            Assert.IsTrue(XmlParser.TryParse(SourceXml, out var doc));
+            Assert.AreEqual(5, doc.Root.Children.Count());
+        }
     }
 }

@@ -166,5 +166,15 @@ namespace csparser
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpan<char> Let<T>(this ReadOnlySpan<char> rest, T id) => 
             rest;
+
+        /// <summary>
+        /// Return remaining buffer as 'out'
+        /// </summary>
+        /// <param name="lhs">Remaining buffer</param>
+        /// <param name="rhs">Remaining buffer</param>
+        /// <returns>Remaining buffer</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<char> Rest(this ReadOnlySpan<char> lhs, out ReadOnlySpan<char> rhs) =>
+            rhs = lhs;
     }
 }

@@ -52,23 +52,19 @@ namespace benchmarks
             from rest in Parse.LetterOrDigit.XOr(Parse.Char('-')).XOr(Parse.Char('_')).Many()
             select new string(first.Concat(rest).ToArray());
 
-        static Parser<T> Tag<T>(Parser<T> content)
-        {
-            return from lt in Parse.Char('<')
-                   from t in content
-                   from gt in Parse.Char('>').Token()
-                   select t;
-        }
+        static Parser<T> Tag<T>(Parser<T> content) =>
+            from lt in Parse.Char('<')
+            from t in content
+            from gt in Parse.Char('>').Token()
+            select t;
 
         static readonly Parser<string> BeginTag = Tag(Identifier);
 
-        static Parser<string> EndTag(string name)
-        {
-            return Tag(from slash in Parse.Char('/')
-                       from id in Identifier
-                       where id == name
-                       select id).Named("closing tag for " + name);
-        }
+        static Parser<string> EndTag(string name) =>
+            Tag(from slash in Parse.Char('/')
+                from id in Identifier
+                where id == name
+                select id).Named("closing tag for " + name);
 
         static readonly Parser<Content> Content =
             from chars in Parse.CharExcept('<').Many()
@@ -87,7 +83,7 @@ namespace benchmarks
         static readonly Parser<Node> Node = ShortNode.Or(FullNode);
 
         static readonly Parser<Item> Item =
-            from item in Node.Select(n => (Item)n).XOr(Content)
+            from item in Node.Select(n => n as Item).XOr(Content)
             select item;
 
         public static readonly Parser<Document> Document =

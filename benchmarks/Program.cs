@@ -52,7 +52,13 @@ namespace benchmarks
         const string SourceXml = @"
         <ul>
             <li>Item 1</li>
-            <li>Item 2</li>
+            <li>
+                <ul>
+                    <li>Item 2.1</li>
+                    <li>Item 2.2</li>
+                    <li>Item 2.3</li>
+                </ul>
+            </li>
             <li>Item 3</li>
             <li>Item 4</li>
             <li>Item 5</li>
@@ -60,22 +66,16 @@ namespace benchmarks
         ";
 
         [Benchmark]
-        public void InternalXml()
-        {
+        public void InternalXml() =>
             csparser.XmlParser.TryParse(SourceXml, out var _);
-        }
         
         [Benchmark]
-        public void SpracheXml()
-        {
-            var parsed = SpracheXmlParser.Document.Parse(SourceXml);
-        }
+        public void SpracheXml() =>
+            SpracheXmlParser.Document.Parse(SourceXml);
 
         #endregion
 
-        static void Main(string[] args)
-        {
+        static void Main(string[] args) =>
             BenchmarkRunner.Run<Program>();
-        }
     }
 }
