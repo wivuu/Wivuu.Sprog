@@ -124,6 +124,16 @@ namespace csparser
             input.Slice(MatchWhile(ref input, predicate, take: 1));
 
         /// <summary>
+        /// Skip one character if predicate is true
+        /// </summary>
+        /// <param name="input">Input to match</param>
+        /// <param name="predicate">Input test</param>
+        /// <returns>Remainder of input</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<char> SkipOne(this ReadOnlySpan<char> input, char predicate) =>
+            input.Slice(MatchWhile(ref input, c => c == predicate, take: 1));
+
+        /// <summary>
         /// Skip while predicate is true
         /// </summary>
         /// <param name="input">Input to match</param>
@@ -132,6 +142,30 @@ namespace csparser
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpan<char> Skip(this ReadOnlySpan<char> input, Predicate predicate) =>
             input.Slice(MatchWhile(ref input, predicate));
+
+        /// <summary>
+        /// Skip while predicate is true
+        /// </summary>
+        /// <param name="input">Input to match</param>
+        /// <param name="value">Input test</param>
+        /// <returns>Remainder of input</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<char> Skip(this ReadOnlySpan<char> input, string value)
+        {
+            if (input.Length < value.Length)
+                return input;
+
+            var i = 0;
+            while (i < value.Length)
+            {
+                if (input[i] != value[i])
+                    break;
+
+                ++i;
+            }
+
+            return input.Slice(i);
+        }
 
         /// <summary>
         /// Convert input span to string

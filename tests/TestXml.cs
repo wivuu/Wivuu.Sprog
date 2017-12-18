@@ -48,18 +48,17 @@ namespace csparser
                  .Skip(IsWhiteSpace);
 
         static CharSpan ParseTag(this CharSpan input, out string name, out bool selfClosing) =>
-            input.SkipOne(c => c == '<')
+            input.SkipOne('<')
                  .ParseIdentifier(out name)
                  .Peek(out var nextC)
                  .Let(selfClosing = nextC == '/')
-                 .SkipOne(c => c == '>')
+                 .SkipOne('>')
                  .Skip(IsWhiteSpace);
 
         static CharSpan ParseEndTag(this CharSpan input, string name) =>
-            input.SkipOne(c => c == '<')
-                 .SkipOne(c => c == '/')
+            input.Skip("</")
                  .ParseIdentifier(out var _)
-                 .SkipOne(c => c == '>')
+                 .SkipOne('>')
                  .Skip(IsWhiteSpace);
 
         static CharSpan ParseItems(this CharSpan input, out List<Item> items)
@@ -71,7 +70,7 @@ namespace csparser
                     next = null;
                     return false;
                 }
-                else if (input.StartsWith("<"))
+                else if (input.StartsWith('<'))
                 {
                     input = input.ParseNode(out var n);
                     next  = n;
@@ -139,8 +138,7 @@ namespace csparser
             <li>Item 3</li>
             <li>Item 4</li>
             <li>Item 5</li>
-        </ul>
-        ";
+        </ul>";
 
         [TestMethod]
         public void TestParse()
