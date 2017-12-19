@@ -3,15 +3,15 @@ using System.Runtime.CompilerServices;
 
 namespace csparser
 {
+    /// <summary>
+    /// Test if the input character matches
+    /// </summary>
+    /// <param name="c">Input character</param>
+    /// <returns>True if input char matches</returns>
+    public delegate bool Predicate(char c);
+
     public static partial class Parser
     {
-        /// <summary>
-        /// Test if the input character matches
-        /// </summary>
-        /// <param name="c">Input character</param>
-        /// <returns>True if input char matches</returns>
-        public delegate bool Predicate(char c);
-
         /// <summary>
         /// Iterate through input until the predicate returns false
         /// </summary>
