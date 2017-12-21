@@ -10,7 +10,6 @@ using static csparser.Parser;
 
 namespace benchmarks
 {
-    [MemoryDiagnoser]
     public class Program
     {
         #region Simple
