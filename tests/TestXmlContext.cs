@@ -26,7 +26,8 @@ namespace csparser
 
         static CharSpan ParseEndTag(this CharSpan input, string name) =>
             input.Skip("</")
-                 .ParseIdentifier(out var _)
+                 .ParseIdentifier(out var endName)
+                 .Assert(endName == name, $"End tag {name} not matched")
                  .SkipOne('>')
                  .Skip(IsWhiteSpace);
 
@@ -53,9 +54,16 @@ namespace csparser
                 }
             }
 
-            items = new List<Item>();
-            while (NextItem(out Item next))
-                items.Add(next);
+            try 
+            {
+                items = new List<Item>();
+                while (NextItem(out Item next))
+                    items.Add(next);
+            }
+            catch (ParseException e)
+            {
+                throw e.AddDetail(expected: "XML end-tag");
+            }
 
             return input;
         }
@@ -70,12 +78,20 @@ namespace csparser
 
         public static bool TryParse(string xml, out Document document)
         {
-            new ParserContext(xml)
-               .Skip(IsWhiteSpace)
-               .ParseNode(out var n);
-               
-            document = new Document { Root = n };
-            return true;
+            try 
+            {
+                new ParserContext(xml)
+                    .Skip(IsWhiteSpace)
+                    .ParseNode(out var n);
+                
+                document = new Document { Root = n };
+                return true;
+            }
+            catch (ParseException)
+            {
+                document = null;
+                return false;
+            }
         }
     }
 

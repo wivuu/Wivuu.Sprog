@@ -49,7 +49,7 @@ namespace csparser
             var i = 0;
             while (i < Buffer.Length && i < take && predicate( Buffer[i] ))
                 ++i;
-
+                
             return i;
         }
 
@@ -66,13 +66,19 @@ namespace csparser
         /// Return an exception containing a basic error report
         /// </summary>
         /// <returns>Error report exception</returns>
-        ParseException ErrorReport(string expected)
+        ParseException ErrorReport(string expected = null)
         {
+            const int MaxRest = 50;
+
             var line = 0; // TODO: retrieve line & col
             var col  = 0;
-            var rest = this.ToString().Remove(50);
+            var rest = Buffer.Length == 0 
+                ? "End of file" 
+                : Buffer.Length > MaxRest 
+                ? Buffer.ToString().Remove(MaxRest)
+                : Buffer.ToString();
             
-            return new ParseException(line, col, rest);
+            return new ParseException(line, col, rest, expected);
         }
 
         /// <summary>
@@ -172,13 +178,13 @@ namespace csparser
         public ParserContext Skip(string value)
         {
             if (Buffer.Length < value.Length)
-                return this;
+                throw ErrorReport(value);
 
             var i = 0;
             while (i < value.Length)
             {
                 if (Buffer[i] != value[i])
-                    break;
+                    throw Next(i).ErrorReport(value);
 
                 ++i;
             }
@@ -231,6 +237,18 @@ namespace csparser
             Buffer.Length == 0;
 
         /// <summary>
+        /// Throw an exception if failing condition
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ParserContext Assert(bool condition, string expected)
+        {
+            if (!condition)
+                throw ErrorReport(expected);
+
+            return this;
+        }
+
+        /// <summary>
         /// Test if the input starts with the input value
         /// </summary>
         /// <param name="value">Input pattern</param>
@@ -255,8 +273,10 @@ namespace csparser
         /// <param name="value">Input pattern</param>
         /// <returns>True if the input matches the pattern</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool StartsWith(char value) => 
-            Buffer[0] == value;
+        public bool StartsWith(char value) =>
+            Buffer.Length > 0 
+            ? Buffer[0] == value
+            : throw ErrorReport();
 
         /// <summary>
         /// Convert input span to string
