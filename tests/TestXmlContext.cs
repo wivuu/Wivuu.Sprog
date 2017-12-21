@@ -97,11 +97,32 @@ namespace csparser
             <li>Item 5</li>
         </ul>";
 
+        const string BadXml = @"
+        <ul>
+            <li>Item 1</li>
+            <li>
+                <ul>
+                    <li>Item 2.1</li>
+                    <li>Item 2.2</li>
+                    <li>Item 2.3</li>
+                </ul>
+            </li>
+            <li>Item 3</li>
+            <li>Item 4
+            <li>Item 5</li>
+        </ul>";
+
         [TestMethod]
         public void TestParseContext()
         {
             Assert.IsTrue(XmlParserContext.TryParse(SourceXml, out var doc));
             Assert.AreEqual(5, doc.Root.Children.Count());
+        }
+
+        [TestMethod]
+        public void TestBadXml()
+        {
+            Assert.IsFalse(XmlParserContext.TryParse(BadXml, out var doc));
         }
     }
 }

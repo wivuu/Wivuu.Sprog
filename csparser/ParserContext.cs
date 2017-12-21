@@ -63,6 +63,19 @@ namespace csparser
             new ParserContext(Buffer.Slice(n), Index + n);
 
         /// <summary>
+        /// Return an exception containing a basic error report
+        /// </summary>
+        /// <returns>Error report exception</returns>
+        ParseException ErrorReport(string expected)
+        {
+            var line = 0; // TODO: retrieve line & col
+            var col  = 0;
+            var rest = this.ToString().Remove(50);
+            
+            return new ParseException(line, col, rest);
+        }
+
+        /// <summary>
         /// Take one character, if matching
         /// </summary>
         /// <param name="predicate">Input test</param>
@@ -208,6 +221,14 @@ namespace csparser
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ParserContext Rest(out ParserContext rhs) =>
             rhs = this;
+
+        /// <summary>
+        /// Check if parser has reached EOF
+        /// </summary>
+        /// <returns>Input buffer is 0</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsEOF() =>
+            Buffer.Length == 0;
 
         /// <summary>
         /// Test if the input starts with the input value
