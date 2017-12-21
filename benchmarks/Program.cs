@@ -66,8 +66,12 @@ namespace benchmarks
         ";
 
         [Benchmark]
-        public void InternalXml() =>
+        public void InternalXmlRaw() =>
             csparser.XmlParser.TryParse(SourceXml, out var _);
+        
+        [Benchmark]
+        public void InternalXmlContext() =>
+            csparser.XmlParserContext.TryParse(SourceXml, out var _);
         
         [Benchmark]
         public void SpracheXml() =>

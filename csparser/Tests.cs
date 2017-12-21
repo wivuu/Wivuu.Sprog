@@ -30,7 +30,6 @@ namespace csparser
         /// <param name="value">Input pattern</param>
         /// <returns>True if the input matches the pattern</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-
         public static bool StartsWith(this ReadOnlySpan<char> input, char value) => 
             input[0] == value;
     }

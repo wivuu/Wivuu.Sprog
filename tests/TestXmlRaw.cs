@@ -129,7 +129,7 @@ namespace csparser
         </ul>";
 
         [TestMethod]
-        public void TestParse()
+        public void TestParseRaw()
         {
             Assert.IsTrue(XmlParser.TryParse(SourceXml, out var doc));
             Assert.AreEqual(5, doc.Root.Children.Count());

@@ -3,26 +3,34 @@ using System.Runtime.CompilerServices;
 
 namespace csparser
 {
-    /// <summary>
-    /// Test if the input character matches
-    /// </summary>
-    /// <param name="c">Input character</param>
-    /// <returns>True if input char matches</returns>
-    public delegate bool Predicate(char c);
-
-    public static partial class Parser
+    public partial struct ParserContext
     {
+        internal ReadOnlySpan<char> Buffer;
+
+        internal readonly int Index;
+
+        public ParserContext(string buffer)
+        {
+            this.Buffer = buffer.AsSpan();
+            this.Index  = 0;
+        }
+
+        internal ParserContext(ReadOnlySpan<char> buffer, int index = 0)
+        {
+            this.Buffer = buffer;
+            this.Index  = index;
+        }
+
         /// <summary>
         /// Iterate through input until the predicate returns false
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <returns>Index match end</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int MatchWhile(ref ReadOnlySpan<char> input, Predicate predicate)
+        int MatchWhile(Predicate predicate)
         {
             var i = 0;
-            while (i < input.Length && predicate( input[i] ))
+            while (i < Buffer.Length && predicate( Buffer[i] ))
                 ++i;
 
             return i;
@@ -32,180 +40,202 @@ namespace csparser
         /// Iterate through input until the predicate returns false or number of taken
         /// characters taken is met
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <param name="take">Number of characters to take</param>
         /// <returns>Index match end</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int MatchWhile(ref ReadOnlySpan<char> input, Predicate predicate, int take)
+        int MatchWhile(Predicate predicate, int take)
         {
             var i = 0;
-            while (i < input.Length && i < take && predicate( input[i] ))
+            while (i < Buffer.Length && i < take && predicate( Buffer[i] ))
                 ++i;
 
             return i;
         }
 
         /// <summary>
+        /// Return a new buffer at the input index
+        /// </summary>
+        /// <param name="n">Index</param>
+        /// <returns>The next slice</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        ParserContext Next(int n) =>
+            new ParserContext(Buffer.Slice(n), Index + n);
+
+        /// <summary>
         /// Take one character, if matching
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <param name="match">Matching character</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> TakeOne(
-            this ReadOnlySpan<char> input, Predicate predicate, out char match)
+        public ParserContext TakeOne(Predicate predicate, out char match)
         {
-            var i = MatchWhile(ref input, predicate, take: 1);
-            match = input[0];
+            var i = MatchWhile(predicate, take: 1);
+            match = Buffer[0];
 
-            return input.Slice(i);
+            return Next(i);
         }
 
         /// <summary>
         /// Take multiple characters, while matching
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <param name="match">Matching characters</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> Take(
-            this ReadOnlySpan<char> input, Predicate predicate, out string match)
+        public ParserContext Take(Predicate predicate, out string match)
         {
-            var i = MatchWhile(ref input, predicate);
-            match = input.Slice(0, i).AsString();
+            var i = MatchWhile(predicate);
+            match = Buffer.Slice(0, i).AsString();
 
-            return input.Slice(i);
+            return Next(i);
         }
 
         /// <summary>
         /// Peek multiple characters
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="take">Input test</param>
         /// <param name="match">Matching string</param>
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> Peek(this ReadOnlySpan<char> input, int take, out string match)
+        public ParserContext Peek(int take, out string match)
         {
-            match = (input.Length < take)
+            match = (Buffer.Length < take)
                 ? null
-                : input.Slice(0, take).AsString();
+                : Buffer.Slice(0, take).AsString();
 
-            return input;
+            return this;
         }
 
         /// <summary>
         /// Peek single character
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="take">Input test</param>
         /// <param name="match">Matching character</param>
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> Peek(this ReadOnlySpan<char> input, out char match)
+        public ParserContext Peek(out char match)
         {        
-            Peek(input, 1, out var m);
+            Peek(1, out var m);
             match = m[0];
 
-            return input;
+            return this;
         }
 
         /// <summary>
         /// Skip one character if predicate is true
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> SkipOne(this ReadOnlySpan<char> input, Predicate predicate) =>
-            input.Slice(MatchWhile(ref input, predicate, take: 1));
+        public ParserContext SkipOne(Predicate predicate) =>
+            Next(MatchWhile(predicate, take: 1));
 
         /// <summary>
         /// Skip one character if predicate is true
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> SkipOne(this ReadOnlySpan<char> input, char predicate) =>
-            input.Slice(MatchWhile(ref input, c => c == predicate, take: 1));
+        public ParserContext SkipOne(char predicate) =>
+            Next(MatchWhile(c => c == predicate, take: 1));
 
         /// <summary>
         /// Skip while predicate is true
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> Skip(this ReadOnlySpan<char> input, Predicate predicate) =>
-            input.Slice(MatchWhile(ref input, predicate));
+        public ParserContext Skip(Predicate predicate) =>
+            Next(MatchWhile(predicate));
 
         /// <summary>
         /// Skip while predicate is true
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="value">Input test</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> Skip(this ReadOnlySpan<char> input, string value)
+        public ParserContext Skip(string value)
         {
-            if (input.Length < value.Length)
-                return input;
+            if (Buffer.Length < value.Length)
+                return this;
 
             var i = 0;
             while (i < value.Length)
             {
-                if (input[i] != value[i])
+                if (Buffer[i] != value[i])
                     break;
 
                 ++i;
             }
 
-            return input.Slice(i);
+            return Next(i);
         }
 
         /// <summary>
         /// Assign and return remaining buffer
         /// </summary>
-        /// <param name="rest">Remaining buffer</param>
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> Let(this ReadOnlySpan<char> rest, string id) => 
-            rest;
+        public ParserContext Let(string id) => 
+            this;
 
         /// <summary>
         /// Assign and return remaining buffer
         /// </summary>
-        /// <param name="rest">Remaining buffer</param>
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> Let(this ReadOnlySpan<char> rest, ReadOnlySpan<char> id) => 
+        public ParserContext Let(ParserContext id) => 
             id;
 
         /// <summary>
         /// Assign and return remaining buffer
         /// </summary>
-        /// <param name="rest">Remaining buffer</param>
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> Let<T>(this ReadOnlySpan<char> rest, T id) => 
-            rest;
+        public ParserContext Let<T>(T id) => 
+            this;
 
         /// <summary>
         /// Return remaining buffer as 'out'
         /// </summary>
-        /// <param name="lhs">Remaining buffer</param>
         /// <param name="rhs">Remaining buffer</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ReadOnlySpan<char> Rest(this ReadOnlySpan<char> lhs, out ReadOnlySpan<char> rhs) =>
-            rhs = lhs;
+        public ParserContext Rest(out ParserContext rhs) =>
+            rhs = this;
+
+        /// <summary>
+        /// Test if the input starts with the input value
+        /// </summary>
+        /// <param name="value">Input pattern</param>
+        /// <returns>True if the input matches the pattern</returns>
+        public bool StartsWith(string value)
+        {
+            if (Buffer.Length < value.Length)
+                return false;
+
+            for (var i = 0; i < value.Length; ++i) 
+            {
+                if (Buffer[i] != value[i])
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Test if the input starts with the input value
+        /// </summary>
+        /// <param name="value">Input pattern</param>
+        /// <returns>True if the input matches the pattern</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool StartsWith(char value) => 
+            Buffer[0] == value;
 
         /// <summary>
         /// Convert input span to string
@@ -213,11 +243,11 @@ namespace csparser
         /// <param name="input">Input span</param>
         /// <returns>New string containing input characters</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe string AsString(this ReadOnlySpan<char> input)
+        public override unsafe string ToString()
         {
-            fixed (char* buffer = &input.DangerousGetPinnableReference())
+            fixed (char* buffer = &Buffer.DangerousGetPinnableReference())
             {
-                return new string(buffer, 0, input.Length);
+                return new string(buffer, 0, Buffer.Length);
             }
         }
     }
