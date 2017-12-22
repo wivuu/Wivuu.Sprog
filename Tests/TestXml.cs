@@ -48,18 +48,18 @@ namespace Wivuu.Sprog
                  .Skip(IsWhiteSpace);
 
         static Parser ParseTag(this Parser input, out string name, out bool selfClosing) =>
-            input.Skip('<')
+            input.SkipOne('<')
                  .ParseIdentifier(out name)
                  .Peek(out var nextC)
                  .Let(selfClosing = nextC == '/')
-                 .Skip('>')
+                 .SkipOne('>')
                  .Skip(IsWhiteSpace);
 
         static Parser ParseEndTag(this Parser input, string name) =>
             input.Skip("</")
                  .ParseIdentifier(out var endName)
                  .Assert(endName == name ? null : $"Expected end tag </{name}>")
-                 .Skip('>')
+                 .SkipOne('>')
                  .Skip(IsWhiteSpace);
 
         static Parser ParseItems(this Parser input, out List<Item> items)
