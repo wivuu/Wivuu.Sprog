@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sprache;
 using static System.String;
 using static System.Char;
-using static csparser.Parser;
+using static Wivuu.Sprog.Parser;
 
 namespace benchmarks
 {
@@ -66,11 +66,11 @@ namespace benchmarks
 
         [Benchmark]
         public void InternalXmlRaw() =>
-            csparser.XmlParser.TryParse(SourceXml, out var _);
+            Wivuu.Sprog.XmlParser.TryParse(SourceXml, out var _);
         
         [Benchmark]
         public void InternalXmlContext() =>
-            csparser.XmlParserContext.TryParse(SourceXml, out var _);
+            Wivuu.Sprog.XmlParserContext.TryParse(SourceXml, out var _);
         
         [Benchmark]
         public void SpracheXml() =>

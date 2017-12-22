@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace csparser
+namespace Wivuu.Sprog
 {
     /// <summary>
     /// Test if the input character matches
@@ -57,10 +57,16 @@ namespace csparser
         public static ReadOnlySpan<char> TakeOne(
             this ReadOnlySpan<char> input, Predicate predicate, out char match)
         {
-            var i = MatchWhile(ref input, predicate, take: 1);
-            match = input[0];
-
-            return input.Slice(i);
+            if (input.Length > 0 && predicate(input[0]))
+            {
+                match = input[0];
+                return input.Slice(1);
+            }
+            else
+            {
+                match = '\0';
+                return input;
+            }
         }
 
         /// <summary>
@@ -106,9 +112,10 @@ namespace csparser
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpan<char> Peek(this ReadOnlySpan<char> input, out char match)
-        {        
-            Peek(input, 1, out var m);
-            match = m[0];
+        {
+            match = (input.Length == 0)
+                ? '\0'
+                : input[0];
 
             return input;
         }
@@ -156,13 +163,8 @@ namespace csparser
                 return input;
 
             var i = 0;
-            while (i < value.Length)
-            {
-                if (input[i] != value[i])
-                    break;
-
+            while (i < value.Length && input[i] == value[i])
                 ++i;
-            }
 
             return input.Slice(i);
         }
@@ -196,6 +198,27 @@ namespace csparser
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ReadOnlySpan<char> Let<T>(this ReadOnlySpan<char> rest, T id) => 
             rest;
+
+        /// <summary>
+        /// Create an assertion
+        /// </summary>
+        /// <returns>Parser</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<char> Assert(this ReadOnlySpan<char> rest, bool condition) =>
+            rest;
+
+        /// <summary>
+        /// Create an assertion
+        /// </summary>
+        /// <returns>Parser</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlySpan<char> Assert(this ReadOnlySpan<char> rest, string assertion)
+        {
+            if (assertion != null)
+                throw new ParserException(assertion, rest.Length);
+
+            return rest;
+        }
 
         /// <summary>
         /// Return remaining buffer as 'out'

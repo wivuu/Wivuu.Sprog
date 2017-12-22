@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.Char;
-using CharSpan = csparser.ParserContext;
+using CharSpan = Wivuu.Sprog.ParserContext;
 
-namespace csparser
+namespace Wivuu.Sprog
 {
     public static class XmlParserContext
     {
@@ -27,7 +27,7 @@ namespace csparser
         static CharSpan ParseEndTag(this CharSpan input, string name) =>
             input.Skip("</")
                  .ParseIdentifier(out var endName)
-                 .Assert(endName == name, $"End tag {name} not matched")
+                 .Assert(endName == name, $"Expected end tag </{name}>")
                  .SkipOne('>')
                  .Skip(IsWhiteSpace);
 
@@ -54,16 +54,9 @@ namespace csparser
                 }
             }
 
-            try 
-            {
-                items = new List<Item>();
-                while (NextItem(out Item next))
-                    items.Add(next);
-            }
-            catch (ParseException e)
-            {
-                throw e.AddDetail(expected: "XML end-tag");
-            }
+            items = new List<Item>();
+            while (NextItem(out var next) && !input.HasError)
+                items.Add(next);
 
             return input;
         }
@@ -78,20 +71,18 @@ namespace csparser
 
         public static bool TryParse(string xml, out Document document)
         {
-            try 
+            new ParserContext(xml)
+                .Skip(IsWhiteSpace)
+                .ParseNode(out var n)
+                .CheckError(out var error);
+            
+            document = new Document 
             {
-                new ParserContext(xml)
-                    .Skip(IsWhiteSpace)
-                    .ParseNode(out var n);
-                
-                document = new Document { Root = n };
-                return true;
-            }
-            catch (ParseException)
-            {
-                document = null;
-                return false;
-            }
+                Root  = n, 
+                Error = error?.CalculateLineAndCol(xml) 
+            };
+
+            return error == null;
         }
     }
 
@@ -115,17 +106,7 @@ namespace csparser
 
         const string BadXml = @"
         <ul>
-            <li>Item 1</li>
-            <li>
-                <ul>
-                    <li>Item 2.1</li>
-                    <li>Item 2.2</li>
-                    <li>Item 2.3</li>
-                </ul>
-            </li>
-            <li>Item 3</li>
-            <li>Item 4
-            <li>Item 5</li>
+            <li>Item 4</lli>
         </ul>";
 
         [TestMethod]

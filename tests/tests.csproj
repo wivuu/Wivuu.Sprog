@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\csparser\csparser.csproj" />
+    <ProjectReference Include="..\Sprog\Sprog.csproj" />
   </ItemGroup>
 
 </Project>

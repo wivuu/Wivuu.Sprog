@@ -5,11 +5,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.Char;
 using CharSpan = System.ReadOnlySpan<char>;
 
-namespace csparser
+namespace Wivuu.Sprog
 {
     public class Document
     {
         public Node Root;
+
+        public ParserError Error;
 
         public override string ToString() => Root.ToString();
     }
@@ -57,7 +59,8 @@ namespace csparser
 
         static CharSpan ParseEndTag(this CharSpan input, string name) =>
             input.Skip("</")
-                 .ParseIdentifier(out var _)
+                 .ParseIdentifier(out var endName)
+                 .Assert(endName == name ? null : $"Expected end tag </{name}>")
                  .SkipOne('>')
                  .Skip(IsWhiteSpace);
 
@@ -84,8 +87,8 @@ namespace csparser
                 }
             }
 
-            items = new List<Item>();
-            while (NextItem(out Item next))
+            items = new List<Item>(capacity: 1);
+            while (NextItem(out var next))
                 items.Add(next);
 
             return input;
@@ -101,12 +104,24 @@ namespace csparser
 
         public static bool TryParse(string xml, out Document document)
         {
-            xml.AsSpan()
-               .Skip(IsWhiteSpace)
-               .ParseNode(out var n);
+            try
+            {
+                xml.AsSpan()
+                    .Skip(IsWhiteSpace)
+                    .ParseNode(out var n);
                
-            document = new Document { Root = n };
-            return true;
+                document = new Document { Root = n };
+                return true;
+            }
+            catch (ParserException e)
+            {
+                document = new Document
+                { 
+                    Error = new ParserError(e.Remaining, e.Assertion).CalculateLineAndCol(xml) 
+                };
+
+                return false;
+            }
         }
     }
 
@@ -128,11 +143,22 @@ namespace csparser
             <li>Item 5</li>
         </ul>";
 
+        const string BadXml = @"
+        <ul>
+            <li>Item 4</lli>
+        </ul>";
+
         [TestMethod]
         public void TestParseRaw()
         {
             Assert.IsTrue(XmlParser.TryParse(SourceXml, out var doc));
             Assert.AreEqual(5, doc.Root.Children.Count());
+        }
+
+        [TestMethod]
+        public void TestBadXml()
+        {
+            Assert.IsFalse(XmlParser.TryParse(BadXml, out var doc));
         }
     }
 }

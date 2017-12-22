@@ -2,7 +2,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.Char;
 
-namespace csparser
+namespace Wivuu.Sprog
 {
     public static class ParserExtensions
     {

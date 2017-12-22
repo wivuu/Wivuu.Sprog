@@ -1,24 +1,23 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace csparser
+namespace Wivuu.Sprog
 {
     public partial struct ParserContext
     {
         internal ReadOnlySpan<char> Buffer;
-
-        internal readonly int Index;
+        internal ParserError Error;
 
         public ParserContext(string buffer)
         {
             this.Buffer = buffer.AsSpan();
-            this.Index  = 0;
+            this.Error  = null;
         }
 
-        internal ParserContext(ReadOnlySpan<char> buffer, int index = 0)
+        internal ParserContext(ReadOnlySpan<char> buffer, ParserError prevError)
         {
             this.Buffer = buffer;
-            this.Index  = index;
+            this.Error  = prevError;
         }
 
         /// <summary>
@@ -60,25 +59,27 @@ namespace csparser
         /// <returns>The next slice</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         ParserContext Next(int n) =>
-            new ParserContext(Buffer.Slice(n), Index + n);
+            new ParserContext(Buffer.Slice(n), Error);
 
         /// <summary>
-        /// Return an exception containing a basic error report
+        /// Take one character, if matching
         /// </summary>
-        /// <returns>Error report exception</returns>
-        ParseException ErrorReport(string expected = null)
+        /// <param name="predicate">Input test</param>
+        /// <param name="match">Matching character</param>
+        /// <returns>Remainder of input</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ParserContext TakeOne(out char match)
         {
-            const int MaxRest = 50;
-
-            var line = 0; // TODO: retrieve line & col
-            var col  = 0;
-            var rest = Buffer.Length == 0 
-                ? "End of file" 
-                : Buffer.Length > MaxRest 
-                ? Buffer.ToString().Remove(MaxRest)
-                : Buffer.ToString();
-            
-            return new ParseException(line, col, rest, expected);
+            if (Buffer.Length > 0)
+            {
+                match = Buffer[0];
+                return Next(1);
+            }
+            else
+            {
+                match = '\0';
+                return this;
+            }
         }
 
         /// <summary>
@@ -90,10 +91,16 @@ namespace csparser
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ParserContext TakeOne(Predicate predicate, out char match)
         {
-            var i = MatchWhile(predicate, take: 1);
-            match = Buffer[0];
-
-            return Next(i);
+            if (Buffer.Length > 0 && predicate(Buffer[0]))
+            {
+                match = Buffer[0];
+                return Next(1);
+            }
+            else
+            {
+                match = '\0';
+                return this;
+            }
         }
 
         /// <summary>
@@ -136,8 +143,9 @@ namespace csparser
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ParserContext Peek(out char match)
         {        
-            Peek(1, out var m);
-            match = m[0];
+            match = (Buffer.Length == 0)
+                ? '\0'
+                : Buffer[0];
 
             return this;
         }
@@ -178,16 +186,11 @@ namespace csparser
         public ParserContext Skip(string value)
         {
             if (Buffer.Length < value.Length)
-                throw ErrorReport(value);
+                return this;
 
             var i = 0;
-            while (i < value.Length)
-            {
-                if (Buffer[i] != value[i])
-                    throw Next(i).ErrorReport(value);
-
+            while (i < value.Length && Buffer[i] == value[i])
                 ++i;
-            }
 
             return Next(i);
         }
@@ -229,54 +232,27 @@ namespace csparser
             rhs = this;
 
         /// <summary>
-        /// Check if parser has reached EOF
-        /// </summary>
-        /// <returns>Input buffer is 0</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsEOF() =>
-            Buffer.Length == 0;
-
-        /// <summary>
         /// Throw an exception if failing condition
         /// </summary>
+        /// <returns>Parser</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ParserContext Assert(bool condition, string expected)
         {
             if (!condition)
-                throw ErrorReport(expected);
+                this.Error = new ParserError(Buffer.Length, expected);
 
             return this;
         }
 
         /// <summary>
-        /// Test if the input starts with the input value
+        /// Returns an error summary
         /// </summary>
-        /// <param name="value">Input pattern</param>
-        /// <returns>True if the input matches the pattern</returns>
-        public bool StartsWith(string value)
+        /// <returns>Parser</returns>
+        public ParserContext CheckError(out ParserError error)
         {
-            if (Buffer.Length < value.Length)
-                return false;
-
-            for (var i = 0; i < value.Length; ++i) 
-            {
-                if (Buffer[i] != value[i])
-                    return false;
-            }
-
-            return true;
+            error = this.Error;
+            return this;
         }
-
-        /// <summary>
-        /// Test if the input starts with the input value
-        /// </summary>
-        /// <param name="value">Input pattern</param>
-        /// <returns>True if the input matches the pattern</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool StartsWith(char value) =>
-            Buffer.Length > 0 
-            ? Buffer[0] == value
-            : throw ErrorReport();
 
         /// <summary>
         /// Convert input span to string

@@ -7,14 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\csparser\csparser.csproj" />
-    <ProjectReference Include="..\tests\tests.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="benchmarkdotnet" Version="0.10.11" />
     <PackageReference Include="sprache" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sprog\Sprog.csproj" />
+    <ProjectReference Include="..\tests\Tests.csproj" />
   </ItemGroup>
   
 </Project>
