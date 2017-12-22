@@ -280,16 +280,14 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool StartsWith(string value)
         {
-            if (Buffer.Length < value.Length)
-                return false;
-
-            for (var i = 0; i < value.Length; ++i) 
+            int i;
+            for (i = 0; i < value.Length; ++i) 
             {
                 if (Buffer[i] != value[i])
                     return false;
             }
 
-            return true;
+            return i == value.Length;
         }
 
         /// <summary>
