@@ -50,7 +50,8 @@ namespace Wivuu.Sprog
         static Parser ParseTag(this Parser input, out string name, out bool selfClosing) =>
             input.SkipOne('<')
                  .ParseIdentifier(out name)
-                 .Peek(out var nextC)
+                 .Assert(name?.Length > 0 ? null : $"XML Tag must be at least 1 character long")
+                 .Peek(out char nextC)
                  .Let(selfClosing = nextC == '/')
                  .SkipOne('>')
                  .Skip(IsWhiteSpace);
@@ -150,6 +151,9 @@ namespace Wivuu.Sprog
             </ul>",
             @"<ul>
                 <li>Item 4
+            </ul>",
+            @"<ul>
+                <>Item 4</>
             </ul>"
         };
 
