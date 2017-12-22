@@ -19,11 +19,11 @@ namespace benchmarks
         {
             Parser TakeIdentifier(string input, out string _id) =>
                 new Parser(input)
-                     .Skip(IsWhiteSpace)
-                     .Take(IsLetter, out char first)
-                     .Take(IsLetterOrDigit, out string rest)
-                     .Skip(IsWhiteSpace)
-                     .Let(_id = Concat(first, rest));
+                    .Skip(IsWhiteSpace)
+                    .Take(IsLetter, out char first)
+                    .Take(IsLetterOrDigit, out string rest)
+                    .Skip(IsWhiteSpace)
+                    .Let(_id = Concat(first, rest));
 
             TakeIdentifier(" abc123  ", out var id);
             Assert.AreEqual("abc123", id);

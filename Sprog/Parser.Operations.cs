@@ -9,7 +9,6 @@ namespace Wivuu.Sprog
         /// <summary>
         /// Iterate through input until the predicate returns false
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <returns>Index match end</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -26,7 +25,6 @@ namespace Wivuu.Sprog
         /// Iterate through input until the predicate returns false or number of taken
         /// characters taken is met
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <param name="take">Number of characters to take</param>
         /// <returns>Index match end</returns>
@@ -47,7 +45,6 @@ namespace Wivuu.Sprog
         /// <summary>
         /// Take one character, if matching
         /// </summary>
-        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <param name="match">Matching character</param>
         /// <returns>Remainder of input</returns>
@@ -124,7 +121,6 @@ namespace Wivuu.Sprog
         /// <summary>
         /// Peek single character
         /// </summary>
-        /// <param name="take">Input test</param>
         /// <param name="match">Matching character</param>
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -204,7 +200,6 @@ namespace Wivuu.Sprog
         /// <summary>
         /// Assign and return remaining buffer
         /// </summary>
-        /// <param name="rest">Remaining buffer</param>
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -214,7 +209,6 @@ namespace Wivuu.Sprog
         /// <summary>
         /// Assign and return remaining buffer
         /// </summary>
-        /// <param name="rest">Remaining buffer</param>
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -224,7 +218,6 @@ namespace Wivuu.Sprog
         /// <summary>
         /// Assign and return remaining buffer
         /// </summary>
-        /// <param name="rest">Remaining buffer</param>
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -238,12 +231,11 @@ namespace Wivuu.Sprog
         /// <summary>
         /// Return remaining buffer as 'out'
         /// </summary>
-        /// <param name="lhs">Remaining buffer</param>
         /// <param name="rhs">Remaining buffer</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Parser Rest(out Parser rhs) =>
-            rhs = this;
+        public Parser Rest(out Parser rest) =>
+            rest = this;
 
         #endregion
 
