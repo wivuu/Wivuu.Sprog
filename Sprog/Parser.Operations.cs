@@ -1,35 +1,22 @@
-using System;
 using System.Runtime.CompilerServices;
 
 namespace Wivuu.Sprog
 {
-    public partial struct ParserContext
+    public partial struct Parser
     {
-        internal ReadOnlySpan<char> Buffer;
-        internal ParserError Error;
-
-        public ParserContext(string buffer)
-        {
-            this.Buffer = buffer.AsSpan();
-            this.Error  = null;
-        }
-
-        internal ParserContext(ReadOnlySpan<char> buffer, ParserError prevError)
-        {
-            this.Buffer = buffer;
-            this.Error  = prevError;
-        }
+        #region MatchWhile
 
         /// <summary>
         /// Iterate through input until the predicate returns false
         /// </summary>
+        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <returns>Index match end</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         int MatchWhile(Predicate predicate)
         {
             var i = 0;
-            while (i < Buffer.Length && predicate( Buffer[i] ))
+            while (i < Buffer.Length && predicate(Buffer[i]))
                 ++i;
 
             return i;
@@ -39,6 +26,7 @@ namespace Wivuu.Sprog
         /// Iterate through input until the predicate returns false or number of taken
         /// characters taken is met
         /// </summary>
+        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <param name="take">Number of characters to take</param>
         /// <returns>Index match end</returns>
@@ -46,60 +34,55 @@ namespace Wivuu.Sprog
         int MatchWhile(Predicate predicate, int take)
         {
             var i = 0;
-            while (i < Buffer.Length && i < take && predicate( Buffer[i] ))
+            while (i < Buffer.Length && i < take && predicate(Buffer[i]))
                 ++i;
-                
+
             return i;
         }
 
-        /// <summary>
-        /// Return a new buffer at the input index
-        /// </summary>
-        /// <param name="n">Index</param>
-        /// <returns>The next slice</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        ParserContext Next(int n) =>
-            new ParserContext(Buffer.Slice(n), Error);
+        #endregion
+
+        #region Take
 
         /// <summary>
         /// Take one character, if matching
         /// </summary>
+        /// <param name="input">Input to match</param>
         /// <param name="predicate">Input test</param>
         /// <param name="match">Matching character</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext TakeOne(out char match)
-        {
-            if (Buffer.Length > 0)
-            {
-                match = Buffer[0];
-                return Next(1);
-            }
-            else
-            {
-                match = '\0';
-                return this;
-            }
-        }
-
-        /// <summary>
-        /// Take one character, if matching
-        /// </summary>
-        /// <param name="predicate">Input test</param>
-        /// <param name="match">Matching character</param>
-        /// <returns>Remainder of input</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext TakeOne(Predicate predicate, out char match)
+        public Parser Take(Predicate predicate, out char match)
         {
             if (Buffer.Length > 0 && predicate(Buffer[0]))
             {
                 match = Buffer[0];
-                return Next(1);
+                return Buffer.Slice(1);
             }
             else
             {
                 match = '\0';
-                return this;
+                return Buffer;
+            }
+        }
+
+        /// <summary>
+        /// Take one character, if matching
+        /// </summary>
+        /// <param name="match">Matching character</param>
+        /// <returns>Remainder of input</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser Take(out char match)
+        {
+            if (Buffer.Length > 0)
+            {
+                match = Buffer[0];
+                return Buffer.Slice(1);
+            }
+            else
+            {
+                match = '\0';
+                return Buffer;
             }
         }
 
@@ -110,13 +93,17 @@ namespace Wivuu.Sprog
         /// <param name="match">Matching characters</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext Take(Predicate predicate, out string match)
+        public Parser Take(Predicate predicate, out string match)
         {
             var i = MatchWhile(predicate);
             match = Buffer.Slice(0, i).AsString();
 
-            return Next(i);
+            return Buffer.Slice(i);
         }
+
+        #endregion
+
+        #region Peek
 
         /// <summary>
         /// Peek multiple characters
@@ -125,7 +112,7 @@ namespace Wivuu.Sprog
         /// <param name="match">Matching string</param>
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext Peek(int take, out string match)
+        public Parser Peek(int take, out string match)
         {
             match = (Buffer.Length < take)
                 ? null
@@ -141,8 +128,8 @@ namespace Wivuu.Sprog
         /// <param name="match">Matching character</param>
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext Peek(out char match)
-        {        
+        public Parser Peek(out char match)
+        {
             match = (Buffer.Length == 0)
                 ? '\0'
                 : Buffer[0];
@@ -150,14 +137,9 @@ namespace Wivuu.Sprog
             return this;
         }
 
-        /// <summary>
-        /// Skip one character if predicate is true
-        /// </summary>
-        /// <param name="predicate">Input test</param>
-        /// <returns>Remainder of input</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext SkipOne(Predicate predicate) =>
-            Next(MatchWhile(predicate, take: 1));
+        #endregion
+
+        #region Skip
 
         /// <summary>
         /// Skip one character if predicate is true
@@ -165,8 +147,28 @@ namespace Wivuu.Sprog
         /// <param name="predicate">Input test</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext SkipOne(char predicate) =>
-            Next(MatchWhile(c => c == predicate, take: 1));
+        public Parser SkipOne(Predicate predicate) =>
+            Buffer.Slice(MatchWhile(predicate, take: 1));
+
+        /// <summary>
+        /// Skip one character if predicate is true
+        /// </summary>
+        /// <param name="predicate">Input test</param>
+        /// <returns>Remainder of input</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser SkipOne() =>
+            Buffer.Length > 0 
+            ? Buffer.Slice(1) 
+            : this;
+
+        /// <summary>
+        /// Skip one character if predicate is true
+        /// </summary>
+        /// <param name="predicate">Input test</param>
+        /// <returns>Remainder of input</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser Skip(char predicate) =>
+            Buffer.Slice(MatchWhile(c => c == predicate, take: 1));
 
         /// <summary>
         /// Skip while predicate is true
@@ -174,8 +176,8 @@ namespace Wivuu.Sprog
         /// <param name="predicate">Input test</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext Skip(Predicate predicate) =>
-            Next(MatchWhile(predicate));
+        public Parser Skip(Predicate predicate) =>
+            Buffer.Slice(MatchWhile(predicate));
 
         /// <summary>
         /// Skip while predicate is true
@@ -183,89 +185,124 @@ namespace Wivuu.Sprog
         /// <param name="value">Input test</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext Skip(string value)
+        public Parser Skip(string value)
         {
             if (Buffer.Length < value.Length)
-                return this;
+                return Buffer;
 
             var i = 0;
             while (i < value.Length && Buffer[i] == value[i])
                 ++i;
 
-            return Next(i);
+            return Buffer.Slice(i);
         }
+
+        #endregion
+
+        #region Let
 
         /// <summary>
         /// Assign and return remaining buffer
         /// </summary>
+        /// <param name="rest">Remaining buffer</param>
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext Let(string id) => 
+        public Parser Let(string id) => 
             this;
 
         /// <summary>
         /// Assign and return remaining buffer
         /// </summary>
+        /// <param name="rest">Remaining buffer</param>
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext Let(ParserContext id) => 
+        public Parser Let(Parser id) =>
             id;
 
         /// <summary>
         /// Assign and return remaining buffer
         /// </summary>
+        /// <param name="rest">Remaining buffer</param>
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext Let<T>(T id) => 
+        public Parser Let<T>(T id) => 
             this;
+
+        #endregion
+
+        #region Rest
 
         /// <summary>
         /// Return remaining buffer as 'out'
         /// </summary>
+        /// <param name="lhs">Remaining buffer</param>
         /// <param name="rhs">Remaining buffer</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext Rest(out ParserContext rhs) =>
+        public Parser Rest(out Parser rhs) =>
             rhs = this;
 
+        #endregion
+
+        #region Assert
+
         /// <summary>
-        /// Throw an exception if failing condition
+        /// Create an assertion
         /// </summary>
         /// <returns>Parser</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParserContext Assert(bool condition, string expected)
+        public Parser Assert(string assertion)
         {
-            if (!condition)
-                this.Error = new ParserError(Buffer.Length, expected);
+            if (assertion != null)
+                throw new ParserException(assertion, Buffer.Length);
 
             return this;
         }
 
-        /// <summary>
-        /// Returns an error summary
-        /// </summary>
-        /// <returns>Parser</returns>
-        public ParserContext CheckError(out ParserError error)
-        {
-            error = this.Error;
-            return this;
-        }
+        #endregion
+
+        #region Tests
 
         /// <summary>
-        /// Convert input span to string
+        /// Check if parser has reached EOF
         /// </summary>
-        /// <param name="input">Input span</param>
-        /// <returns>New string containing input characters</returns>
+        /// <returns>Input buffer is 0</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override unsafe string ToString()
+        public bool IsEOF() =>
+            Buffer.Length == 0;
+
+        /// <summary>
+        /// Test if the input starts with the input value
+        /// </summary>
+        /// <param name="value">Input pattern</param>
+        /// <returns>True if the input matches the pattern</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool StartsWith(string value)
         {
-            fixed (char* buffer = &Buffer.DangerousGetPinnableReference())
+            if (Buffer.Length < value.Length)
+                return false;
+
+            for (var i = 0; i < value.Length; ++i) 
             {
-                return new string(buffer, 0, Buffer.Length);
+                if (Buffer[i] != value[i])
+                    return false;
             }
+
+            return true;
         }
+
+        /// <summary>
+        /// Test if the input starts with the input value
+        /// </summary>
+        /// <param name="value">Input pattern</param>
+        /// <returns>True if the input matches the pattern</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool StartsWith(char value) => 
+            Buffer[0] == value;
+
+        #endregion
     }
 }

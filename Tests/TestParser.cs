@@ -6,10 +6,10 @@ namespace Wivuu.Sprog
 {
     public static class ParserExtensions
     {
-        public static ReadOnlySpan<char> TakeIdentifier(this ReadOnlySpan<char> input, out string identifier) =>
+        public static Parser TakeIdentifier(this Parser input, out string identifier) =>
             input.Skip(IsWhiteSpace)
-                 .TakeOne(IsLetter, out var first)
-                 .Take(IsLetterOrDigit, out var rest)
+                 .Take(IsLetter, out char first)
+                 .Take(IsLetterOrDigit, out string rest)
                  .Let(identifier = $"{first}{rest}");
     }
 
@@ -19,7 +19,7 @@ namespace Wivuu.Sprog
         [TestMethod]
         public void TestParserContinuators()
         {
-            var remaining = " This is a test ".AsSpan();
+            var remaining = new Parser(" This is a test ");
 
             while (remaining.Length > 0) 
             {
@@ -35,8 +35,7 @@ namespace Wivuu.Sprog
         public void TestParseIdents()
         {
             var remaining = 
-                @"1  B3his is some string  "
-                .AsSpan()
+                new Parser(@"1  B3his is some string  ")
                 .SkipOne(IsDigit)
                 .Skip(IsWhiteSpace)
                 .Peek(out var c)
@@ -45,7 +44,7 @@ namespace Wivuu.Sprog
 
             Console.WriteLine($"     Char: `{c}`");
             Console.WriteLine($"    Ident: `{ident}`");
-            Console.WriteLine($"Remaining: `{remaining.AsString()}`");
+            Console.WriteLine($"Remaining: `{remaining.ToString()}`");
         }
     }
 }

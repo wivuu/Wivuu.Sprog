@@ -18,18 +18,20 @@ namespace Wivuu.Sprog
 
         public ParserError CalculateLineAndCol(string fromText)
         {
-            var prevline = new ParserContext(fromText);
-            var line = 1;
+            var prevline = new Parser(fromText);
 
-            while (!prevline.IsEOF())
+            // TODO: Also retrieve text 'surrounding' the error:
+            // MyCodeFile.xml(24, 4) Expected end tag </li> at `some stuff</lli>`
+
+            for (var line = 1; !prevline.IsEOF(); ++line)
             {
                 var nextline = prevline
                     .Skip(c => c != '\n')
-                    .TakeOne(out char ln);
+                    .SkipOne();
 
                 // If we've passed the index, go back and
                 // find the column
-                if (nextline.Buffer.Length <= Remaining) 
+                if (nextline.Length <= Remaining) 
                 {
                     var index     = fromText.Length - Remaining;
                     var lineStart = fromText.Length - prevline.Buffer.Length;
@@ -37,8 +39,6 @@ namespace Wivuu.Sprog
                     LineAndColumn = (line, 1 + index - lineStart);
                     break;
                 }
-
-                if (ln == '\n') ++line;
 
                 prevline = nextline;
             }

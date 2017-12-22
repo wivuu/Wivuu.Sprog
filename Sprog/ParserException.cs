@@ -4,7 +4,7 @@ namespace Wivuu.Sprog
 {
     public class ParserException : Exception
     {
-        public ParserException(string assertion, int remaining)
+        internal ParserException(string assertion, int remaining)
             : base(assertion)
         {
             this.Assertion = assertion;

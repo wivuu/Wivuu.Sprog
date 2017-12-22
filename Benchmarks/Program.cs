@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sprache;
 using static System.String;
 using static System.Char;
-using static Wivuu.Sprog.Parser;
+using Wivuu.Sprog;
 
 namespace benchmarks
 {
@@ -15,13 +15,13 @@ namespace benchmarks
         #region Simple
 
         [Benchmark]
-        public void InternalSimple()
+        public void SprogSimple()
         {
-            ReadOnlySpan<char> TakeIdentifier(string input, out string _id) =>
-                input.AsSpan()
+            Parser TakeIdentifier(string input, out string _id) =>
+                new Parser(input)
                      .Skip(IsWhiteSpace)
-                     .TakeOne(IsLetter, out var first)
-                     .Take(IsLetterOrDigit, out var rest)
+                     .Take(IsLetter, out char first)
+                     .Take(IsLetterOrDigit, out string rest)
                      .Skip(IsWhiteSpace)
                      .Let(_id = Concat(first, rest));
 
@@ -65,12 +65,8 @@ namespace benchmarks
         ";
 
         [Benchmark]
-        public void InternalXmlRaw() =>
-            Wivuu.Sprog.XmlParser.TryParse(SourceXml, out var _);
-        
-        [Benchmark]
-        public void InternalXmlContext() =>
-            Wivuu.Sprog.XmlParserContext.TryParse(SourceXml, out var _);
+        public void SprogXml() =>
+            SprogXmlParser.TryParse(SourceXml, out var _);
         
         [Benchmark]
         public void SpracheXml() =>
