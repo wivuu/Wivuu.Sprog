@@ -126,37 +126,47 @@ namespace Wivuu.Sprog
     [TestClass]
     public class TestXml
     {
-        const string SourceXml = @"
-        <ul>
-            <li>Item 1</li>
-            <li>
-                <ul>
-                    <li>Item 2.1</li>
-                    <li>Item 2.2</li>
-                    <li>Item 2.3</li>
-                </ul>
-            </li>
-            <li>Item 3</li>
-            <li>Item 4</li>
-            <li>Item 5</li>
-        </ul>";
+        readonly string[] GoodXml = 
+        {
+            @"<ul>
+                <li>Item 1</li>
+                <li>
+                    <ul>
+                        <li>Item 2.1</li>
+                        <li>Item 2.2</li>
+                        <li>Item 2.3</li>
+                    </ul>
+                </li>
+                <li>Item 3</li>
+                <li>Item 4</li>
+                <li>Item 5</li>
+            </ul>"
+        };
 
-        const string BadXml = @"
-        <ul>
-            <li>Item 4</lli>
-        </ul>";
+        readonly string[] BadXml = 
+        {
+            @"<ul>
+                <li>Item 4</lli>
+            </ul>",
+            @"<ul>
+                <li>Item 4
+            </ul>"
+        };
 
         [TestMethod]
         public void TestGoodXml()
         {
-            Assert.IsTrue(SprogXmlParser.TryParse(SourceXml, out var doc));
-            Assert.AreEqual(5, doc.Root.Children.Count());
+            Document doc;
+            foreach (var good in GoodXml)
+                Assert.IsTrue(SprogXmlParser.TryParse(good, out doc));
         }
 
         [TestMethod]
         public void TestBadXml()
         {
-            Assert.IsFalse(SprogXmlParser.TryParse(BadXml, out var doc));
+            Document doc;
+            foreach (var bad in BadXml)
+                Assert.IsFalse(SprogXmlParser.TryParse(bad, out doc));
         }
     }
 }
