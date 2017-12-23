@@ -11,6 +11,7 @@
     <Description>Sprog (Danish for 'Language') string parsing library</Description>
     <AssemblyName>Wivuu.Sprog</AssemblyName>
     <RootNamespace>Wivuu.Sprog</RootNamespace>
+    <ReleaseNotes>- Initial release</ReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
