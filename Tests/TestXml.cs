@@ -48,18 +48,19 @@ namespace Wivuu.Sprog
                  .Skip(IsWhiteSpace);
 
         static Parser ParseTag(this Parser input, out string name, out bool selfClosing) =>
-            input.Skip('<')
+            input.SkipOne('<')
                  .ParseIdentifier(out name)
-                 .Peek(out var nextC)
+                 .Assert(name?.Length > 0 ? null : $"XML Tag must be at least 1 character long")
+                 .Peek(out char nextC)
                  .Let(selfClosing = nextC == '/')
-                 .Skip('>')
+                 .SkipOne('>')
                  .Skip(IsWhiteSpace);
 
         static Parser ParseEndTag(this Parser input, string name) =>
             input.Skip("</")
                  .ParseIdentifier(out var endName)
                  .Assert(endName == name ? null : $"Expected end tag </{name}>")
-                 .Skip('>')
+                 .SkipOne('>')
                  .Skip(IsWhiteSpace);
 
         static Parser ParseItems(this Parser input, out List<Item> items)
@@ -126,37 +127,50 @@ namespace Wivuu.Sprog
     [TestClass]
     public class TestXml
     {
-        const string SourceXml = @"
-        <ul>
-            <li>Item 1</li>
-            <li>
-                <ul>
-                    <li>Item 2.1</li>
-                    <li>Item 2.2</li>
-                    <li>Item 2.3</li>
-                </ul>
-            </li>
-            <li>Item 3</li>
-            <li>Item 4</li>
-            <li>Item 5</li>
-        </ul>";
+        readonly string[] GoodXml = 
+        {
+            @"<ul>
+                <li>Item 1</li>
+                <li>
+                    <ul>
+                        <li>Item 2.1</li>
+                        <li>Item 2.2</li>
+                        <li>Item 2.3</li>
+                    </ul>
+                </li>
+                <li>Item 3</li>
+                <li>Item 4</li>
+                <li>Item 5</li>
+            </ul>"
+        };
 
-        const string BadXml = @"
-        <ul>
-            <li>Item 4</lli>
-        </ul>";
+        readonly string[] BadXml = 
+        {
+            @"<ul>
+                <li>Item 4</lli>
+            </ul>",
+            @"<ul>
+                <li>Item 4
+            </ul>",
+            @"<ul>
+                <>Item 4</>
+            </ul>"
+        };
 
         [TestMethod]
         public void TestGoodXml()
         {
-            Assert.IsTrue(SprogXmlParser.TryParse(SourceXml, out var doc));
-            Assert.AreEqual(5, doc.Root.Children.Count());
+            Document doc;
+            foreach (var good in GoodXml)
+                Assert.IsTrue(SprogXmlParser.TryParse(good, out doc));
         }
 
         [TestMethod]
         public void TestBadXml()
         {
-            Assert.IsFalse(SprogXmlParser.TryParse(BadXml, out var doc));
+            Document doc;
+            foreach (var bad in BadXml)
+                Assert.IsFalse(SprogXmlParser.TryParse(bad, out doc));
         }
     }
 }
