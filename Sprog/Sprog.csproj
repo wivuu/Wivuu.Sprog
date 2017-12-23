@@ -13,6 +13,7 @@
     <RootNamespace>Wivuu.Sprog</RootNamespace>
     <ReleaseNotes>
     - Added overload for ParserError to take ParserException input
+    - Additional 'Declare' helpers
     </ReleaseNotes>
     <PackageProjectUrl>https://github.com/onionhammer/Wivuu.Sprog</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/onionhammer/Wivuu.Sprog/master/LICENSE</PackageLicenseUrl>

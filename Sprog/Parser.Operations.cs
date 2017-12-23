@@ -232,6 +232,49 @@ namespace Wivuu.Sprog
 
         #endregion
 
+        #region Declare
+
+        /// <summary>
+        /// Assign and return remaining buffer
+        /// </summary>
+        /// <param name="output">Newly declared output</param>
+        /// <param name="input">Input</param>
+        /// <returns>Remaining buffer</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser Declare(out string output, string input)
+        {
+            output = input;
+            return this;
+        }
+
+        /// <summary>
+        /// Assign and return remaining buffer
+        /// </summary>
+        /// <param name="output">Newly declared output</param>
+        /// <param name="input">Input</param>
+        /// <returns>Remaining buffer</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser Declare(out char output, char input)
+        {
+            output = input;
+            return this;
+        }
+
+        /// <summary>
+        /// Assign and return remaining buffer
+        /// </summary>
+        /// <param name="output">Newly declared output</param>
+        /// <param name="input">Input</param>
+        /// <returns>Remaining buffer</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser Declare<T>(out T output, T input)
+        {
+            output = input;
+            return this;
+        }
+        
+        #endregion
+
         #region Rest
 
         /// <summary>

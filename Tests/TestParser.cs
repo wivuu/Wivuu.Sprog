@@ -46,5 +46,15 @@ namespace Wivuu.Sprog
             Console.WriteLine($"    Ident: `{ident}`");
             Console.WriteLine($"Remaining: `{remaining.ToString()}`");
         }
+
+        [TestMethod]
+        public void TestDeclaration()
+        {
+            var remaining = 
+                new Parser("Test")
+                .Declare(out var fst, "FST");
+
+            Assert.AreEqual("FST", fst);
+        }
     }
 }
