@@ -8,13 +8,13 @@
     <Authors>Erik O'Leary</Authors>
     <Company>Wivuu</Company>
     <Product>Wivuu Sprog</Product>
-    <Description>Sprog (Danish for 'Language') string parsing library</Description>
+    <Description>Sprog (Danish for 'Language') string parsing library written for C# 7+ and .NET Core.</Description>
     <AssemblyName>Wivuu.Sprog</AssemblyName>
     <RootNamespace>Wivuu.Sprog</RootNamespace>
     <ReleaseNotes>- Initial release</ReleaseNotes>
     <PackageProjectUrl>https://github.com/onionhammer/Wivuu.Sprog</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/onionhammer/Wivuu.Sprog/master/LICENSE</PackageLicenseUrl>
-    <PackageTags>c#;parse;parser</PackageTags>
+    <PackageTags>c#;parse;parser;core;dotnet core</PackageTags>
     <RepositoryUrl>https://github.com/onionhammer/Wivuu.Sprog.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>

@@ -44,13 +44,13 @@ namespace Wivuu.Sprog
             input.Skip(IsWhiteSpace)
                  .Take(IsLetter, out char first)
                  .Take(IsLetterOrDigit, out string rest)
+                 .Assert(first != '\0' ? null : "\"\" is an invalid identifier")
                  .Let(identifier = string.Concat(first, rest))
                  .Skip(IsWhiteSpace);
 
         static Parser ParseTag(this Parser input, out string name, out bool selfClosing) =>
             input.SkipOne('<')
                  .ParseIdentifier(out name)
-                 .Assert(name?.Length > 0 ? null : $"XML Tag must be at least 1 character long")
                  .Peek(out char nextC)
                  .Let(selfClosing = nextC == '/')
                  .SkipOne('>')

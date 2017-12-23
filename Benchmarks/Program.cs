@@ -1,19 +1,20 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sprache;
+using Wivuu.Sprog;
 using static System.String;
 using static System.Char;
-using Wivuu.Sprog;
 
 namespace benchmarks
 {
     public class Program
     {
         #region Simple
-
+        
         [Benchmark]
         public void SprogSimple()
         {
@@ -29,6 +30,18 @@ namespace benchmarks
             Assert.AreEqual("abc123", id);
         }
 
+        static Regex Pattern = new Regex(@"\s*(?<ident>[a-zA-Z][a-zA-Z0-9]*)\s*", RegexOptions.Compiled);
+     
+        [Benchmark]
+        public void RegexSimple()
+        {
+            string TakeIdentifier(string input) =>
+                Pattern.Match(input).Groups["ident"].Value;
+
+            var id = TakeIdentifier(" abc123  ");
+            Assert.AreEqual("abc123", id);
+        }
+
         [Benchmark]
         public void SpracheSimple() 
         {
@@ -40,7 +53,6 @@ namespace benchmarks
                 select new string(first.Concat(rest).ToArray());
 
             var id = identifier.Parse(" abc123  ");
-
             Assert.AreEqual("abc123", id);
         }
 
