@@ -10,6 +10,10 @@ namespace Wivuu.Sprog
 
         public (int line, int col)? LineAndColumn { get; private set; }
 
+        public ParserError(ParserException e) : this(e.Remaining, e.Assertion)
+        {
+        }
+
         public ParserError(int remaining, string expected)
         {
             this.Remaining = remaining;

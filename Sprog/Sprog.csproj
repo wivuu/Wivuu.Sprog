@@ -11,7 +11,9 @@
     <Description>Sprog (Danish for 'Language') string parsing library written for C# 7+ and .NET Core.</Description>
     <AssemblyName>Wivuu.Sprog</AssemblyName>
     <RootNamespace>Wivuu.Sprog</RootNamespace>
-    <ReleaseNotes>- Initial release</ReleaseNotes>
+    <ReleaseNotes>
+    - Added overload for ParserError to take ParserException input
+    </ReleaseNotes>
     <PackageProjectUrl>https://github.com/onionhammer/Wivuu.Sprog</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/onionhammer/Wivuu.Sprog/master/LICENSE</PackageLicenseUrl>
     <PackageTags>c#;parse;parser;core;dotnet core</PackageTags>
