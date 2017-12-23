@@ -116,7 +116,7 @@ namespace Wivuu.Sprog
             {
                 document = new Document
                 { 
-                    Error = new ParserError(e.Remaining, e.Assertion).CalculateLineAndCol(xml) 
+                    Error = new ParserError(e, xml)
                 };
 
                 return false;
