@@ -198,6 +198,15 @@ namespace Wivuu.Sprog
 
             return Buffer.Slice(i);
         }
+        
+        /// <summary>
+        /// Skip until predicate is matched
+        /// </summary>
+        /// <param name="predicate">Input test</param>
+        /// <returns>Remainder of input</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser SkipUntil(char predicate) =>
+            Skip(c => c != predicate);
 
         #endregion
 
@@ -288,6 +297,30 @@ namespace Wivuu.Sprog
 
         #endregion
 
+        #region If
+
+        /// <summary>
+        /// Return true if condition is true, or false if condition is false
+        /// </summary>
+        /// <returns>True or false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool If(bool condition) =>
+            condition;
+            
+        /// <summary>
+        /// Return true if condition is true, or false if condition is false
+        /// </summary>
+        /// <param name="rest">Remaining buffer</param>
+        /// <returns>True or false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool If(bool condition, out Parser rest)
+        {
+            rest = this;
+            return condition;
+        }
+
+        #endregion
+
         #region Assert
 
         /// <summary>
@@ -302,6 +335,13 @@ namespace Wivuu.Sprog
 
             return this;
         }
+
+        /// <summary>
+        /// Assertion fails
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ParserException Fail(string assertion) =>
+            new ParserException(assertion, Buffer.Length);
 
         #endregion
 
