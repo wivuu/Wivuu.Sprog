@@ -186,7 +186,7 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Parser Skip(string predicate)
         {
-            if (Buffer.Length < predicate.Length)
+            if (predicate == null || Buffer.Length < predicate.Length)
                 return Buffer;
 
             int i;
