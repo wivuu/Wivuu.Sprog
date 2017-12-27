@@ -363,8 +363,11 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool StartsWith(string value)
         {
+            if (value == null) 
+                return false;
+
             int i;
-            for (i = 0; i < value.Length; ++i) 
+            for (i = 0; i < value.Length && i < Buffer.Length; ++i) 
             {
                 if (Buffer[i] != value[i])
                     return false;
@@ -380,7 +383,7 @@ namespace Wivuu.Sprog
         /// <returns>True if the input matches the pattern</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool StartsWith(char value) => 
-            Buffer[0] == value;
+            Buffer.Length > 0 && Buffer[0] == value;
 
         #endregion
     }
