@@ -34,7 +34,7 @@ namespace Wivuu.Sprog
 
         #endregion
 
-        #region Opertors
+        #region Operators
 
         public static implicit operator Parser(ReadOnlySpan<char> input) => new Parser(input);
 

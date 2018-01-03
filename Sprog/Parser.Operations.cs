@@ -375,7 +375,7 @@ namespace Wivuu.Sprog
 
             return i == value.Length;
         }
-
+        
         /// <summary>
         /// Test if the input starts with the input value
         /// </summary>
@@ -384,6 +384,36 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool StartsWith(char value) => 
             Buffer.Length > 0 && Buffer[0] == value;
+
+        /// <summary>
+        /// Test if the input starts with the input value
+        /// </summary>
+        /// <param name="value">Input pattern</param>
+        /// <param name="doesStartWith">Output is matching</param>
+        /// <returns>True if the input matches the pattern</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser StartsWith(string value, out bool doesStartWith)
+        {
+            if (doesStartWith = StartsWith(value))
+                return Skip(value);
+            else
+                return this;
+        }
+        
+        /// <summary>
+        /// Test if the input starts with the input value
+        /// </summary>
+        /// <param name="value">Input pattern</param>
+        /// <param name="doesStartWith">Output is matching</param>
+        /// <returns>True if the input matches the pattern</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser StartsWith(char value, out bool doesStartWith)
+        {
+            if (doesStartWith = StartsWith(value))
+                return SkipOne();
+            else
+                return this;
+        }
 
         #endregion
     }
