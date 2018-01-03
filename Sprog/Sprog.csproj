@@ -12,8 +12,7 @@
     <AssemblyName>Wivuu.Sprog</AssemblyName>
     <RootNamespace>Wivuu.Sprog</RootNamespace>
     <ReleaseNotes>
-    - Added 'Fail' method to generate an exception.
-    - Added 'If' helpers to assist checking paths.
+    - Added overloads for 'skip' to return if skip succeeded
     </ReleaseNotes>
     <PackageProjectUrl>https://github.com/onionhammer/Wivuu.Sprog</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/onionhammer/Wivuu.Sprog/master/LICENSE</PackageLicenseUrl>
