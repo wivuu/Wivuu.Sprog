@@ -9,6 +9,13 @@ namespace Wivuu.Sprog
     /// <param name="c">Input character</param>
     /// <returns>True if input char matches</returns>
     public delegate bool Predicate(char c);
+    
+    /// <summary>
+    /// Condition of the match
+    /// </summary>
+    /// <param name="input">Input parser buffer</param>
+    /// <returns>True if the input succeeds, and the value of the successfully parsed value</returns>
+    public delegate (bool success, T value) TakeManyCondition<T>(ref Parser input);
 
     /// <summary>
     /// Sprog Parser

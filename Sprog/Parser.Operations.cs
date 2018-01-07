@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Wivuu.Sprog
@@ -96,6 +97,35 @@ namespace Wivuu.Sprog
             match = Buffer.Slice(0, i).AsString();
 
             return Buffer.Slice(i);
+        }
+
+        #endregion
+
+        #region TakeWhile
+        
+        /// <summary>
+        /// Take multiple items, while matching
+        /// </summary>
+        /// <param name="predicate">Input test</param>
+        /// <param name="match">Matching items</param>
+        /// <returns>Remainder of input</returns>
+        public Parser TakeMany<T>(TakeManyCondition<T> predicate, out List<T> match)
+        {
+            var input = this;
+            match     = new List<T>();
+
+            do 
+            {
+                var (success, value) = predicate(ref input);
+                
+                if (success)
+                    match.Add(value);
+                else
+                    break;
+            }
+            while (true);
+
+            return input;
         }
 
         #endregion
@@ -350,7 +380,7 @@ namespace Wivuu.Sprog
         }
 
         #endregion
-
+        
         #region Assert
 
         /// <summary>
@@ -415,6 +445,15 @@ namespace Wivuu.Sprog
         public bool StartsWith(char value) => 
             Buffer.Length > 0 && Buffer[0] == value;
         
+        #endregion
+
+        #region Returns
+        
+        /// <summary>
+        /// Return input value
+        /// </summary>
+        public T Return<T>(T value) => value;
+
         #endregion
     }
 }
