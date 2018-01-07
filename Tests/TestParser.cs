@@ -66,7 +66,7 @@ namespace Wivuu.Sprog
                 .Skip(IsWhiteSpace)
                 .Rest(out var rest)
                 .Let(hasValue ? input = rest : input)
-                .Return(hasValue ? (true, intValue) : (false, 0));
+                .Return(hasValue ? (true, intValue) : (false, default));
 
             new Parser("0 5 6").TakeMany(TakeInteger, out var ints);
 
