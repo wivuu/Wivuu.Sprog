@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Wivuu.Sprog
 {
@@ -15,10 +16,10 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static unsafe string AsString(this ReadOnlySpan<char> input)
         {
-            fixed (char* buffer = &input.DangerousGetPinnableReference())
-            {
-                return new string(buffer, 0, input.Length);
-            }
+            ref char buffer_ptr = ref MemoryMarshal.GetReference(input);
+            
+            fixed (char* ptr = &buffer_ptr)
+                return new string(ptr, 0, input.Length);
         }
 
         #endregion

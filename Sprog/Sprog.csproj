@@ -12,8 +12,7 @@
     <AssemblyName>Wivuu.Sprog</AssemblyName>
     <RootNamespace>Wivuu.Sprog</RootNamespace>
     <ReleaseNotes>
-    - Added 'TakeMany' overload
-    - Added 'Return' overload
+    - Updated System.Memory to 4.5.0-preview1-*
     </ReleaseNotes>
     <PackageProjectUrl>https://github.com/onionhammer/Wivuu.Sprog</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/onionhammer/Wivuu.Sprog/master/LICENSE</PackageLicenseUrl>
@@ -23,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.4.0-preview1-25305-02" />
+    <PackageReference Include="System.Memory" Version="4.5.0-preview1-26216-02" />
   </ItemGroup>
 
 </Project>

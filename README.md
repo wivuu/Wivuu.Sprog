@@ -26,22 +26,21 @@ Assert.AreEqual("abc123", id);
 Preliminary results are promising, with performance nearly 32x faster than [Sprache](https://github.com/sprache/Sprache/) in a naive XML parsing benchmark, using far less memory and GC usage thanks to `Sprog`s reliance on the stack rather than heap allocation.
 
 ```
-BenchmarkDotNet=v0.10.11, OS=macOS 10.13.2 (17C88) [Darwin 17.3.0]
-Processor=Intel Core i7-6820HQ CPU 2.70GHz (Skylake), ProcessorCount=8
-.NET Core SDK=2.1.2
-  [Host]     : .NET Core 2.0.3 (Framework 4.6.0.0), 64bit RyuJIT
-  DefaultJob : .NET Core 2.0.3 (Framework 4.6.0.0), 64bit RyuJIT
+BenchmarkDotNet=v0.10.11, OS=Windows 10 Redstone 3 [1709, Fall Creators Update] (10.0.16299.248)
+Processor=Intel Core i7-7700K CPU 4.20GHz (Kaby Lake), ProcessorCount=8
+  [Host]     : .NET Framework 4.7 (CLR 4.0.30319.42000), 64bit RyuJIT-v4.7.2633.0
+  DefaultJob : .NET Framework 4.7 (CLR 4.0.30319.42000), 64bit RyuJIT-v4.7.2633.0
 
-        Method |         Mean |        Error |       StdDev |
--------------- |-------------:|-------------:|-------------:|
+        Method |         Mean |       Error |      StdDev |
+-------------- |-------------:|------------:|------------:|
 -- Identifier
-   SprogSimple |     193.2 ns |     1.736 ns |     1.624 ns |
-   RegexSimple |     686.3 ns |    13.370 ns |    18.300 ns |
- SpracheSimple |   2,794.5 ns |    36.709 ns |    32.542 ns |
+   SprogSimple |     144.8 ns |   0.7640 ns |   0.6380 ns |
+   RegexSimple |     366.0 ns |   3.7773 ns |   3.5333 ns |
+ SpracheSimple |   1,893.6 ns |  11.1901 ns |   9.9197 ns |
 
- -- XML
-      SprogXml |   7,385.3 ns |    93.462 ns |    87.424 ns |
-    SpracheXml | 202,844.1 ns | 2,601.748 ns | 2,433.676 ns |
+-- XML
+      SprogXml |   5,093.0 ns |  13.3911 ns |  11.8708 ns |
+    SpracheXml | 126,225.1 ns | 398.7293 ns | 332.9570 ns |
 ```
 
 ## Roadmap

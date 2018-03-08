@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Wivuu.Sprog
 {
@@ -20,7 +21,7 @@ namespace Wivuu.Sprog
     /// <summary>
     /// Sprog Parser
     /// </summary>
-    public partial struct Parser
+    public readonly ref partial struct Parser
     {
         #region Members
 
@@ -32,7 +33,7 @@ namespace Wivuu.Sprog
 
         #region Constructors
 
-        public Parser(string input) : this(input.AsSpan()) { }
+        public Parser(string input) : this(input.AsReadOnlySpan()) { }
 
         public Parser(ReadOnlySpan<char> buffer)
         {
@@ -59,12 +60,10 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe override string ToString()
         {
-            var buffer = Buffer;
+            ref char buffer_ptr = ref MemoryMarshal.GetReference(Buffer);
 
-            fixed (char* buffer_ptr = &buffer.DangerousGetPinnableReference())
-            {
-                return new string(buffer_ptr, 0, buffer.Length);
-            }
+            fixed (char* ptr = &buffer_ptr)
+                return new string(ptr, 0, Buffer.Length);
         }
 
         #endregion

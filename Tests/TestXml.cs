@@ -65,29 +65,29 @@ namespace Wivuu.Sprog
 
         static Parser ParseItems(this Parser input, out List<Item> items)
         {
-            bool NextItem(out Item next)
+            bool NextItem(ref Parser i, out Item next)
             {
-                if (input.StartsWith("</"))
+                if (i.StartsWith("</"))
                 {
                     next = null;
                     return false;
                 }
-                else if (input.StartsWith('<'))
+                else if (i.StartsWith('<'))
                 {
-                    input = input.ParseNode(out var n);
+                    i = i.ParseNode(out var n);
                     next  = n;
                     return true;
                 }
                 else
                 {
-                    input = input.Take(c => c != '<', out string content);
+                    i = i.Take(c => c != '<', out string content);
                     next  = new Content { Text = content };
                     return true;
                 }
             }
 
             items = new List<Item>(capacity: 1);
-            while (NextItem(out var next))
+            while (NextItem(ref input, out var next))
                 items.Add(next);
 
             return input;

@@ -1,13 +1,12 @@
-﻿using System;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
-using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sprache;
 using Wivuu.Sprog;
-using static System.String;
 using static System.Char;
+using static System.String;
 
 namespace benchmarks
 {
