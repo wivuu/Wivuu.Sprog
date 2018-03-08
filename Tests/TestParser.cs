@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.Char;
+using static Wivuu.Sprog.Utilities;
 
 namespace Wivuu.Sprog
 {
@@ -74,6 +76,30 @@ namespace Wivuu.Sprog
             Assert.AreEqual(0, ints[0]);
             Assert.AreEqual(5, ints[1]);
             Assert.AreEqual(6, ints[2]);
+        }
+
+        [TestMethod]
+        public void TestNot()
+        {
+            var result = new Parser(" This is a test ")
+                .TakeMany(
+                    (ref Parser rest) => rest
+                        .Skip(IsWhiteSpace)
+                        .Take(Not(IsWhiteSpace), out string word)
+                        .Rest(out rest)
+                        .Return(word?.Length > 0 
+                            ? (true, word) 
+                            : (false, default)), 
+                    out var words
+                )
+                .Return(words);
+
+            Assert.AreEqual(4, words.Count);
+
+            foreach (var (actual, expected) in words.Zip(new [] { "This","is","a","test" }, (l,r) => (r, l)))
+            {
+                Assert.AreEqual(actual, expected);
+            }
         }
     }
 }
