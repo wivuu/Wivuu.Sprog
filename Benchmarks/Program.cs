@@ -10,6 +10,7 @@ using static System.String;
 
 namespace benchmarks
 {
+    [MemoryDiagnoser]
     public class Program
     {
         #region Simple

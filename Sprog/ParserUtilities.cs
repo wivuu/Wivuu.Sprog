@@ -17,5 +17,16 @@ namespace Wivuu.Sprog
             bool not(char c) => !fun(c);
             return not;
         }
+        
+        /// <summary>
+        /// Returns a new predicate which ORs together the input
+        /// predicates
+        /// </summary>
+        public static Predicate Or(Predicate l1, Predicate l2)
+        {
+            bool or(char c) => l1(c) || l2(c);
+
+            return or;
+        }
     }
 }

@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="benchmarkdotnet" Version="0.10.11" />
-    <PackageReference Include="sprache" Version="2.1.0" />
+    <PackageReference Include="benchmarkdotnet" Version="0.10.13" />
+    <PackageReference Include="sprache" Version="2.1.2" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
   </ItemGroup>
 

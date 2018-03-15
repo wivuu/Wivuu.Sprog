@@ -5,7 +5,7 @@ using static System.Char;
 
 namespace Wivuu.Sprog
 {
-    public class Document
+    public class XmlDocument
     {
         public Node Root;
 
@@ -51,7 +51,7 @@ namespace Wivuu.Sprog
         static Parser ParseTag(this Parser input, out string name, out bool selfClosing) =>
             input.SkipOne('<')
                  .ParseIdentifier(out name)
-                 .Peek(out char nextC)
+                 .Peek(out var nextC)
                  .Let(selfClosing = nextC == '/')
                  .SkipOne('>')
                  .Skip(IsWhiteSpace);
@@ -101,7 +101,7 @@ namespace Wivuu.Sprog
                                         .Let(n = new Node { Name = id, Children = children })
                                         .ParseEndTag(id));
 
-        public static bool TryParse(string xml, out Document document)
+        public static bool TryParse(string xml, out XmlDocument document)
         {
             try
             {
@@ -109,12 +109,12 @@ namespace Wivuu.Sprog
                     .Skip(IsWhiteSpace)
                     .ParseNode(out var n);
                
-                document = new Document { Root = n };
+                document = new XmlDocument { Root = n };
                 return true;
             }
             catch (ParserException e)
             {
-                document = new Document
+                document = new XmlDocument
                 { 
                     Error = new ParserError(e, xml)
                 };
@@ -160,7 +160,7 @@ namespace Wivuu.Sprog
         [TestMethod]
         public void TestGoodXml()
         {
-            Document doc;
+            XmlDocument doc;
             foreach (var good in GoodXml)
                 Assert.IsTrue(SprogXmlParser.TryParse(good, out doc));
         }
@@ -168,7 +168,7 @@ namespace Wivuu.Sprog
         [TestMethod]
         public void TestBadXml()
         {
-            Document doc;
+            XmlDocument doc;
             foreach (var bad in BadXml)
                 Assert.IsFalse(SprogXmlParser.TryParse(bad, out doc));
         }
