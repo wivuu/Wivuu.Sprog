@@ -132,6 +132,7 @@ namespace Tests
                               .Skip(IsWhiteSpace)
                               .Skip(':', out var hasColon)
                               .Assert(hasColon ? null : "Expected ':'")
+                              .Skip(IsWhiteSpace)
                               // Parse property value
                               .ParseJson(out var propertyValue)
                               // Skip to either close object or comma
@@ -161,7 +162,7 @@ namespace Tests
                     .Rest(out rest)
                     .Skip(']', out var isEnded)
                     .Return(!isEnded
-                        ? rest.ParseValue(out var value)
+                        ? rest.ParseJson(out var value)
                               .Rest(out rest)
                               .Return((true, value))
                         : (false, default)
@@ -174,9 +175,13 @@ namespace Tests
         }
 
 
-        public static Parser ParseValue(this Parser input, out JsonValue value)
+        public static Parser ParseJson(this Parser input, out JsonValue value)
         {
-            if (input.Skip("null", out var isNull).If(isNull, out input))
+            if (input.StartsWith('{'))
+                return input.SkipOne().ParseObject(out value);
+            else if (input.StartsWith('['))
+                return input.SkipOne().ParseArray(out value);
+            else if (input.Skip("null", out var isNull).If(isNull, out input))
             {
                 value = null;
                 return input;
@@ -199,21 +204,12 @@ namespace Tests
                             .Let(value = new JsonLiteral(numValue));
         }
 
-        public static Parser ParseJson(this Parser input, out JsonValue root) =>
-            input.Skip(IsWhiteSpace)
-                 .Rest(out input)
-                 .Peek(out var c)
-                 .Let(
-                     c == '{' ? input.SkipOne().ParseObject(out root) :
-                     c == '[' ? input.SkipOne().ParseArray(out root) :
-                                input.ParseValue(out root)
-                 );
-
         public static bool TryParse(string json, out JsonDocument document)
         {
             try
             {
                 new Parser(json)
+                    .Skip(IsWhiteSpace)
                     .ParseJson(out var n);
 
                 document = new JsonDocument(root: n);
@@ -232,6 +228,12 @@ namespace Tests
     {
         readonly string[] GoodJson =
         {
+            @"{
+            ""type"": ""FeatureCollection"",
+            ""features"": [
+                { ""type"": ""Feature"", ""properties"": { ""MAPBLKLOT"": ""0001001"", ""BLKLOT"": ""0001001"", ""BLOCK_NUM"": ""0001"", ""LOT_NUM"": ""001"", ""FROM_ST"": ""0"", ""TO_ST"": ""0"", ""STREET"": ""UNKNOWN"", ""ST_TYPE"": null, ""ODD_EVEN"": ""E"" }, ""geometry"": { ""type"": ""Polygon"", ""coordinates"": [ [ [ -122.422003528252475, 37.808480096967251, 0.0 ], [ -122.422076013325281, 37.808835019815085, 0.0 ], [ -122.421102174348633, 37.808803534992904, 0.0 ], [ -122.421062569067274, 37.808601056818148, 0.0 ], [ -122.422003528252475, 37.808480096967251, 0.0 ] ] ] } }
+              ]
+            }",
             @"{
                 ""PositiveNumber"" : 512.52,
                 ""NegativeNumber"": -100,
