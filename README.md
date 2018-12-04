@@ -1,6 +1,8 @@
 # Sprog 
 ![Build Status](https://wivuu.visualstudio.com/_apis/public/build/definitions/1d87258d-f96d-4792-bf63-430c8cea1376/7/badge)
 
+![Nuget](https://img.shields.io/nuget/v/wivuu.sprog.svg)
+
 Sprog (Danish for 'Language') cross-platform string parsing library written for C# 7+ and .NET Core.
 
 ## Usage
