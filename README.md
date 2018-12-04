@@ -46,5 +46,3 @@ Processor=Intel Core i7-7700K CPU 4.20GHz (Kaby Lake), ProcessorCount=8
 ## Roadmap
 - Improved samples and documentation
 - More test coverage
-
-**Note**: This package will be in pre-release at least as long as Microsoft's `System.Memory` is in pre-release.

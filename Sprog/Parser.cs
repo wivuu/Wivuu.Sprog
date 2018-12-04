@@ -33,7 +33,7 @@ namespace Wivuu.Sprog
 
         #region Constructors
 
-        public Parser(string input) : this(input.AsReadOnlySpan()) { }
+        public Parser(string input) : this(input.AsSpan()) { }
 
         public Parser(ReadOnlySpan<char> buffer)
         {

@@ -12,7 +12,7 @@
     <AssemblyName>Wivuu.Sprog</AssemblyName>
     <RootNamespace>Wivuu.Sprog</RootNamespace>
     <ReleaseNotes>
-    - Updated System.Memory to 4.5.0-preview1-*
+    - Updated to no longer use preview
     </ReleaseNotes>
     <PackageProjectUrl>https://github.com/onionhammer/Wivuu.Sprog</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/onionhammer/Wivuu.Sprog/master/LICENSE</PackageLicenseUrl>
@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.0-preview1-26216-02" />
+    <PackageReference Include="System.Memory" Version="4.5.1" />
   </ItemGroup>
 
 </Project>
