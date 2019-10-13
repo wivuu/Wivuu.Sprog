@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
     <PackageId>Wivuu.Sprog</PackageId>
     <Authors>Erik O'Leary</Authors>
     <Company>Wivuu</Company>
@@ -10,7 +10,9 @@
     <AssemblyName>Wivuu.Sprog</AssemblyName>
     <RootNamespace>Wivuu.Sprog</RootNamespace>
     <ReleaseNotes>
-    - Rebuilt in release mode
+    - Support multi-targeting .NET Standard 2.0 and .NET Standard 2.1
+    - Remove usage of marshalling for `.ToString()`; now supported natively
+    - Remove all `unsafe` usages
     </ReleaseNotes>
     <PackageProjectUrl>https://github.com/onionhammer/Wivuu.Sprog</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/onionhammer/Wivuu.Sprog/master/LICENSE</PackageLicenseUrl>
@@ -18,5 +20,9 @@
     <RepositoryUrl>https://github.com/onionhammer/Wivuu.Sprog.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Memory" Version="4.5.3" />
+  </ItemGroup>
 
 </Project>
