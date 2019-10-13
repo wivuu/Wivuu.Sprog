@@ -44,7 +44,7 @@ namespace Wivuu.Sprog
             input.Skip(IsWhiteSpace)
                  .Take(IsLetter, out char first)
                  .Take(IsLetterOrDigit, out string rest)
-                 .Assert(first != '\0' ? null : "\"\" is an invalid identifier")
+                 .Assert(first != default ? null : "\"\" is an invalid identifier")
                  .Let(identifier = string.Concat(first, rest))
                  .Skip(IsWhiteSpace);
 

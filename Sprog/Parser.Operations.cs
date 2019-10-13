@@ -58,7 +58,7 @@ namespace Wivuu.Sprog
             }
             else
             {
-                match = '\0';
+                match = default;
                 return Buffer;
             }
         }
@@ -79,7 +79,7 @@ namespace Wivuu.Sprog
             }
             else
             {
-                match = '\0';
+                match = default;
                 return Buffer;
             }
         }
@@ -94,7 +94,7 @@ namespace Wivuu.Sprog
         public Parser Take(Predicate predicate, out string match)
         {
             var i = MatchWhile(predicate);
-            match = Buffer.Slice(0, i).AsString();
+            match = Buffer.Slice(0, i).ToString();
 
             return Buffer.Slice(i);
         }
@@ -142,8 +142,8 @@ namespace Wivuu.Sprog
         public Parser Peek(int length, out string match)
         {
             match = Buffer.Length < length
-                ? null
-                : Buffer.Slice(0, length).AsString();
+                ? default
+                : Buffer.Slice(0, length).ToString();
 
             return this;
         }
@@ -157,7 +157,7 @@ namespace Wivuu.Sprog
         public Parser Peek(out char match)
         {
             match = Buffer.Length == 0
-                ? '\0'
+                ? default
                 : Buffer[0];
 
             return this;

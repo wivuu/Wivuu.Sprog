@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Wivuu.Sprog
 {
+    [Obsolete("Replaced with 'ToString()'")]
     public static class SpanExtensions
     {
         #region AsString
@@ -14,13 +14,8 @@ namespace Wivuu.Sprog
         /// <param name="input">Input span</param>
         /// <returns>New string containing input characters</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe string AsString(this ReadOnlySpan<char> input)
-        {
-            ref char buffer_ptr = ref MemoryMarshal.GetReference(input);
-            
-            fixed (char* ptr = &buffer_ptr)
-                return new string(ptr, 0, input.Length);
-        }
+        [Obsolete("Replaced with 'ToString()'")]
+        internal static string AsString(this ReadOnlySpan<char> input) => input.ToString();
 
         #endregion
     }

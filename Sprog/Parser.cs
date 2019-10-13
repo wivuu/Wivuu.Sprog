@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Wivuu.Sprog
 {
@@ -55,16 +54,9 @@ namespace Wivuu.Sprog
         /// <summary>
         /// Convert input span to string
         /// </summary>
-        /// <param name="input">Input span</param>
         /// <returns>New string containing input characters</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe override string ToString()
-        {
-            ref char buffer_ptr = ref MemoryMarshal.GetReference(Buffer);
-
-            fixed (char* ptr = &buffer_ptr)
-                return new string(ptr, 0, Buffer.Length);
-        }
+        public override string ToString() => Buffer.ToString();
 
         #endregion
     }

@@ -174,7 +174,6 @@ namespace Tests
                         .Assert(hasEndArr ? null : "Expected ']'");
         }
 
-
         public static Parser ParseJson(this Parser input, out JsonValue value)
         {
             if (input.StartsWith('{'))

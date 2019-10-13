@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageId>Wivuu.Sprog</PackageId>
     <Authors>Erik O'Leary</Authors>
     <Company>Wivuu</Company>
