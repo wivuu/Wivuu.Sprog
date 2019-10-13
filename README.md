@@ -1,4 +1,4 @@
-# Sprog 
+# Sprog
 ![Nuget](https://img.shields.io/nuget/v/wivuu.sprog.svg)
 
 Sprog (Danish for 'Language') cross-platform string parsing library written for C# 7+ and .NET Core.
@@ -37,16 +37,16 @@ Intel Core i7-6820HQ CPU 2.70GHz (Skylake), 1 CPU, 8 logical and 4 physical core
 
 |        Method |         Mean |        Error |       StdDev |   Gen 0 | Gen 1 | Gen 2 | Allocated |
 |-------------- |-------------:|-------------:|-------------:|--------:|------:|------:|----------:|
-|   SprogSimple |     186.4 ns |     3.005 ns |     2.811 ns |  0.0932 |     - |     - |     392 B |
-|   RegexSimple |     561.9 ns |     7.693 ns |     7.196 ns |  0.1011 |     - |     - |     424 B |
-| SpracheSimple |   2,908.5 ns |    37.716 ns |    35.280 ns |  1.3885 |     - |     - |    5832 B |
+|   SprogSimple |     180.4 ns |     3.616 ns |     4.701 ns |  0.0899 |     - |     - |     376 B |
+|   RegexSimple |     536.5 ns |     6.310 ns |     5.593 ns |  0.1011 |     - |     - |     424 B |
+| SpracheSimple |   2,710.9 ns |    19.738 ns |    16.482 ns |  1.3657 |     - |     - |    5712 B |
 
 ### XML
 
 |        Method |         Mean |        Error |       StdDev |   Gen 0 | Gen 1 | Gen 2 | Allocated |
 |-------------- |-------------:|-------------:|-------------:|--------:|------:|------:|----------:|
-|      SprogXml |   6,819.7 ns |    80.744 ns |    75.528 ns |  2.5406 |     - |     - |   10688 B |
-|    SpracheXml | 208,274.6 ns | 1,598.243 ns | 1,416.801 ns | 78.3691 |     - |     - |  329128 B |
+|      SprogXml |   6,630.5 ns |    69.168 ns |    61.316 ns |  2.4490 |     - |     - |   10264 B |
+|    SpracheXml | 185,090.2 ns | 1,568.695 ns | 1,224.734 ns | 77.1484 |     - |     - |  322832 B |
 
 ## Roadmap
 - Improved samples and documentation
