@@ -18,7 +18,7 @@ namespace benchmarks
         [Benchmark]
         public void SprogSimple()
         {
-            Parser TakeIdentifier(string input, out string _id) =>
+            static Parser TakeIdentifier(string input, out string _id) =>
                 new Parser(input)
                     .Skip(IsWhiteSpace)
                     .Take(IsLetter, out char first)
@@ -35,7 +35,7 @@ namespace benchmarks
         [Benchmark]
         public void RegexSimple()
         {
-            string TakeIdentifier(string input) =>
+            static string TakeIdentifier(string input) =>
                 Pattern.Match(input).Groups["ident"].Value;
 
             var id = TakeIdentifier(" abc123  ");
