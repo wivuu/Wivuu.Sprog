@@ -11,11 +11,11 @@ using static System.String;
 namespace benchmarks
 {
     [MemoryDiagnoser]
-    public class Program
+    public class Simple
     {
         #region Simple
-        
-        [Benchmark]
+
+        [Benchmark(Baseline = true)]
         public void SprogSimple()
         {
             static Parser TakeIdentifier(string input, out string _id) =>
@@ -31,7 +31,7 @@ namespace benchmarks
         }
 
         static Regex Pattern = new Regex(@"\s*(?<ident>[a-zA-Z][a-zA-Z0-9]*)\s*", RegexOptions.Compiled);
-     
+
         [Benchmark]
         public void RegexSimple()
         {
@@ -43,7 +43,7 @@ namespace benchmarks
         }
 
         [Benchmark]
-        public void SpracheSimple() 
+        public void SpracheSimple()
         {
             var identifier =
                 from leading in Sprache.Parse.WhiteSpace.Many()
@@ -58,8 +58,13 @@ namespace benchmarks
 
         #endregion
 
+    }
+
+    [MemoryDiagnoser]
+    public class Xml
+    {
         #region Xml
-        
+
         const string SourceXml = @"
         <ul>
             <li>Item 1</li>
@@ -76,17 +81,20 @@ namespace benchmarks
         </ul>
         ";
 
-        [Benchmark]
+        [Benchmark(Baseline = true)]
         public void SprogXml() =>
             SprogXmlParser.TryParse(SourceXml, out var _);
-        
+
         [Benchmark]
         public void SpracheXml() =>
             SpracheXmlParser.Document.Parse(SourceXml);
 
         #endregion
 
-        static void Main(string[] args) =>
-            BenchmarkRunner.Run<Program>();
+        static void Main(string[] args)
+        {
+            BenchmarkRunner.Run<Simple>();
+            BenchmarkRunner.Run<Xml>();
+        }
     }
 }
