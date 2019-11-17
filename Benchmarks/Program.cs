@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
@@ -22,9 +23,9 @@ namespace benchmarks
                 new Parser(input)
                     .Skip(IsWhiteSpace)
                     .Take(IsLetter, out char first)
-                    .Take(IsLetterOrDigit, out string rest)
+                    .Take(IsLetterOrDigit, out ReadOnlySpan<char> rest)
                     .Skip(IsWhiteSpace)
-                    .Let(_id = Concat(first, rest));
+                    .Let(_id = first.Concat(rest));
 
             TakeIdentifier(" abc123  ", out var id);
             Assert.AreEqual("abc123", id);

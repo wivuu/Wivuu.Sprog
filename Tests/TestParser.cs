@@ -19,6 +19,21 @@ namespace Wivuu.Sprog
     public class TestParser
     {
         [TestMethod]
+        public void TestConcat()
+        {
+            ReadOnlySpan<char> span1 = "Test value";
+            ReadOnlySpan<char> span2 = "Value2";
+
+            var rhs = span1.Concat('!');
+            var lhs = '!'.Concat(span1);
+            var twoSpans = span1.Concat(span2);
+
+            Assert.AreEqual("Test value!", rhs);
+            Assert.AreEqual("!Test value", lhs);
+            Assert.AreEqual("Test valueValue2", twoSpans);
+        }
+
+        [TestMethod]
         public void TestParserContinuators()
         {
             var remaining = new Parser(" This is a test ");

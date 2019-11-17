@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -43,9 +44,9 @@ namespace Wivuu.Sprog
         static Parser ParseIdentifier(this Parser input, out string identifier) =>
             input.Skip(IsWhiteSpace)
                  .Take(IsLetter, out char first)
-                 .Take(IsLetterOrDigit, out string rest)
+                 .Take(IsLetterOrDigit, out ReadOnlySpan<char> rest)
                  .Assert(first != default ? null : "\"\" is an invalid identifier")
-                 .Let(identifier = string.Concat(first, rest))
+                 .Let(identifier = first.Concat(rest))
                  .Skip(IsWhiteSpace);
 
         static Parser ParseTag(this Parser input, out string name, out bool selfClosing) =>

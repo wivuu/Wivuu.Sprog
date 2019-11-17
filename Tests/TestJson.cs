@@ -109,12 +109,13 @@ namespace Tests
                 return true;
             }
 
-            return input.Skip('"', out var hasOpenQuote)
-                 .Assert(hasOpenQuote ? null : "Open quote missing")
-                 .Take(StringSequence, out string value)
-                 .Skip('"', out var hasCloseQuote)
-                 .Assert(hasOpenQuote ? null : "Found EOF instead of end quote")
-                 .Let(stringValue = value);
+            return input
+                .Skip('"', out var hasOpenQuote)
+                .Assert(hasOpenQuote ? null : "Open quote missing")
+                .Take(StringSequence, out string value)
+                .Skip('"', out var hasCloseQuote)
+                .Assert(hasOpenQuote ? null : "Found EOF instead of end quote")
+                .Let(stringValue = value);
         }
 
         public static Parser ParseObject(this Parser input, out JsonValue obj)
