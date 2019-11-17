@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -54,7 +55,7 @@ namespace Wivuu.Sprog
             if (Buffer.Length > 0)
             {
                 match = Buffer[0];
-                return Buffer.Slice(1);
+                return Buffer[1..];
             }
             else
             {
@@ -75,7 +76,7 @@ namespace Wivuu.Sprog
             if (Buffer.Length > 0 && predicate(Buffer[0]))
             {
                 match = Buffer[0];
-                return Buffer.Slice(1);
+                return Buffer[1..];
             }
             else
             {
@@ -91,12 +92,27 @@ namespace Wivuu.Sprog
         /// <param name="match">Matching characters</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser Take(Predicate predicate, out ReadOnlySpan<char> match)
+        {
+            var i = MatchWhile(predicate);
+            match = Buffer[0..i];
+
+            return Buffer[i..];
+        }
+
+        /// <summary>
+        /// Take multiple characters, while matching
+        /// </summary>
+        /// <param name="predicate">Input test</param>
+        /// <param name="match">Matching characters</param>
+        /// <returns>Remainder of input</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Parser Take(Predicate predicate, out string match)
         {
             var i = MatchWhile(predicate);
-            match = Buffer.Slice(0, i).ToString();
+            match = Buffer[0..i].ToString();
 
-            return Buffer.Slice(i);
+            return Buffer[i..];
         }
 
         #endregion
@@ -143,7 +159,7 @@ namespace Wivuu.Sprog
         {
             match = Buffer.Length < length
                 ? default
-                : Buffer.Slice(0, length).ToString();
+                : Buffer[0..length].ToString();
 
             return this;
         }
@@ -174,7 +190,7 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Parser SkipOne() =>
             Buffer.Length > 0 
-            ? Buffer.Slice(1) 
+            ? Buffer[1..]
             : this;
 
         /// <summary>
@@ -185,7 +201,7 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Parser SkipOne(char predicate) =>
             Buffer.Length > 0 && Buffer[0] == predicate
-            ? Buffer.Slice(1) 
+            ? Buffer[1..]
             : this;
 
         /// <summary>
@@ -196,7 +212,7 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Parser SkipOne(Predicate predicate) =>
             Buffer.Length > 0 && predicate(Buffer[0])
-            ? Buffer.Slice(1) 
+            ? Buffer[1..]
             : this;
 
         /// <summary>
@@ -236,7 +252,7 @@ namespace Wivuu.Sprog
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Parser Skip(Predicate predicate) =>
-            Buffer.Slice(MatchWhile(predicate));
+            Buffer[MatchWhile(predicate)..];
 
         /// <summary>
         /// Skip while predicate is true
@@ -256,7 +272,7 @@ namespace Wivuu.Sprog
                     return this;
             }
 
-            return Buffer.Slice(i);
+            return Buffer[i..];
         }
         
         /// <summary>

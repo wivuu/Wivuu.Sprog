@@ -65,7 +65,7 @@ namespace Wivuu.Sprog
 
         static Parser ParseItems(this Parser input, out List<Item> items)
         {
-            bool NextItem(ref Parser i, out Item next)
+            static bool NextItem(ref Parser i, out Item next)
             {
                 if (i.StartsWith("</"))
                 {
@@ -74,14 +74,14 @@ namespace Wivuu.Sprog
                 }
                 else if (i.StartsWith('<'))
                 {
-                    i = i.ParseNode(out var n);
-                    next  = n;
+                    i    = i.ParseNode(out var n);
+                    next = n;
                     return true;
                 }
                 else
                 {
-                    i = i.Take(c => c != '<', out string content);
-                    next  = new Content { Text = content };
+                    i    = i.Take(c => c != '<', out string content);
+                    next = new Content { Text = content };
                     return true;
                 }
             }
