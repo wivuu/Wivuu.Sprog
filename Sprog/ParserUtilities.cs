@@ -15,6 +15,7 @@ namespace Wivuu.Sprog
                 throw new ArgumentNullException(nameof(fun));
 
             bool not(char c) => !fun(c);
+            
             return not;
         }
         

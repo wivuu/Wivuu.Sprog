@@ -95,7 +95,7 @@ namespace Wivuu.Sprog
         public Parser Take(Predicate predicate, out ReadOnlySpan<char> match)
         {
             var i = MatchWhile(predicate);
-            match = Buffer[0..i];
+            match = Buffer[..i];
 
             return Buffer[i..];
         }
@@ -110,7 +110,7 @@ namespace Wivuu.Sprog
         public Parser Take(Predicate predicate, out string match)
         {
             var i = MatchWhile(predicate);
-            match = Buffer[0..i].ToString();
+            match = Buffer[..i].ToString();
 
             return Buffer[i..];
         }
@@ -152,6 +152,22 @@ namespace Wivuu.Sprog
         /// Peek multiple characters
         /// </summary>
         /// <param name="length">Input test</param>
+        /// <param name="match">Matching span</param>
+        /// <returns>True if enough characters to match; otherwise false</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser Peek(int length, out ReadOnlySpan<char> match)
+        {
+            match = Buffer.Length < length
+                ? default
+                : Buffer[..length];
+
+            return this;
+        }
+
+        /// <summary>
+        /// Peek multiple characters
+        /// </summary>
+        /// <param name="length">Input test</param>
         /// <param name="match">Matching string</param>
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -159,7 +175,7 @@ namespace Wivuu.Sprog
         {
             match = Buffer.Length < length
                 ? default
-                : Buffer[0..length].ToString();
+                : Buffer[..length].ToString();
 
             return this;
         }
@@ -222,28 +238,22 @@ namespace Wivuu.Sprog
         /// <param name="skipped">Input was skipped</param>
         /// <returns>True if the input matches the pattern</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Parser Skip(string value, out bool skipped)
-        {
-            if (skipped = StartsWith(value))
-                return Skip(value);
-            else
-                return this;
-        }
+        public Parser Skip(ReadOnlySpan<char> value, out bool skipped) =>
+            (skipped = StartsWith(value))
+            ? Skip(value)
+            : this;
 
         /// <summary>
         /// Test if the input starts with the input value before skipping
         /// </summary>
         /// <param name="value">Input pattern</param>
         /// <param name="skipped">Input was skipped</param>
-        /// <returns>True if the input matches the pattern</returns>
+        /// <>True if the input matches the pattern</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Parser Skip(char value, out bool skipped)
-        {
-            if (skipped = StartsWith(value))
-                return SkipOne();
-            else
-                return this;
-        }
+        public Parser Skip(char value, out bool skipped) =>
+            (skipped = StartsWith(value))
+            ? SkipOne()
+            : this;
 
         /// <summary>
         /// Skip while predicate is true
@@ -260,7 +270,7 @@ namespace Wivuu.Sprog
         /// <param name="predicate">Input test</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Parser Skip(string predicate)
+        public Parser Skip(ReadOnlySpan<char> predicate)
         {
             if (predicate == null || Buffer.Length < predicate.Length)
                 return Buffer;
@@ -281,12 +291,25 @@ namespace Wivuu.Sprog
         /// <param name="predicate">Input test</param>
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Parser SkipUntil(char predicate) =>
-            Skip(c => c != predicate);
+        public Parser SkipUntil(char predicate)
+        {
+            bool neq(char c) => c != predicate;
+
+            return Skip(neq);
+        }
 
         #endregion
 
         #region Let
+
+        /// <summary>
+        /// Assign and return remaining buffer
+        /// </summary>
+        /// <param name="id">Assignments</param>
+        /// <returns>Remaining buffer</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Parser Let(ReadOnlySpan<char> id) => 
+            this;
 
         /// <summary>
         /// Assign and return remaining buffer
@@ -404,10 +427,10 @@ namespace Wivuu.Sprog
         /// </summary>
         /// <returns>Parser</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Parser Assert(string assertion)
+        public Parser Assert(ReadOnlySpan<char> assertion)
         {
             if (assertion != null)
-                throw new ParserException(assertion, Buffer.Length);
+                throw new ParserException(assertion.ToString(), Buffer.Length);
 
             return this;
         }
@@ -437,7 +460,7 @@ namespace Wivuu.Sprog
         /// <param name="value">Input pattern</param>
         /// <returns>True if the input matches the pattern</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool StartsWith(string value)
+        public bool StartsWith(ReadOnlySpan<char> value)
         {
             if (value == null) 
                 return false;
@@ -468,6 +491,7 @@ namespace Wivuu.Sprog
         /// <summary>
         /// Return input value
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Return<T>(T value) => value;
 
         #endregion
