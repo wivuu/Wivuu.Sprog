@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/benchmarks/bin/Debug/netcoreapp3.0/benchmarks.dll",
+            "program": "${workspaceFolder}/benchmarks/bin/Debug/net5.0/benchmarks.dll",
             "args": [],
             "cwd": "${workspaceFolder}/benchmarks",
             "console": "internalConsole",
