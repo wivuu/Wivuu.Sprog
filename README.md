@@ -26,28 +26,29 @@ Assert.AreEqual("abc123", id);
 Preliminary results are promising, with performance nearly 30x faster than [Sprache](https://github.com/sprache/Sprache/) in a naive XML parsing benchmark, using far less memory and GC usage thanks to `Sprog`s reliance on the stack rather than heap allocation.
 
 ```
-BenchmarkDotNet=v0.12.0, OS=macOS 10.15.1 (19B88) [Darwin 19.0.0]
-Intel Core i7-6820HQ CPU 2.70GHz (Skylake), 1 CPU, 8 logical and 4 physical cores
-.NET Core SDK=3.0.100
-  [Host]     : .NET Core 3.0.0 (CoreCLR 4.700.19.46205, CoreFX 4.700.19.46214), X64 RyuJIT
-  DefaultJob : .NET Core 3.0.0 (CoreCLR 4.700.19.46205, CoreFX 4.700.19.46214), X64 RyuJIT
+BenchmarkDotNet=v0.12.1, OS=macOS Catalina 10.15.7 (19H15) [Darwin 19.6.0]
+Intel Core i7-9750H CPU 2.60GHz, 1 CPU, 12 logical and 6 physical cores
+.NET Core SDK=5.0.100
+  [Host]     : .NET Core 5.0.0 (CoreCLR 5.0.20.51904, CoreFX 5.0.20.51904), X64 RyuJIT
+  DefaultJob : .NET Core 5.0.0 (CoreCLR 5.0.20.51904, CoreFX 5.0.20.51904), X64 RyuJIT
 ```
 
 ### Identifier
 
-|        Method |       Mean |    Error |   StdDev | Ratio | RatioSD |  Gen 0 | Gen 1 | Gen 2 | Allocated |
-|-------------- |-----------:|---------:|---------:|------:|--------:|-------:|------:|------:|----------:|
-|   SprogSimple |   156.5 ns |  1.78 ns |  1.58 ns |  1.00 |    0.00 | 0.0706 |     - |     - |     296 B |
-|   RegexSimple |   539.3 ns |  6.94 ns |  6.49 ns |  3.45 |    0.05 | 0.1011 |     - |     - |     424 B |
-| SpracheSimple | 2,777.1 ns | 22.71 ns | 21.24 ns | 17.76 |    0.24 | 1.3657 |     - |     - |    5712 B |
+|        Method |       Mean |   Error |  StdDev | Ratio | RatioSD |  Gen 0 |  Gen 1 | Gen 2 | Allocated |
+|-------------- |-----------:|--------:|--------:|------:|--------:|-------:|-------:|------:|----------:|
+|   SprogSimple |   103.0 ns | 0.53 ns | 0.47 ns |  1.00 |    0.00 | 0.0471 |      - |     - |     296 B |
+|   RegexSimple |   235.9 ns | 1.23 ns | 1.15 ns |  2.29 |    0.02 | 0.0675 |      - |     - |     424 B |
+| SpracheSimple | 1,819.5 ns | 7.97 ns | 6.66 ns | 17.67 |    0.10 | 0.9232 | 0.0038 |     - |    5792 B |
 
 
 ### XML
 
-|     Method |       Mean |     Error |    StdDev | Ratio | RatioSD |   Gen 0 | Gen 1 | Gen 2 | Allocated |
-|----------- |-----------:|----------:|----------:|------:|--------:|--------:|------:|------:|----------:|
-|   SprogXml |   6.373 us | 0.0411 us | 0.0364 us |  1.00 |    0.00 |  2.1057 |     - |     - |   8.62 KB |
-| SpracheXml | 190.159 us | 2.4556 us | 2.2970 us | 29.84 |    0.41 | 77.1484 |     - |     - | 315.27 KB |
+|     Method |       Mean |     Error |    StdDev | Ratio | RatioSD |   Gen 0 |  Gen 1 | Gen 2 | Allocated |
+|----------- |-----------:|----------:|----------:|------:|--------:|--------:|-------:|------:|----------:|
+|   SprogXml |   4.654 μs | 0.0197 μs | 0.0175 μs |  1.00 |    0.00 |  1.4038 | 0.0076 |     - |   8.62 KB |
+| SpracheXml | 126.919 μs | 0.5976 μs | 0.4990 μs | 27.27 |    0.15 | 51.7578 | 1.7090 |     - | 318.43 KB |
+
 
 ## Roadmap
 - Improved samples and documentation
