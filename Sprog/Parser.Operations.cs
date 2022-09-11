@@ -272,7 +272,7 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Parser Skip(ReadOnlySpan<char> predicate)
         {
-            if (predicate == null || Buffer.Length < predicate.Length)
+            if (Buffer.Length < predicate.Length)
                 return Buffer;
 
             int i;
@@ -429,7 +429,7 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Parser Assert(ReadOnlySpan<char> assertion)
         {
-            if (assertion != null)
+            if (assertion.Length > 0)
                 throw new ParserException(assertion.ToString(), Buffer.Length);
 
             return this;
