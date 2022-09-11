@@ -81,7 +81,7 @@ namespace Wivuu.Sprog
                 }
                 else
                 {
-                    i    = i.Take(c => c != '<', out string content);
+                    i    = i.Take(static c => c != '<', out string content);
                     next = new Content { Text = content };
                     return true;
                 }
@@ -97,9 +97,9 @@ namespace Wivuu.Sprog
         static Parser ParseNode(this Parser input, out Node n) =>
             input.ParseTag(out var id, out var selfClosing)
                  .Rest(out var rest)
-                 .Let(selfClosing ? rest.Let(n = new Node { Name = id })
+                 .Let(selfClosing ? rest.Let(n = new () { Name = id })
                                   : rest.ParseItems(out var children)
-                                        .Let(n = new Node { Name = id, Children = children })
+                                        .Let(n = new () { Name = id, Children = children })
                                         .ParseEndTag(id));
 
         public static bool TryParse(string xml, out XmlDocument document)
@@ -116,7 +116,7 @@ namespace Wivuu.Sprog
             catch (ParserException e)
             {
                 document = new XmlDocument
-                { 
+                {
                     Error = new ParserError(e, xml)
                 };
 
