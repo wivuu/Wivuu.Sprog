@@ -118,7 +118,7 @@ namespace Wivuu.Sprog
         #endregion
 
         #region TakeWhile
-        
+
         /// <summary>
         /// Take multiple items, while matching
         /// </summary>
@@ -130,10 +130,10 @@ namespace Wivuu.Sprog
             var input = this;
             match     = new List<T>();
 
-            do 
+            do
             {
                 var (success, value) = predicate(ref input);
-                
+
                 if (success)
                     match.Add(value);
                 else
@@ -171,7 +171,7 @@ namespace Wivuu.Sprog
         /// <param name="match">Matching string</param>
         /// <returns>True if enough characters to match; otherwise false</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Parser Peek(int length, out string match)
+        public Parser Peek(int length, out string? match)
         {
             match = Buffer.Length < length
                 ? default
@@ -205,7 +205,7 @@ namespace Wivuu.Sprog
         /// <returns>Remainder of input</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Parser SkipOne() =>
-            Buffer.Length > 0 
+            Buffer.Length > 0
             ? Buffer[1..]
             : this;
 
@@ -284,7 +284,7 @@ namespace Wivuu.Sprog
 
             return Buffer[i..];
         }
-        
+
         /// <summary>
         /// Skip until predicate is matched
         /// </summary>
@@ -308,7 +308,7 @@ namespace Wivuu.Sprog
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Parser Let(ReadOnlySpan<char> id) => 
+        public Parser Let(ReadOnlySpan<char> id) =>
             this;
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace Wivuu.Sprog
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Parser Let(string id) => 
+        public Parser Let(string id) =>
             this;
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace Wivuu.Sprog
         /// <param name="id">Assignments</param>
         /// <returns>Remaining buffer</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Parser Let<T>(T id) => 
+        public Parser Let<T>(T id) =>
             this;
 
         #endregion
@@ -380,7 +380,7 @@ namespace Wivuu.Sprog
             output = input;
             return this;
         }
-        
+
         #endregion
 
         #region Rest
@@ -405,7 +405,7 @@ namespace Wivuu.Sprog
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool If(bool condition) =>
             condition;
-            
+
         /// <summary>
         /// Return true if condition is true, or false if condition is false
         /// </summary>
@@ -419,7 +419,7 @@ namespace Wivuu.Sprog
         }
 
         #endregion
-        
+
         #region Assert
 
         /// <summary>
@@ -460,34 +460,21 @@ namespace Wivuu.Sprog
         /// <param name="value">Input pattern</param>
         /// <returns>True if the input matches the pattern</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool StartsWith(ReadOnlySpan<char> value)
-        {
-            if (value == null) 
-                return false;
+        public bool StartsWith(ReadOnlySpan<char> value) => Buffer.StartsWith(value);
 
-            int i;
-            for (i = 0; i < value.Length && i < Buffer.Length; ++i) 
-            {
-                if (Buffer[i] != value[i])
-                    return false;
-            }
-
-            return i == value.Length;
-        }
-        
         /// <summary>
         /// Test if the input starts with the input value
         /// </summary>
         /// <param name="value">Input pattern</param>
         /// <returns>True if the input matches the pattern</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool StartsWith(char value) => 
+        public bool StartsWith(char value) =>
             Buffer.Length > 0 && Buffer[0] == value;
-        
+
         #endregion
 
         #region Returns
-        
+
         /// <summary>
         /// Return input value
         /// </summary>

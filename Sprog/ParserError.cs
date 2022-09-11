@@ -10,7 +10,7 @@ namespace Wivuu.Sprog
 
         public (int line, int col)? LineAndColumn { get; private set; }
 
-        public ParserError(ParserException e, string input = null) : this(e.Remaining, e.Assertion)
+        public ParserError(ParserException e, string? input = null) : this(e.Remaining, e.Assertion)
         {
             if (input != null)
                 CalculateLineAndCol(input);
