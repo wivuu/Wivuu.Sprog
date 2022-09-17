@@ -14,7 +14,7 @@ BenchmarkRunner.Run<benchmarks.Xml>();
 namespace benchmarks
 {
     [MemoryDiagnoser]
-    public class Simple
+    public partial class Simple
     {
         #region Simple
 
@@ -33,13 +33,26 @@ namespace benchmarks
             Assert.AreEqual("abc123", id);
         }
 
-        static Regex Pattern = new Regex(@"\s*(?<ident>[a-zA-Z][a-zA-Z0-9]*)\s*", RegexOptions.Compiled);
+        static Regex SimplePattern = new Regex(@"\s*(?<ident>[a-zA-Z][a-zA-Z0-9]*)\s*", RegexOptions.Compiled);
 
         [Benchmark]
         public void RegexSimple()
         {
             static string TakeIdentifier(string input) =>
-                Pattern.Match(input).Groups["ident"].Value;
+                SimplePattern.Match(input).Groups["ident"].Value;
+
+            var id = TakeIdentifier(" abc123  ");
+            Assert.AreEqual("abc123", id);
+        }
+
+        [GeneratedRegex(@"\s*(?<ident>[a-zA-Z][a-zA-Z0-9]*)\s*", RegexOptions.CultureInvariant)]
+        public static partial Regex SourceGenPattern();
+
+        [Benchmark]
+        public void RegexSourceGenerator()
+        {
+            static string TakeIdentifier(string input) =>
+                SourceGenPattern().Match(input).Groups["ident"].Value;
 
             var id = TakeIdentifier(" abc123  ");
             Assert.AreEqual("abc123", id);
