@@ -8,6 +8,9 @@ using Sprache;
 using Wivuu.Sprog;
 using static System.Char;
 
+BenchmarkRunner.Run<benchmarks.Simple>();
+BenchmarkRunner.Run<benchmarks.Xml>();
+
 namespace benchmarks
 {
     [MemoryDiagnoser]
@@ -90,11 +93,5 @@ namespace benchmarks
             SpracheXmlParser.Document.Parse(SourceXml);
 
         #endregion
-
-        static void Main(string[] args)
-        {
-            BenchmarkRunner.Run<Simple>();
-            BenchmarkRunner.Run<Xml>();
-        }
     }
 }
