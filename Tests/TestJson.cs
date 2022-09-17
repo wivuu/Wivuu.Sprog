@@ -12,52 +12,52 @@ namespace Tests
 
     public class JsonDocument : JsonValue
     {
-        public JsonValue Root { get; }
+        public JsonValue? Root { get; }
 
-        public ParserError Error { get; }
+        public ParserError? Error { get; }
 
         public JsonDocument(ParserError error)
         {
             this.Error = error;
         }
 
-        public JsonDocument(JsonValue root)
+        public JsonDocument(JsonValue? root)
         {
             this.Root = root;
         }
 
-        public override string ToString() => Root.ToString();
+        public override string? ToString() => Root?.ToString();
     }
 
     public class JsonObject : JsonValue
     {
-        public IReadOnlyList<(string, JsonValue)> Properties { get; }
+        public IReadOnlyList<(string, JsonValue?)> Properties { get; }
 
-        internal JsonObject(List<(string, JsonValue)> properties)
+        internal JsonObject(List<(string, JsonValue?)> properties)
         {
             Properties = properties;
         }
 
         public override string ToString()
         {
-            string FormatProperty((string Key, JsonValue Value) pair) =>
+            static string FormatProperty((string Key, JsonValue? Value) pair) =>
                 $"\"{pair.Key}\": {(pair.Value?.ToString() ?? "null")},";
 
-            return "{ " + Properties.Aggregate("", (s, c) => s + FormatProperty(c)).TrimEnd(',') + " }";
+            return "{ " + Properties.Aggregate("", static (s, c) => s + FormatProperty(c)).TrimEnd(',') + " }";
         }
     }
 
     public class JsonArray : JsonValue
     {
-        public IReadOnlyList<JsonValue> Values { get; }
+        public IReadOnlyList<JsonValue?> Values { get; }
 
-        public JsonArray(IReadOnlyList<JsonValue> values)
+        public JsonArray(IReadOnlyList<JsonValue?> values)
         {
             Values = values;
         }
 
         public override string ToString() =>
-            "[ " + Values.Aggregate("", (s, c) => s + c + ",").TrimEnd(',') + " ]";
+            "[ " + Values.Aggregate("", static (s, c) => s + c + ",").TrimEnd(',') + " ]";
     }
 
     public class JsonLiteral : JsonValue
@@ -69,24 +69,21 @@ namespace Tests
             Value = value;
         }
 
-        public override string ToString()
-        {
-            switch (Value)
+        public override string ToString() =>
+            Value switch
             {
-                case string stringValue: return $"\"{stringValue}\"";
-                case null:               return "null";
-                default:                 return Value.ToString();
-            }
-        }
+                string stringValue => $"\"{stringValue}\"",
+                null               => "null",
+                _                  => Value.ToString()!,
+            };
     }
 
     public static class SprogJsonParser
     {
         public static Parser ParseNumber(this Parser input, out decimal decimalValue) =>
-            input.Skip('-', out var isNegative)
-                 .Take(Or(IsDigit, c => c == '.' || c == 'e' || c == 'E' || c == '+' || c == '-'), out string decimalString)
+            input.Take(Or(IsDigit, static c => c is '.' or 'e' or 'E' or '+' or '-'), out string decimalString)
                  .Assert(decimal.TryParse(decimalString, out var value) ? null : "Malformed JSON")
-                 .Let(decimalValue = isNegative ? (value * -1) : value);
+                 .Let(decimalValue = value);
 
         public static Parser ParseString(this Parser input, out string stringValue)
         {
@@ -120,7 +117,7 @@ namespace Tests
 
         public static Parser ParseObject(this Parser input, out JsonValue obj)
         {
-            (bool success, (string, JsonValue) value) TakeProperty(ref Parser rest) =>
+            (bool success, (string, JsonValue?) value) TakeProperty(ref Parser rest) =>
                 rest.Skip(IsWhiteSpace)
                     .SkipOne(',')
                     .Skip(IsWhiteSpace)
@@ -128,7 +125,7 @@ namespace Tests
                     .Peek(out var quote)
                     .Return(quote == '"'
                         ? rest.ParseString(out var propertyName)
-                              .Assert(propertyName?.Length > 0
+                              .Assert(propertyName is { Length: > 0 }
                                       ? null : "Object property name not valid")
                               .Skip(IsWhiteSpace)
                               .Skip(':', out var hasColon)
@@ -142,7 +139,7 @@ namespace Tests
                               .Skip(',', out var isNextObj)
                               .Skip('}', out var isEndObj)
                               .Assert(isNextObj || isEndObj ? null : "Expected ',' or '}'")
-                              .Return((true, (propertyName, propertyValue)))
+                              .Return((true, (propertyName!, propertyValue)))
                         : (false, default)
                     );
 
@@ -155,7 +152,7 @@ namespace Tests
 
         public static Parser ParseArray(this Parser input, out JsonValue array)
         {
-            (bool success, JsonValue value) TakeItem(ref Parser rest) =>
+            static (bool success, JsonValue? value) TakeItem(ref Parser rest) =>
                 rest
                     .Skip(IsWhiteSpace)
                     .SkipOne(',')
@@ -169,13 +166,13 @@ namespace Tests
                         : (false, default)
                     );
 
-            return input.TakeMany(TakeItem, out List<JsonValue> items)
+            return input.TakeMany(TakeItem, out List<JsonValue?> items)
                         .Let(array = new JsonArray(items))
                         .Skip(']', out var hasEndArr)
                         .Assert(hasEndArr ? null : "Expected ']'");
         }
 
-        public static Parser ParseJson(this Parser input, out JsonValue value)
+        public static Parser ParseJson(this Parser input, out JsonValue? value)
         {
             if (input.StartsWith('{'))
                 return input.SkipOne().ParseObject(out value);
@@ -258,7 +255,7 @@ namespace Tests
         [TestMethod]
         public void TestToString()
         {
-            var doc = new JsonObject(new List<(string, JsonValue)>
+            var doc = new JsonObject(new List<(string, JsonValue?)>
             {
                 ("TestValue", new JsonLiteral(5)),
                 ("TestArray", new JsonArray(new List<JsonValue>

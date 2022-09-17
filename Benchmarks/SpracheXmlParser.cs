@@ -10,11 +10,11 @@ namespace benchmarks
 {
     public class Document
     {
-        public Node Root;
+        public Node? Root;
 
-        public override string ToString()
+        public override string? ToString()
         {
-            return Root.ToString();
+            return Root?.ToString();
         }
     }
 
@@ -22,9 +22,9 @@ namespace benchmarks
 
     public class Content : Item
     {
-        public string Text;
+        public string? Text;
 
-        public override string ToString()
+        public override string? ToString()
         {
             return Text;
         }
@@ -32,8 +32,8 @@ namespace benchmarks
 
     public class Node : Item
     {
-        public string Name;
-        public IEnumerable<Item> Children;
+        public string? Name;
+        public IEnumerable<Item>? Children;
 
         public override string ToString()
         {

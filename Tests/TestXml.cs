@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.Char;
@@ -8,26 +9,26 @@ namespace Wivuu.Sprog
 {
     public class XmlDocument
     {
-        public Node Root;
+        public Node? Root;
 
-        public ParserError Error;
+        public ParserError? Error;
 
-        public override string ToString() => Root.ToString();
+        public override string? ToString() => Root?.ToString();
     }
 
     public class Item { }
 
     public class Content : Item
     {
-        public string Text;
+        public string? Text;
 
-        public override string ToString() => Text;
+        public override string? ToString() => Text;
     }
 
     public class Node : Item
     {
-        public string Name;
-        public IEnumerable<Item> Children;
+        public string? Name;
+        public IEnumerable<Item>? Children;
 
         public override string ToString()
         {
@@ -66,7 +67,7 @@ namespace Wivuu.Sprog
 
         static Parser ParseItems(this Parser input, out List<Item> items)
         {
-            static bool NextItem(ref Parser i, out Item next)
+            static bool NextItem(ref Parser i, [NotNullWhen(true)] out Item? next)
             {
                 if (i.StartsWith("</"))
                 {

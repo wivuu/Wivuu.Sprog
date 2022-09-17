@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sprache;
 using Wivuu.Sprog;
 using static System.Char;
-using static System.String;
 
 namespace benchmarks
 {
