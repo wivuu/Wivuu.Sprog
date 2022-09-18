@@ -111,12 +111,12 @@ public static class SprogXmlParser
                 .Skip(IsWhiteSpace)
                 .ParseNode(out var n);
             
-            document = new XmlDocument { Root = n };
+            document = new() { Root = n };
             return true;
         }
         catch (ParserException e)
         {
-            document = new XmlDocument
+            document = new()
             {
                 Error = new ParserError(e, xml)
             };

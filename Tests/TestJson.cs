@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Wivuu.Sprog;
@@ -62,9 +61,9 @@ namespace Tests
 
     public class JsonLiteral : JsonValue
     {
-        public object Value { get; }
+        public object? Value { get; }
 
-        public JsonLiteral(object value)
+        public JsonLiteral(object? value)
         {
             Value = value;
         }
@@ -117,7 +116,7 @@ namespace Tests
 
         public static Parser ParseObject(this Parser input, out JsonValue obj)
         {
-            (bool success, (string, JsonValue?) value) TakeProperty(ref Parser rest) =>
+            static (bool success, (string, JsonValue?) value) TakeProperty(ref Parser rest) =>
                 rest.Skip(IsWhiteSpace)
                     .SkipOne(',')
                     .Skip(IsWhiteSpace)
@@ -153,8 +152,7 @@ namespace Tests
         public static Parser ParseArray(this Parser input, out JsonValue array)
         {
             static (bool success, JsonValue? value) TakeItem(ref Parser rest) =>
-                rest
-                    .Skip(IsWhiteSpace)
+                rest.Skip(IsWhiteSpace)
                     .SkipOne(',')
                     .Skip(IsWhiteSpace)
                     .Rest(out rest)
@@ -209,12 +207,12 @@ namespace Tests
                     .Skip(IsWhiteSpace)
                     .ParseJson(out var n);
 
-                document = new JsonDocument(root: n);
+                document = new (root: n);
                 return true;
             }
             catch (ParserException e)
             {
-                document = new JsonDocument(error: new ParserError(e, json));
+                document = new (error: new ParserError(e, json));
                 return false;
             }
         }
