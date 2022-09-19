@@ -33,10 +33,9 @@ public class Node : Item
     public override string ToString()
     {
         if (Children != null)
-            return string.Format("<{0}>", Name) +
-                Children.Aggregate("", (s, c) => s + c) +
-                string.Format("</{0}>", Name);
-        return string.Format("<{0}/>", Name);
+            return $"<{Name}>{Children.Aggregate("", (s, c) => s + c)}</{Name}>";
+
+        return $"<{Name}/>";
     }
 }
 
@@ -44,26 +43,26 @@ public static class SprogXmlParser
 {
     static Parser ParseIdentifier(this Parser input, out string identifier) =>
         input.Skip(IsWhiteSpace)
-                .Take(IsLetter, out char first)
-                .Take(IsLetterOrDigit, out ReadOnlySpan<char> rest)
-                .Assert(first != default ? null : "\"\" is an invalid identifier")
-                .Let(identifier = first.Concat(rest))
-                .Skip(IsWhiteSpace);
+             .Take(IsLetter, out char first)
+             .Take(IsLetterOrDigit, out ReadOnlySpan<char> rest)
+             .Assert(first != default ? null : "\"\" is an invalid identifier")
+             .Let(identifier = first.Concat(rest))
+             .Skip(IsWhiteSpace);
 
     static Parser ParseTag(this Parser input, out string name, out bool selfClosing) =>
         input.SkipOne('<')
-                .ParseIdentifier(out name)
-                .Peek(out var nextC)
-                .Let(selfClosing = nextC == '/')
-                .SkipOne('>')
-                .Skip(IsWhiteSpace);
+             .ParseIdentifier(out name)
+             .Peek(out var nextC)
+             .Let(selfClosing = nextC == '/')
+             .SkipOne('>')
+             .Skip(IsWhiteSpace);
 
     static Parser ParseEndTag(this Parser input, string name) =>
         input.Skip("</")
-                .ParseIdentifier(out var endName)
-                .Assert(endName == name ? null : $"Expected end tag </{name}>")
-                .SkipOne('>')
-                .Skip(IsWhiteSpace);
+             .ParseIdentifier(out var endName)
+             .Assert(endName == name ? null : $"Expected end tag </{name}>")
+             .SkipOne('>')
+             .Skip(IsWhiteSpace);
 
     static Parser ParseItems(this Parser input, out List<Item> items)
     {
@@ -97,9 +96,9 @@ public static class SprogXmlParser
 
     static Parser ParseNode(this Parser input, out Node n) =>
         input.ParseTag(out var id, out var selfClosing)
-                .Rest(out var rest)
-                .Let(selfClosing ? rest.Let(n = new () { Name = id })
-                                : rest.ParseItems(out var children)
+             .Rest(out var rest)
+             .Let(selfClosing ? rest.Let(n = new () { Name = id })
+                              : rest.ParseItems(out var children)
                                     .Let(n = new () { Name = id, Children = children })
                                     .ParseEndTag(id));
 
@@ -110,15 +109,16 @@ public static class SprogXmlParser
             new Parser(xml)
                 .Skip(IsWhiteSpace)
                 .ParseNode(out var n);
-            
+
             document = new() { Root = n };
+
             return true;
         }
         catch (ParserException e)
         {
             document = new()
             {
-                Error = new ParserError(e, xml)
+                Error = new (e, xml)
             };
 
             return false;
@@ -129,7 +129,7 @@ public static class SprogXmlParser
 [TestClass]
 public class TestXml
 {
-    readonly string[] GoodXml = 
+    readonly string[] GoodXml =
     {
         @"<ul>
             <li>Item 1</li>
@@ -146,7 +146,7 @@ public class TestXml
         </ul>"
     };
 
-    readonly string[] BadXml = 
+    readonly string[] BadXml =
     {
         @"<ul>
             <li>Item 4</lli>
