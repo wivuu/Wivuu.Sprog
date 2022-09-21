@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Wivuu.Sprog;
 
@@ -13,11 +12,13 @@ public partial struct Parser
     /// </summary>
     /// <param name="predicate">Input test</param>
     /// <returns>Index match end</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     int MatchWhile(Predicate predicate)
     {
+        var buffer = Buffer;
+        var len    = buffer.Length;
+
         var i = 0;
-        while (i < Buffer.Length && predicate(Buffer[i]))
+        while (i < len && predicate(buffer[i]))
             ++i;
 
         return i;
@@ -30,11 +31,13 @@ public partial struct Parser
     /// <param name="predicate">Input test</param>
     /// <param name="take">Number of characters to take</param>
     /// <returns>Index match end</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     int MatchWhile(Predicate predicate, int take)
     {
+        var buffer = Buffer;
+        var len    = buffer.Length;
+
         var i = 0;
-        while (i < Buffer.Length && i < take && predicate(Buffer[i]))
+        while (i < len && i < take && predicate(buffer[i]))
             ++i;
 
         return i;
@@ -45,11 +48,10 @@ public partial struct Parser
     #region Take
 
     /// <summary>
-    /// Take one character, if matching
+    /// Take one character
     /// </summary>
     /// <param name="match">Matching character</param>
     /// <returns>Remainder of input</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Take(out char match)
     {
         if (Buffer.Length > 0)
@@ -70,7 +72,6 @@ public partial struct Parser
     /// <param name="predicate">Input test</param>
     /// <param name="match">Matching character</param>
     /// <returns>Remainder of input</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Take(Predicate predicate, out char match)
     {
         if (Buffer.Length > 0 && predicate(Buffer[0]))
@@ -91,7 +92,6 @@ public partial struct Parser
     /// <param name="predicate">Input test</param>
     /// <param name="match">Matching characters</param>
     /// <returns>Remainder of input</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Take(Predicate predicate, out ReadOnlySpan<char> match)
     {
         var i = MatchWhile(predicate);
@@ -106,7 +106,6 @@ public partial struct Parser
     /// <param name="predicate">Input test</param>
     /// <param name="match">Matching characters</param>
     /// <returns>Remainder of input</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Take(Predicate predicate, out string match)
     {
         var i = MatchWhile(predicate);
@@ -154,7 +153,6 @@ public partial struct Parser
     /// <param name="length">Input test</param>
     /// <param name="match">Matching span</param>
     /// <returns>True if enough characters to match; otherwise false</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Peek(int length, out ReadOnlySpan<char> match)
     {
         match = Buffer.Length < length
@@ -170,7 +168,6 @@ public partial struct Parser
     /// <param name="length">Input test</param>
     /// <param name="match">Matching string</param>
     /// <returns>True if enough characters to match; otherwise false</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Peek(int length, out string? match)
     {
         match = Buffer.Length < length
@@ -185,7 +182,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="match">Matching character</param>
     /// <returns>True if enough characters to match; otherwise false</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Peek(out char match)
     {
         match = Buffer.Length == 0
@@ -203,7 +199,6 @@ public partial struct Parser
     /// Skip one character
     /// </summary>
     /// <returns>Remainder of input</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser SkipOne() =>
         Buffer.Length > 0
         ? Buffer[1..]
@@ -214,7 +209,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="predicate">Input test</param>
     /// <returns>Remainder of input</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser SkipOne(char predicate) =>
         Buffer.Length > 0 && Buffer[0] == predicate
         ? Buffer[1..]
@@ -225,7 +219,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="predicate">Input test</param>
     /// <returns>Remainder of input</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser SkipOne(Predicate predicate) =>
         Buffer.Length > 0 && predicate(Buffer[0])
         ? Buffer[1..]
@@ -237,7 +230,6 @@ public partial struct Parser
     /// <param name="value">Input pattern</param>
     /// <param name="skipped">Input was skipped</param>
     /// <returns>True if the input matches the pattern</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Skip(ReadOnlySpan<char> value, out bool skipped) =>
         (skipped = StartsWith(value))
         ? Skip(value)
@@ -249,7 +241,6 @@ public partial struct Parser
     /// <param name="value">Input pattern</param>
     /// <param name="skipped">Input was skipped</param>
     /// <>True if the input matches the pattern</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Skip(char value, out bool skipped) =>
         (skipped = StartsWith(value))
         ? SkipOne()
@@ -260,7 +251,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="predicate">Input test</param>
     /// <returns>Remainder of input</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Skip(Predicate predicate) =>
         Buffer[MatchWhile(predicate)..];
 
@@ -269,20 +259,20 @@ public partial struct Parser
     /// </summary>
     /// <param name="predicate">Input test</param>
     /// <returns>Remainder of input</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Skip(ReadOnlySpan<char> predicate)
     {
-        if (Buffer.Length < predicate.Length)
-            return Buffer;
+        var buffer = Buffer;
+        if (buffer.Length < predicate.Length)
+            return buffer;
 
         int i;
         for (i = 0; i < predicate.Length; ++i)
         {
-            if (Buffer[i] != predicate[i])
+            if (buffer[i] != predicate[i])
                 return this;
         }
 
-        return Buffer[i..];
+        return buffer[i..];
     }
 
     /// <summary>
@@ -290,7 +280,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="predicate">Input test</param>
     /// <returns>Remainder of input</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser SkipUntil(char predicate)
     {
         bool neq(char c) => c != predicate;
@@ -307,7 +296,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="id">Assignments</param>
     /// <returns>Remaining buffer</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Let(ReadOnlySpan<char> id) =>
         this;
 
@@ -316,7 +304,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="id">Assignments</param>
     /// <returns>Remaining buffer</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Let(string id) =>
         this;
 
@@ -325,7 +312,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="id">Assignments</param>
     /// <returns>Remaining buffer</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Let(Parser id) =>
         id;
 
@@ -334,7 +320,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="id">Assignments</param>
     /// <returns>Remaining buffer</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Let<T>(T id) =>
         this;
 
@@ -348,7 +333,6 @@ public partial struct Parser
     /// <param name="output">Newly declared output</param>
     /// <param name="input">Input</param>
     /// <returns>Remaining buffer</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Declare(out string output, string input)
     {
         output = input;
@@ -361,7 +345,6 @@ public partial struct Parser
     /// <param name="output">Newly declared output</param>
     /// <param name="input">Input</param>
     /// <returns>Remaining buffer</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Declare(out char output, char input)
     {
         output = input;
@@ -374,7 +357,6 @@ public partial struct Parser
     /// <param name="output">Newly declared output</param>
     /// <param name="input">Input</param>
     /// <returns>Remaining buffer</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Declare<T>(out T output, T input)
     {
         output = input;
@@ -390,7 +372,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="rest">Remaining buffer</param>
     /// <returns>Remaining buffer</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Rest(out Parser rest) =>
         rest = this;
 
@@ -402,7 +383,6 @@ public partial struct Parser
     /// Return true if condition is true, or false if condition is false
     /// </summary>
     /// <returns>True or false</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool If(bool condition) =>
         condition;
 
@@ -411,7 +391,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="rest">Remaining buffer</param>
     /// <returns>True or false</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool If(bool condition, out Parser rest)
     {
         rest = this;
@@ -426,7 +405,6 @@ public partial struct Parser
     /// Create an assertion
     /// </summary>
     /// <returns>Parser</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Parser Assert(ReadOnlySpan<char> assertion)
     {
         if (assertion.Length > 0)
@@ -438,7 +416,6 @@ public partial struct Parser
     /// <summary>
     /// Assertion fails
     /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ParserException Fail(string assertion) =>
         new ParserException(assertion, Buffer.Length);
 
@@ -450,7 +427,6 @@ public partial struct Parser
     /// Check if parser has reached EOF
     /// </summary>
     /// <returns>Input buffer is 0</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsEOF() =>
         Buffer.Length == 0;
 
@@ -459,7 +435,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="value">Input pattern</param>
     /// <returns>True if the input matches the pattern</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool StartsWith(ReadOnlySpan<char> value) => Buffer.StartsWith(value);
 
     /// <summary>
@@ -467,7 +442,6 @@ public partial struct Parser
     /// </summary>
     /// <param name="value">Input pattern</param>
     /// <returns>True if the input matches the pattern</returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool StartsWith(char value) =>
         Buffer.Length > 0 && Buffer[0] == value;
 
@@ -478,7 +452,6 @@ public partial struct Parser
     /// <summary>
     /// Return input value
     /// </summary>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T Return<T>(T value) => value;
 
     #endregion
