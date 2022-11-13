@@ -1,16 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>net6.0; net7.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
     <PackageId>Wivuu.Sprog</PackageId>
     <Authors>Erik O'Leary</Authors>
     <Company>Wivuu</Company>
     <Product>Wivuu Sprog</Product>
-    <Description>Sprog (Danish for 'Language') string parsing library written for C# 7+ and .NET Core.</Description>
+    <Description>Sprog (Danish for 'Language') string parsing library written for C# 11+ and .NET.</Description>
     <AssemblyName>Wivuu.Sprog</AssemblyName>
     <RootNamespace>Wivuu.Sprog</RootNamespace>
     <ReleaseNotes>
-    - Multi-target .net 5.0
+    - Target .net 6.0 LTS
     </ReleaseNotes>
     <PackageProjectUrl>https://github.com/onionhammer/Wivuu.Sprog</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/onionhammer/Wivuu.Sprog/master/LICENSE</PackageLicenseUrl>
@@ -18,9 +19,5 @@
     <RepositoryUrl>https://github.com/onionhammer/Wivuu.Sprog.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Memory" Version="4.5.4" />
-  </ItemGroup>
 
 </Project>
