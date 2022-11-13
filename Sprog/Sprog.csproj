@@ -7,7 +7,7 @@
     <Authors>Erik O'Leary</Authors>
     <Company>Wivuu</Company>
     <Product>Wivuu Sprog</Product>
-    <Description>Sprog (Danish for 'Language') string parsing library written for C# 7+ and .NET Core.</Description>
+    <Description>Sprog (Danish for 'Language') string parsing library written for C# 11+ and .NET.</Description>
     <AssemblyName>Wivuu.Sprog</AssemblyName>
     <RootNamespace>Wivuu.Sprog</RootNamespace>
     <ReleaseNotes>
