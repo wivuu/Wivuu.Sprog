@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net6.0; net7.0</TargetFrameworks>
+    <Version>0.4.0</Version>
     <Nullable>enable</Nullable>
     <PackageId>Wivuu.Sprog</PackageId>
     <Authors>Erik O'Leary</Authors>
@@ -11,7 +12,7 @@
     <AssemblyName>Wivuu.Sprog</AssemblyName>
     <RootNamespace>Wivuu.Sprog</RootNamespace>
     <ReleaseNotes>
-    - Target .net 6.0 LTS
+    - Add StartsWith predicate overload
     </ReleaseNotes>
     <PackageProjectUrl>https://github.com/onionhammer/Wivuu.Sprog</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/onionhammer/Wivuu.Sprog/master/LICENSE</PackageLicenseUrl>
