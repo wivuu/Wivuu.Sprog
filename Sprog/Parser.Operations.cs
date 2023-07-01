@@ -448,10 +448,10 @@ public partial struct Parser
     /// <summary>
     /// Test if the input starts with the input value
     /// </summary>
-    /// <param name="value">Input callback</param>
+    /// <param name="predicate">Input callback</param>
     /// <returns>True if the input matches the pattern</returns>
-    public bool StartsWith(Predicate value) =>
-        Buffer.Length > 0 && value(Buffer[0]);
+    public bool StartsWith(Predicate predicate) =>
+        Buffer.Length > 0 && predicate(Buffer[0]);
 
     #endregion
 

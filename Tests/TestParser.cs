@@ -116,4 +116,18 @@ public class TestParser
             Assert.AreEqual(actual, expected);
         }
     }
+
+    [TestMethod]
+    public void TestStartsWith()
+    {
+        var result = new Parser(" This is a test ");
+
+        Assert.IsTrue(result.Skip(IsWhiteSpace).StartsWith(static c => c == 'T'));
+        Assert.IsTrue(result.Skip(IsWhiteSpace).StartsWith("This"));
+        Assert.IsTrue(result.Skip(IsWhiteSpace).StartsWith('T'));
+
+        Assert.IsFalse(result.StartsWith(static c => c == 'T'));
+        Assert.IsFalse(result.StartsWith("This"));
+        Assert.IsFalse(result.StartsWith('T'));
+    }
 }
