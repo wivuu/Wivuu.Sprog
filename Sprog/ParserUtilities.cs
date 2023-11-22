@@ -15,10 +15,10 @@ public static class Utilities
             throw new ArgumentNullException(nameof(fun));
 
         bool not(char c) => !fun(c);
-        
+
         return not;
     }
-    
+
     /// <summary>
     /// Returns a new predicate which ORs together the input
     /// predicates

@@ -43,7 +43,7 @@ public readonly ref partial struct Parser
 
     #region Operators
 
-    public static implicit operator Parser(ReadOnlySpan<char> input) => new Parser(input);
+    public static implicit operator Parser(ReadOnlySpan<char> input) => new(input);
 
     public char this[int i] => Buffer[i];
 

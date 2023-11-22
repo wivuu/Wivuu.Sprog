@@ -127,7 +127,7 @@ public partial struct Parser
     public Parser TakeMany<T>(TakeManyCondition<T> predicate, out List<T> match)
     {
         var input = this;
-        match     = new List<T>();
+        match     = [];
 
         do
         {
@@ -417,7 +417,7 @@ public partial struct Parser
     /// Assertion fails
     /// </summary>
     public ParserException Fail(string assertion) =>
-        new ParserException(assertion, Buffer.Length);
+        new(assertion, Buffer.Length);
 
     #endregion
 
