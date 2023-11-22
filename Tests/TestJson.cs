@@ -223,31 +223,37 @@ namespace Tests
     {
         readonly string[] GoodJson =
         {
-            @"{
-            ""type"": ""FeatureCollection"",
-            ""features"": [
-                { ""type"": ""Feature"", ""properties"": { ""MAPBLKLOT"": ""0001001"", ""BLKLOT"": ""0001001"", ""BLOCK_NUM"": ""0001"", ""LOT_NUM"": ""001"", ""FROM_ST"": ""0"", ""TO_ST"": ""0"", ""STREET"": ""UNKNOWN"", ""ST_TYPE"": null, ""ODD_EVEN"": ""E"" }, ""geometry"": { ""type"": ""Polygon"", ""coordinates"": [ [ [ -122.422003528252475, 37.808480096967251, 0.0 ], [ -122.422076013325281, 37.808835019815085, 0.0 ], [ -122.421102174348633, 37.808803534992904, 0.0 ], [ -122.421062569067274, 37.808601056818148, 0.0 ], [ -122.422003528252475, 37.808480096967251, 0.0 ] ] ] } }
+            """
+            {
+            "type": "FeatureCollection",
+            "features": [
+                { "type": "Feature", "properties": { "MAPBLKLOT": "0001001", "BLKLOT": "0001001", "BLOCK_NUM": "0001", "LOT_NUM": "001", "FROM_ST": "0", "TO_ST": "0", "STREET": "UNKNOWN", "ST_TYPE": null, "ODD_EVEN": "E" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -122.422003528252475, 37.808480096967251, 0.0 ], [ -122.422076013325281, 37.808835019815085, 0.0 ], [ -122.421102174348633, 37.808803534992904, 0.0 ], [ -122.421062569067274, 37.808601056818148, 0.0 ], [ -122.422003528252475, 37.808480096967251, 0.0 ] ] ] } }
               ]
-            }",
-            @"{
-                ""PositiveNumber"" : 512.52,
-                ""NegativeNumber"": -100,
-                ""Array"": [ ""Item1"", ""Item2"" ],
-                ""Null"": null,
-                ""Obj"": { ""Prop1"": ""Value"" }
-            }"
+            }
+            """,
+            """
+            {
+                "PositiveNumber" : 512.52,
+                "NegativeNumber": -100,
+                "Array": [ "Item1", "Item2" ],
+                "Null": null,
+                "Obj": { "Prop1": "Value" }
+            }
+            """
         };
 
         readonly string[] BadJson =
         {
             // Line 5, missing end ']'
-            @"{
-                ""PositiveNumber"": 512.52,
-                ""NegativeNumber"": -100,
-                ""Array"": [ ""Item1"", ""Item2"",
-                ""Null"": null,
-                ""Obj"": { ""Prop1"": ""Value"" }
-            }"
+            """
+            {
+                "PositiveNumber": 512.52,
+                "NegativeNumber": -100,
+                "Array": [ "Item1", "Item2",
+                "Null": null,
+                "Obj": { "Prop1": "Value" }
+            }
+            """
         };
 
         [TestMethod]

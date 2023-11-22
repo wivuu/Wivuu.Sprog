@@ -52,7 +52,7 @@ public class TestParser
     public void TestParseIdents()
     {
         var remaining = 
-            new Parser(@"1  B3his is some string  ")
+            new Parser("1  B3his is some string  ")
             .SkipOne(IsDigit)
             .Skip(IsWhiteSpace)
             .Peek(out var c)

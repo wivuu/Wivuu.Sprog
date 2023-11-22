@@ -131,7 +131,8 @@ public class TestXml
 {
     readonly string[] GoodXml =
     {
-        @"<ul>
+        """
+        <ul>
             <li>Item 1</li>
             <li>
                 <ul>
@@ -143,20 +144,27 @@ public class TestXml
             <li>Item 3</li>
             <li>Item 4</li>
             <li>Item 5</li>
-        </ul>"
+        </ul>
+        """
     };
 
     readonly string[] BadXml =
     {
-        @"<ul>
+        """
+        <ul>
             <li>Item 4</lli>
-        </ul>",
-        @"<ul>
+        </ul>
+        """,
+        """
+        <ul>
             <li>Item 4
-        </ul>",
-        @"<ul>
+        </ul>
+        """,
+        """
+        <ul>
             <>Item 4</>
-        </ul>"
+        </ul>
+        """
     };
 
     [TestMethod]

@@ -84,7 +84,7 @@ namespace benchmarks
     {
         #region Xml
 
-        const string SourceXml = @"
+        const string SourceXml = """
         <ul>
             <li>Item 1</li>
             <li>
@@ -98,7 +98,7 @@ namespace benchmarks
             <li>Item 4</li>
             <li>Item 5</li>
         </ul>
-        ";
+        """;
 
         [Benchmark(Baseline = true)]
         public void SprogXml() =>
@@ -117,12 +117,14 @@ namespace benchmarks
         #region Json
 
         readonly string GoodJson =
-            @"{
-            ""type"": ""FeatureCollection"",
-            ""features"": [
-                { ""type"": ""Feature"", ""properties"": { ""MAPBLKLOT"": ""0001001"", ""BLKLOT"": ""0001001"", ""BLOCK_NUM"": ""0001"", ""LOT_NUM"": ""001"", ""FROM_ST"": ""0"", ""TO_ST"": ""0"", ""STREET"": ""UNKNOWN"", ""ST_TYPE"": null, ""ODD_EVEN"": ""E"" }, ""geometry"": { ""type"": ""Polygon"", ""coordinates"": [ [ [ -122.422003528252475, 37.808480096967251, 0.0 ], [ -122.422076013325281, 37.808835019815085, 0.0 ], [ -122.421102174348633, 37.808803534992904, 0.0 ], [ -122.421062569067274, 37.808601056818148, 0.0 ], [ -122.422003528252475, 37.808480096967251, 0.0 ] ] ] } }
-              ]
-            }";
+            """
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    { "type": "Feature", "properties": { "MAPBLKLOT": "0001001", "BLKLOT": "0001001", "BLOCK_NUM": "0001", "LOT_NUM": "001", "FROM_ST": "0", "TO_ST": "0", "STREET": "UNKNOWN", "ST_TYPE": null, "ODD_EVEN": "E" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -122.422003528252475, 37.808480096967251, 0.0 ], [ -122.422076013325281, 37.808835019815085, 0.0 ], [ -122.421102174348633, 37.808803534992904, 0.0 ], [ -122.421062569067274, 37.808601056818148, 0.0 ], [ -122.422003528252475, 37.808480096967251, 0.0 ] ] ] } }
+                ]
+            }
+            """;
 
         [Benchmark(Baseline = true)]
         public void SprogJson() =>
