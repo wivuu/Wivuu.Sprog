@@ -77,7 +77,7 @@ public class TestParser
     [TestMethod]
     public void TestTakeMany()
     {
-        (bool success, int value) TakeInteger(ref Parser input) => input
+        static (bool success, int value) TakeInteger(ref Parser input) => input
             .Take(IsDigit, out string strValue)
             .Declare(out var hasValue, int.TryParse(strValue, out var intValue))
             .Skip(IsWhiteSpace)
