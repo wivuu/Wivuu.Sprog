@@ -34,10 +34,10 @@ public partial struct Parser
     int MatchWhile(Predicate predicate, int take)
     {
         var buffer = Buffer;
-        var len    = buffer.Length;
+        var len    = Math.Min(buffer.Length, take);
 
         var i = 0;
-        while (i < len && i < take && predicate(buffer[i]))
+        while (i < len && predicate(buffer[i]))
             ++i;
 
         return i;
