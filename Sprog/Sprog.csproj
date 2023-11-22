@@ -20,6 +20,7 @@
     <PackageTags>c#;parse;parser;core;dotnet core</PackageTags>
     <RepositoryUrl>https://github.com/onionhammer/Wivuu.Sprog.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
 </Project>
