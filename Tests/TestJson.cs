@@ -40,33 +40,23 @@ namespace Tests
         public override string ToString()
         {
             static string FormatProperty((string Key, JsonValue? Value) pair) =>
-                $"\"{pair.Key}\": {(pair.Value?.ToString() ?? "null")},";
+                $"\"{pair.Key}\": {pair.Value?.ToString() ?? "null"},";
 
             return "{ " + Properties.Aggregate("", static (s, c) => s + FormatProperty(c)).TrimEnd(',') + " }";
         }
     }
 
-    public class JsonArray : JsonValue
+    public class JsonArray(IReadOnlyList<JsonValue?> values) : JsonValue
     {
-        public IReadOnlyList<JsonValue?> Values { get; }
-
-        public JsonArray(IReadOnlyList<JsonValue?> values)
-        {
-            Values = values;
-        }
+        public IReadOnlyList<JsonValue?> Values { get; } = values;
 
         public override string ToString() =>
             "[ " + Values.Aggregate("", static (s, c) => s + c + ",").TrimEnd(',') + " ]";
     }
 
-    public class JsonLiteral : JsonValue
+    public class JsonLiteral(object? value) : JsonValue
     {
-        public object? Value { get; }
-
-        public JsonLiteral(object? value)
-        {
-            Value = value;
-        }
+        public object? Value { get; } = value;
 
         public override string ToString() =>
             Value switch

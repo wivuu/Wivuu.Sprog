@@ -54,15 +54,16 @@ public partial struct Parser
     /// <returns>Remainder of input</returns>
     public Parser Take(out char match)
     {
-        if (Buffer.Length > 0)
+        var buffer = Buffer;
+        if (buffer.Length > 0)
         {
-            match = Buffer[0];
-            return Buffer[1..];
+            match = buffer[0];
+            return buffer[1..];
         }
         else
         {
             match = default;
-            return Buffer;
+            return buffer;
         }
     }
 
@@ -74,15 +75,16 @@ public partial struct Parser
     /// <returns>Remainder of input</returns>
     public Parser Take(Predicate predicate, out char match)
     {
-        if (Buffer.Length > 0 && predicate(Buffer[0]))
+        var buffer = Buffer;
+        if (buffer.Length > 0 && predicate(buffer[0]))
         {
-            match = Buffer[0];
-            return Buffer[1..];
+            match = buffer[0];
+            return buffer[1..];
         }
         else
         {
             match = default;
-            return Buffer;
+            return buffer;
         }
     }
 
