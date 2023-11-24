@@ -45,7 +45,7 @@ public static class SprogXmlParser
         input.Skip(IsWhiteSpace)
              .Take(IsLetter, out char first)
              .Take(IsLetterOrDigit, out ReadOnlySpan<char> rest)
-             .Assert(first != default ? null : "\"\" is an invalid identifier")
+             .Assert(first != default, "\"\" is an invalid identifier")
              .Let(identifier = first.Concat(rest))
              .Skip(IsWhiteSpace);
 

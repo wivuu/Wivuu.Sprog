@@ -72,7 +72,7 @@ namespace Tests
         static readonly SearchValues<char> IsDigitOrExponent = SearchValues.Create("0123456789.eE+-");
         public static Parser ParseNumber(this Parser input, out double decimalValue) =>
             input.Take(IsDigitOrExponent.Contains, out string decimalString)
-                 .Assert(double.TryParse(decimalString, out var value) ? null : "Malformed JSON")
+                 .Assert(double.TryParse(decimalString, out var value), "Malformed JSON")
                  .Let(decimalValue = value);
 
         public static Parser ParseString(this Parser input, out string stringValue)
@@ -98,11 +98,10 @@ namespace Tests
 
             return input
                 .Skip('"', out var hasOpenQuote)
-                .Assert(hasOpenQuote ? null : "Open quote missing")
-                .Take(StringSequence, out string value)
+                .Assert(hasOpenQuote, "Open quote missing")
+                .Take(StringSequence, out stringValue)
                 .Skip('"', out var hasCloseQuote)
-                .Assert(hasOpenQuote ? null : "Found EOF instead of end quote")
-                .Let(stringValue = value);
+                .Assert(hasOpenQuote, "Found EOF instead of end quote");
         }
 
         public static Parser ParseObject(this Parser input, out JsonValue obj)
@@ -115,11 +114,10 @@ namespace Tests
                     .Peek(out var quote)
                     .Return(quote == '"'
                         ? rest.ParseString(out var propertyName)
-                              .Assert(propertyName is { Length: > 0 }
-                                      ? null : "Object property name not valid")
+                              .Assert(propertyName is { Length: > 0 }, "Object property name not valid")
                               .Skip(IsWhiteSpace)
                               .Skip(':', out var hasColon)
-                              .Assert(hasColon ? null : "Expected ':'")
+                              .Assert(hasColon, "Expected ':'")
                               .Skip(IsWhiteSpace)
                               // Parse property value
                               .ParseJson(out var propertyValue)
@@ -128,15 +126,15 @@ namespace Tests
                               .Rest(out rest)
                               .Skip(',', out var isNextObj)
                               .Skip('}', out var isEndObj)
-                              .Assert(isNextObj || isEndObj ? null : "Expected ',' or '}'")
-                              .Return((true, (propertyName!, propertyValue)))
+                              .Assert(isNextObj || isEndObj, "Expected ',' or '}'")
+                              .Return((true, (propertyName, propertyValue)))
                         : (false, default)
                     );
 
             return input.TakeMany(TakeProperty, out var items)
                         .Skip(IsWhiteSpace)
                         .Skip('}', out var hasEndObj)
-                        .Assert(hasEndObj ? null : "Expected '}'")
+                        .Assert(hasEndObj, "Expected '}'")
                         .Let(obj = new JsonObject(items));
         }
 
@@ -158,7 +156,7 @@ namespace Tests
             return input.TakeMany(TakeItem, out List<JsonValue?> items)
                         .Let(array = new JsonArray(items))
                         .Skip(']', out var hasEndArr)
-                        .Assert(hasEndArr ? null : "Expected ']'");
+                        .Assert(hasEndArr, "Expected ']'");
         }
 
         public static Parser ParseJson(this Parser input, out JsonValue? value)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Wivuu.Sprog;
 
@@ -453,6 +454,18 @@ public partial struct Parser
     {
         if (assertion.Length > 0)
             throw new ParserException(assertion.ToString(), Buffer.Length);
+
+        return this;
+    }
+
+    /// <summary>
+    /// Create an assertion
+    /// </summary>
+    /// <returns>Parser</returns>
+    public Parser Assert([DoesNotReturnIf(false)] bool assertion, string failIfFalse)
+    {
+        if (!assertion)
+            throw new ParserException(failIfFalse, Buffer.Length);
 
         return this;
     }
