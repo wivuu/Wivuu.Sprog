@@ -49,8 +49,8 @@ public static class SpanExtensions
                 (First: input, Second: (IntPtr)f, SecondLength: value.Length),
                 static (destination, state) =>
                 {
-                    new Span<char>((char*)state.Second, state.SecondLength).CopyTo(destination[1..]);
                     destination[0] = state.First;
+                    new Span<char>((char*)state.Second, state.SecondLength).CopyTo(destination[1..]);
                 }
             );
         }

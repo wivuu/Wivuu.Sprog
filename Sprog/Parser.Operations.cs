@@ -289,6 +289,48 @@ public partial struct Parser
         return Skip(neq);
     }
 
+    /// <summary>
+    /// Skip if the predicate is matched, returning true if skipped
+    /// </summary>
+    /// <param name="value">Input pattern</param>
+    /// <param name="rest">Remaining buffer</param>
+    /// <returns>True if the input matches the pattern</returns>
+    public bool SkipIf(Predicate predicate, out Parser rest)
+    {
+        var buffer = Buffer;
+        if (buffer.Length > 0 && predicate(buffer[0]))
+        {
+            rest = buffer[1..];
+            return true;
+        }
+        else
+        {
+            rest = buffer;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Skip if the predicate is matched, returning true if skipped
+    /// </summary>
+    /// <param name="predicate">Input pattern</param>
+    /// <param name="rest">Remaining buffer</param>
+    /// <returns>True if the input matches the pattern</returns>
+    public bool SkipIf(ReadOnlySpan<char> predicate, out Parser rest)
+    {
+        var buffer = Buffer;
+        if (buffer.StartsWith(predicate))
+        {
+            rest = buffer[predicate.Length..];
+            return true;
+        }
+        else
+        {
+            rest = buffer;
+            return false;
+        }
+    }
+
     #endregion
 
     #region Let
