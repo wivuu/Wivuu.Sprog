@@ -2,8 +2,8 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Wivuu.Sprog;
-using static Wivuu.Sprog.Utilities;
 using static System.Char;
+using System.Buffers;
 
 namespace Tests
 {
@@ -69,9 +69,10 @@ namespace Tests
 
     public static class SprogJsonParser
     {
-        public static Parser ParseNumber(this Parser input, out decimal decimalValue) =>
-            input.Take(Or(IsDigit, static c => c is '.' or 'e' or 'E' or '+' or '-'), out string decimalString)
-                 .Assert(decimal.TryParse(decimalString, out var value) ? null : "Malformed JSON")
+        static readonly SearchValues<char> IsDigitOrExponent = SearchValues.Create("0123456789.eE+-");
+        public static Parser ParseNumber(this Parser input, out double decimalValue) =>
+            input.Take(IsDigitOrExponent.Contains, out string decimalString)
+                 .Assert(double.TryParse(decimalString, out var value) ? null : "Malformed JSON")
                  .Let(decimalValue = value);
 
         public static Parser ParseString(this Parser input, out string stringValue)
@@ -166,20 +167,20 @@ namespace Tests
                 return input.SkipOne().ParseObject(out value);
             else if (input.StartsWith('['))
                 return input.SkipOne().ParseArray(out value);
-            else if (input.Skip("null", out var isNull).If(isNull, out input))
+            else if (input.StartsWith("null"))
             {
                 value = null;
-                return input;
+                return input.Buffer[4..];
             }
-            else if (input.Skip("true", out var isTrue).If(isTrue, out input))
+            else if (input.StartsWith("true"))
             {
                 value = new JsonLiteral(true);
-                return input;
+                return input.Buffer[4..];
             }
-            else if (input.Skip("false", out var isFalse).If(isFalse, out input))
+            else if (input.StartsWith("false"))
             {
                 value = new JsonLiteral(false);
-                return input;
+                return input.Buffer[5..];
             }
             else if (input.StartsWith('"'))
                 return input.ParseString(out var stringValue)
@@ -225,6 +226,7 @@ namespace Tests
             {
                 "PositiveNumber" : 512.52,
                 "NegativeNumber": -100,
+                "ExponentNumber": 1.2e-3,
                 "Array": [ "Item1", "Item2" ],
                 "Null": null,
                 "Obj": { "Prop1": "Value" }
@@ -249,8 +251,7 @@ namespace Tests
         [TestMethod]
         public void TestToString()
         {
-            var doc = new JsonObject(new List<(string, JsonValue?)>
-            {
+            var doc = new JsonObject([
                 ("TestValue", new JsonLiteral(5)),
                 ("TestArray", new JsonArray(new List<JsonValue>
                 {
@@ -260,7 +261,7 @@ namespace Tests
                     new JsonLiteral(4),
                 })),
                 ("NextValue", null)
-            });
+            ]);
 
             var value = doc.ToString();
         }
