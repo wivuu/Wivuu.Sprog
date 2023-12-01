@@ -4,7 +4,7 @@ using Wivuu.Sprog;
 using static System.Char;
 using System.Buffers;
 
-namespace Tests;
+namespace Wivuu.Sprog;
 
 public abstract class JsonValue;
 

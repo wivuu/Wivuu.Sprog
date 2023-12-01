@@ -6,7 +6,6 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sprache;
-using Tests;
 using Wivuu.Sprog;
 using static System.Char;
 
