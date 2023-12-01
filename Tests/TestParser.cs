@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using static System.Char;
 using static Wivuu.Sprog.Utilities;
 
