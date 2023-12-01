@@ -20,11 +20,11 @@ public delegate (bool success, T value) TakeManyCondition<T>(ref Parser input);
 /// <summary>
 /// Sprog Parser
 /// </summary>
-public readonly ref partial struct Parser
+public readonly ref partial struct Parser(ReadOnlySpan<char> buffer)
 {
     #region Members
 
-    public readonly ReadOnlySpan<char> Buffer;
+    public readonly ReadOnlySpan<char> Buffer = buffer;
 
     public int Length => Buffer.Length;
 
@@ -33,11 +33,6 @@ public readonly ref partial struct Parser
     #region Constructors
 
     public Parser(string input) : this(input.AsSpan()) { }
-
-    public Parser(ReadOnlySpan<char> buffer)
-    {
-        this.Buffer = buffer;
-    }
 
     #endregion
 
