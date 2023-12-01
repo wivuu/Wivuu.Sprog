@@ -100,7 +100,7 @@ public static class SprogJsonParser
             .Assert(hasOpenQuote, "Open quote missing")
             .Take(StringSequence, out stringValue)
             .Skip('"', out var hasCloseQuote)
-            .Assert(hasOpenQuote, "Found EOF instead of end quote");
+            .Assert(hasCloseQuote, "Found EOF instead of end quote");
     }
 
     public static Parser ParseObject(this Parser input, out JsonValue obj)
