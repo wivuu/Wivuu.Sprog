@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.Char;
 using static Wivuu.Sprog.Utilities;
 
@@ -15,10 +14,9 @@ public static class ParserExtensions
                 .Let(identifier = $"{first}{rest}");
 }
 
-[TestClass]
 public class TestParser
 {
-    [TestMethod]
+    [Fact]
     public void TestConcat()
     {
         ReadOnlySpan<char> span1 = "Test value";
@@ -28,12 +26,12 @@ public class TestParser
         var lhs = '!'.Concat(span1);
         var twoSpans = span1.Concat(span2);
 
-        Assert.AreEqual("Test value!", rhs);
-        Assert.AreEqual("!Test value", lhs);
-        Assert.AreEqual("Test valueValue2", twoSpans);
+        Assert.Equal("Test value!", rhs);
+        Assert.Equal("!Test value", lhs);
+        Assert.Equal("Test valueValue2", twoSpans);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestParserContinuators()
     {
         var remaining = new Parser(" This is a test ");
@@ -48,7 +46,7 @@ public class TestParser
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void TestParseIdents()
     {
         var remaining = 
@@ -64,17 +62,17 @@ public class TestParser
         Console.WriteLine($"Remaining: `{remaining.ToString()}`");
     }
 
-    [TestMethod]
+    [Fact]
     public void TestDeclaration()
     {
         var remaining = 
             new Parser("Test")
             .Declare(out var fst, "FST");
 
-        Assert.AreEqual("FST", fst);
+        Assert.Equal("FST", fst);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestTakeMany()
     {
         static (bool success, int value) TakeInteger(ref Parser input) => input
@@ -87,13 +85,13 @@ public class TestParser
 
         new Parser("0 5 6").TakeMany(TakeInteger, out var ints);
 
-        Assert.AreEqual(3, ints.Count);
-        Assert.AreEqual(0, ints[0]);
-        Assert.AreEqual(5, ints[1]);
-        Assert.AreEqual(6, ints[2]);
+        Assert.Equal(3, ints.Count);
+        Assert.Equal(0, ints[0]);
+        Assert.Equal(5, ints[1]);
+        Assert.Equal(6, ints[2]);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestNot()
     {
         var result = new Parser(" This is a test ")
@@ -109,25 +107,25 @@ public class TestParser
             )
             .Return(words);
 
-        Assert.AreEqual(4, words.Count);
+        Assert.Equal(4, words.Count);
 
         foreach (var (actual, expected) in words.Zip(new [] { "This","is","a","test" }, (l,r) => (r, l)))
         {
-            Assert.AreEqual(actual, expected);
+            Assert.Equal(actual, expected);
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void TestStartsWith()
     {
         var result = new Parser(" This is a test ");
 
-        Assert.IsTrue(result.Skip(IsWhiteSpace).StartsWith(static c => c == 'T'));
-        Assert.IsTrue(result.Skip(IsWhiteSpace).StartsWith("This"));
-        Assert.IsTrue(result.Skip(IsWhiteSpace).StartsWith('T'));
+        Assert.True(result.Skip(IsWhiteSpace).StartsWith(static c => c == 'T'));
+        Assert.True(result.Skip(IsWhiteSpace).StartsWith("This"));
+        Assert.True(result.Skip(IsWhiteSpace).StartsWith('T'));
 
-        Assert.IsFalse(result.StartsWith(static c => c == 'T'));
-        Assert.IsFalse(result.StartsWith("This"));
-        Assert.IsFalse(result.StartsWith('T'));
+        Assert.False(result.StartsWith(static c => c == 'T'));
+        Assert.False(result.StartsWith("This"));
+        Assert.False(result.StartsWith('T'));
     }
 }

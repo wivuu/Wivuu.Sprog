@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.Char;
 
 namespace Wivuu.Sprog;
@@ -126,7 +125,6 @@ public static class SprogXmlParser
     }
 }
 
-[TestClass]
 public class TestXml
 {
     readonly string[] GoodXml =
@@ -167,19 +165,19 @@ public class TestXml
         """
     };
 
-    [TestMethod]
+    [Fact]
     public void TestGoodXml()
     {
         XmlDocument doc;
         foreach (var good in GoodXml)
-            Assert.IsTrue(SprogXmlParser.TryParse(good, out doc));
+            Assert.True(SprogXmlParser.TryParse(good, out doc));
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBadXml()
     {
         XmlDocument doc;
         foreach (var bad in BadXml)
-            Assert.IsFalse(SprogXmlParser.TryParse(bad, out doc));
+            Assert.False(SprogXmlParser.TryParse(bad, out doc));
     }
 }
