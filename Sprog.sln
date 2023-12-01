@@ -2,9 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "benchmarks\Benchmarks.csproj", "{23A98424-CEC7-4B3C-8D10-B8BFF7C8CA17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarks", "Benchmarks\Benchmarks.csproj", "{23A98424-CEC7-4B3C-8D10-B8BFF7C8CA17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "tests\Tests.csproj", "{C83F717B-CC69-45EB-B2BB-9FCF4AE7A2E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{C83F717B-CC69-45EB-B2BB-9FCF4AE7A2E1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sprog", "Sprog\Sprog.csproj", "{953E6561-F46E-4824-8A32-B4A138764B90}"
 EndProject
