@@ -11,8 +11,7 @@ public static class Utilities
     /// <returns>The negation of the input pattern</returns>
     public static Predicate Not(Predicate fun)
     {
-        if (fun == null)
-            throw new ArgumentNullException(nameof(fun));
+        ArgumentNullException.ThrowIfNull(fun);
 
         bool not(char c) => !fun(c);
 
