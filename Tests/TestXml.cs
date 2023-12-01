@@ -16,7 +16,7 @@ public class XmlDocument
     public override string? ToString() => Root?.ToString();
 }
 
-public class Item { }
+public class Item;
 
 public class Content : Item
 {
@@ -87,7 +87,7 @@ public static class SprogXmlParser
             }
         }
 
-        items = new List<Item>(capacity: 1);
+        items = [];
         while (NextItem(ref input, out var next))
             items.Add(next);
 

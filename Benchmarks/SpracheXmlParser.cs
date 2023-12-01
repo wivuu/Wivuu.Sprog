@@ -18,7 +18,7 @@ public class Document
     }
 }
 
-public class Item { }
+public class Item;
 
 public class Content : Item
 {

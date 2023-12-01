@@ -7,7 +7,7 @@ using System.Buffers;
 
 namespace Tests
 {
-    public abstract class JsonValue {}
+    public abstract class JsonValue;
 
     public class JsonDocument : JsonValue
     {
@@ -114,7 +114,7 @@ namespace Tests
                     .Peek(out var quote)
                     .Return(quote == '"'
                         ? rest.ParseString(out var propertyName)
-                              .Assert(propertyName is { Length: > 0 }, "Object property name not valid")
+                              .Assert(propertyName.Length > 0, "Object property name not valid")
                               .Skip(IsWhiteSpace)
                               .Skip(':', out var hasColon)
                               .Assert(hasColon, "Expected ':'")
