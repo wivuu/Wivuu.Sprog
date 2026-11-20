@@ -26,9 +26,10 @@ Assert.AreEqual("abc123", id);
 
 ## NetWasm
 
-The package includes a `netwasm0.1` build, so Sprog can be used in applications compiled with
-[NetWasm](https://github.com/zion-sati/NetWasm). Building Sprog from source requires the .NET 10
-SDK (10.0.303 or newer); the NetWasm SDK is restored from NuGet.
+Applications compiled with [NetWasm](https://github.com/zion-sati/NetWasm) 0.15 or newer target
+`net10.0-netwasm` and use the package's `net10.0` build. NetWasm 0.15 deprecates the `netwasm0.1`
+target framework, and Sprog 0.6.0 is the last release with a `netwasm0.1` build, for applications
+that still target it.
 
 ## Performance
 Preliminary results are promising, with performance over 40x faster than [Sprache](https://github.com/sprache/Sprache/) in a naive XML parsing benchmark, using far less memory and GC usage thanks to `Sprog`s reliance on the stack rather than heap allocation.

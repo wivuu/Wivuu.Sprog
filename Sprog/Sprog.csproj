@@ -1,9 +1,8 @@
-<!-- NetWasm.Sdk builds the regular .NET targets as usual and adds netwasm0.1 for NetWasm consumers -->
-<Project Sdk="NetWasm.Sdk/0.14.2">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net10.0;netwasm0.1</TargetFrameworks>
-    <Version>0.6.0</Version>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <Version>0.7.0</Version>
     <Nullable>enable</Nullable>
     <PackageId>Wivuu.Sprog</PackageId>
     <Authors>Erik O'Leary</Authors>
@@ -14,9 +13,8 @@
     <RootNamespace>Wivuu.Sprog</RootNamespace>
     <LangVersion>latest</LangVersion>
     <PackageReleaseNotes>
-    - Add net10.0 target
-    - Drop net6.0 target (out of support)
-    - Build the netwasm0.1 target with NetWasm 0.14.2, so that it compiles into NetWasm 0.14 programs
+    - Drop the netwasm0.1 target, which NetWasm 0.15 deprecates: NetWasm projects that target
+      net10.0-netwasm use the net10.0 build. Projects that still target netwasm0.1 can stay on 0.6.0
     </PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/onionhammer/Wivuu.Sprog</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
